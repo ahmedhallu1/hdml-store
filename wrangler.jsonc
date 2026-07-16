@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hdml-store",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-06-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  }
+  // Secrets (set with `npx wrangler secret put NAME` — never commit values):
+  //   SUPABASE_SERVICE_ROLE_KEY, BREVO_API_KEY, TURNSTILE_SECRET_KEY
+  // Public vars can go in `vars` or the Cloudflare dashboard:
+  //   NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  //   NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_TURNSTILE_SITE_KEY, EMAIL_FROM, EMAIL_FROM_NAME
+}

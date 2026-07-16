@@ -1,26 +1,60 @@
 @import "tailwindcss";
 
+/* HDML brand system — primary teal #004754 extracted from the logo. */
+@theme {
+  --color-brand-50: #eef4f5;
+  --color-brand-100: #d7e6e9;
+  --color-brand-200: #afccd2;
+  --color-brand-300: #82a5ab;
+  --color-brand-400: #437781;
+  --color-brand-500: #176e7e;
+  --color-brand-600: #0b5a68;
+  --color-brand-700: #004754;
+  --color-brand-800: #00333d;
+  --color-brand-900: #002830;
+  --color-brand-950: #001b21;
+
+  --color-accent-500: #e8b24a;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 0.75rem;
+}
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground: #10272c;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Focus visibility for keyboard users. */
+:focus-visible {
+  outline: 2px solid #0b5a68;
+  outline-offset: 2px;
+}
+
+/* Subtle entrance used on cards/sections. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.rise-in {
+  animation: rise-in 0.3s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise-in {
+    animation: none;
+  }
 }

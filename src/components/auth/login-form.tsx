@@ -1,18 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { login, type AuthFormState } from "@/server/actions/auth";
 import { Button } from "@/components/ui/button";
 import { TextField } from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
 import { PasswordInput } from "@/components/auth/password-input";
 import { ForgotPassword } from "@/components/auth/forgot-password";
+import { TurnstileWidget, type TurnstileHandle } from "@/components/turnstile-widget";
 
 const initialState: AuthFormState = {};
 
 export function LoginForm({ next, notice }: { next: string; notice?: string }) {
   const [state, formAction, pending] = useActionState(login, initialState);
+  const turnstileRef = useRef<TurnstileHandle>(null);
+
+  // Tokens are single-use: get a fresh one after a failed attempt.
+  useEffect(() => {
+    if (state.error) turnstileRef.current?.reset();
+  }, [state]);
 
   return (
     <div className="space-y-4">
@@ -48,6 +55,8 @@ export function LoginForm({ next, notice }: { next: string; notice?: string }) {
           required
           error={state.fieldErrors?.password}
         />
+
+        <TurnstileWidget ref={turnstileRef} onToken={() => {}} />
 
         <Button type="submit" disabled={pending} className="w-full">
           {pending && <Spinner className="size-4 border-white/40 border-t-white" />}

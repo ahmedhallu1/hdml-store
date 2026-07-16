@@ -35,6 +35,7 @@ export const registerSchema = z.object({
 export const loginSchema = z.object({
   email: emailSchema,
   password: z.string().min(1).max(72),
+  turnstileToken: z.string().min(1, "Verification failed — please retry"),
 });
 
 export const profileSchema = z.object({

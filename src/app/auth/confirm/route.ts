@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { supabaseServer } from "@/lib/supabase/server";
+import { safeNextPath } from "@/lib/safe-path";
 
 /**
  * Landing point for Supabase auth email links (password recovery).
@@ -20,7 +21,7 @@ export async function GET(request: NextRequest) {
   const tokenHash = url.searchParams.get("token_hash");
   const type = url.searchParams.get("type");
   const nextRaw = url.searchParams.get("next");
-  const next = nextRaw && /^\/(?!\/)/.test(nextRaw) ? nextRaw : "/account/update-password";
+  const next = safeNextPath(nextRaw, "/account/update-password");
 
   const failure = new URL("/login?error=recovery", url.origin);
   const success = new URL(next, url.origin);

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getUser } from "@/lib/auth";
 import { LoginForm } from "@/components/auth/login-form";
+import { safeNextPath } from "@/lib/safe-path";
 
 export const metadata: Metadata = {
   title: "Sign in",
@@ -14,7 +15,7 @@ interface Props {
 
 export default async function LoginPage(props: Props) {
   const { next, error } = await props.searchParams;
-  const safeNext = typeof next === "string" && /^\/(?!\/)/.test(next) ? next : "/";
+  const safeNext = safeNextPath(next);
 
   const user = await getUser();
   if (user) redirect(safeNext);

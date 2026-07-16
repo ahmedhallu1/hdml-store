@@ -29,10 +29,7 @@ export interface AuthFormState {
   success?: string;
 }
 
-/** Only same-origin relative paths are allowed as post-auth destinations. */
-function safeNextPath(raw: unknown): string {
-  return typeof raw === "string" && /^\/(?!\/)/.test(raw) ? raw : "/";
-}
+import { safeNextPath } from "@/lib/safe-path";
 
 // ---------------------------------------------------------------------------
 // Register
@@ -127,13 +124,22 @@ export async function login(
   const parsed = parseOrErrors(loginSchema, {
     email: formData.get("email"),
     password: formData.get("password"),
+    turnstileToken: formData.get("turnstileToken"),
   });
   if (!parsed.ok) {
     return { error: "Please enter your email and password.", fieldErrors: parsed.errors };
   }
 
   const ip = clientIpFrom(await headers());
+  if (!(await verifyTurnstile(parsed.data.turnstileToken, ip))) {
+    return { error: "Human verification failed. Please try again." };
+  }
   if (!(await rateLimit(`login:${ip}`, 20, 900))) {
+    return { error: "Too many sign-in attempts. Please wait a few minutes and try again." };
+  }
+  // Account-scoped throttle on top of the IP one (credential stuffing through
+  // rotating proxies still burns against the target mailbox).
+  if (!(await rateLimit(`login-email:${parsed.data.email}`, 10, 900))) {
     return { error: "Too many sign-in attempts. Please wait a few minutes and try again." };
   }
 

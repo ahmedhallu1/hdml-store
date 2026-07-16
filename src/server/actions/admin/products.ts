@@ -297,7 +297,7 @@ const CSV_COLUMNS = [
 ] as const;
 type CsvColumn = (typeof CSV_COLUMNS)[number];
 
-const MAX_IMPORT_ROWS = 5000;
+const MAX_IMPORT_ROWS = 20000;
 
 interface RowError {
   line: number;
@@ -397,6 +397,7 @@ async function analyzeCsv(text: string): Promise<ImportPlan | { fatal: string }>
     const { data, error } = await service
       .from("products")
       .select("id, sku, slug, name")
+      .order("id")
       .range(from, from + 999);
     if (error) return { fatal: `Failed to load products: ${error.message}` };
     for (const r of data ?? []) {
@@ -628,9 +629,11 @@ export async function importProductsCsvAction(input: unknown): Promise<CsvImport
       .upsert(rows, { onConflict: "slug", ignoreDuplicates: true });
     if (error) return { ok: false, message: `Brand upsert failed: ${error.message}` };
   }
-  const { data: allBrands, error: brandError } = await service.from("brands").select("id, name");
+  const { data: allBrands, error: brandError } = await service.from("brands").select("id, slug");
   if (brandError) return { ok: false, message: `Brand load failed: ${brandError.message}` };
-  const brandByName = new Map((allBrands ?? []).map((b) => [b.name as string, b.id as string]));
+  // Keyed by slug — the same key the upsert conflicts on — so a renamed brand
+  // or a case-variant in the CSV still resolves instead of silently nulling.
+  const brandBySlug = new Map((allBrands ?? []).map((b) => [b.slug as string, b.id as string]));
 
   // 2. Record the batch first so products can reference it.
   const { data: batch } = await service
@@ -651,7 +654,11 @@ export async function importProductsCsvAction(input: unknown): Promise<CsvImport
   const usedSlugs = new Set<string>();
   {
     for (let from = 0; ; from += 1000) {
-      const { data, error } = await service.from("products").select("slug").range(from, from + 999);
+      const { data, error } = await service
+        .from("products")
+        .select("slug")
+        .order("id")
+        .range(from, from + 999);
       if (error) return { ok: false, message: `Slug load failed: ${error.message}` };
       for (const r of data ?? []) usedSlugs.add(r.slug as string);
       if (!data || data.length < 1000) break;
@@ -673,7 +680,7 @@ export async function importProductsCsvAction(input: unknown): Promise<CsvImport
         original_title: c.name,
         price: c.priceDecimal,
         category_id: c.categoryId,
-        brand_id: c.brandName ? (brandByName.get(c.brandName) ?? null) : null,
+        brand_id: c.brandName ? (brandBySlug.get(slugify(c.brandName, 60)) ?? null) : null,
         stock_status: c.stockStatus,
         moq: c.moq,
         active: c.active,
@@ -707,7 +714,7 @@ export async function importProductsCsvAction(input: unknown): Promise<CsvImport
   for (const u of plan.updates) {
     const patch = { ...u.patch };
     if (u.brandName !== undefined && u.brandName !== null) {
-      patch.brand_id = brandByName.get(u.brandName) ?? null;
+      patch.brand_id = brandBySlug.get(slugify(u.brandName, 60)) ?? null;
     }
     const { error } = await service.from("products").update(patch).eq("id", u.productId);
     if (error) errors.push({ line: u.line, message: `SKU ${u.sku}: ${error.message}` });

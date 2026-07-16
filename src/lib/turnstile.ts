@@ -11,7 +11,19 @@ const VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 export const TURNSTILE_TEST_SECRET = "1x0000000000000000000000000000000AA";
 
 export async function verifyTurnstile(token: string, remoteIp?: string): Promise<boolean> {
-  const secret = process.env.TURNSTILE_SECRET_KEY || TURNSTILE_TEST_SECRET;
+  let secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) {
+    // The always-pass test secret must be an explicit opt-in: silently falling
+    // back to it in production would disable bot protection on every endpoint.
+    if (process.env.TURNSTILE_ALLOW_TEST_KEYS === "1") {
+      secret = TURNSTILE_TEST_SECRET;
+    } else {
+      console.error(
+        "TURNSTILE_SECRET_KEY is not set and TURNSTILE_ALLOW_TEST_KEYS!=1 — failing verification closed.",
+      );
+      return false;
+    }
+  }
   try {
     const res = await fetch(VERIFY_URL, {
       method: "POST",

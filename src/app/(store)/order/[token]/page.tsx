@@ -91,9 +91,13 @@ export default async function OrderTrackingPage(props: Props) {
         ["awaiting_verification", "paid", "fulfilled"].includes(order.status),
   );
 
+  // Admin-uploaded QR images take precedence; otherwise generate one from the
+  // wallet/Instapay number.
   const methodQrs = showPayment
-    ? await Promise.all(methods.map((m) => qrSvg(m.number)))
+    ? await Promise.all(methods.map((m) => (m.qr_path ? Promise.resolve("") : qrSvg(m.number))))
     : [];
+  const qrImageUrl = (path: string) =>
+    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/site-assets/${path}`;
 
   const placedOn = new Intl.DateTimeFormat("en-GB", {
     timeZone: "Africa/Cairo",
@@ -194,7 +198,15 @@ export default async function OrderTrackingPage(props: Props) {
                   </p>
                 )}
                 {m.instructions && <p className="mt-1 text-xs text-gray-500">{m.instructions}</p>}
-                {methodQrs[i] && (
+                {m.qr_path ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={qrImageUrl(m.qr_path)}
+                    alt={`QR code for ${m.label} ${m.number}`}
+                    className="mt-3 w-28 rounded bg-white"
+                    loading="lazy"
+                  />
+                ) : methodQrs[i] ? (
                   <div
                     className="mt-3 w-28 [&>svg]:h-auto [&>svg]:w-full"
                     aria-label={`QR code for ${m.label} ${m.number}`}
@@ -202,7 +214,7 @@ export default async function OrderTrackingPage(props: Props) {
                     // qrSvg output is our own generated SVG, not user content.
                     dangerouslySetInnerHTML={{ __html: methodQrs[i] }}
                   />
-                )}
+                ) : null}
               </div>
             ))}
             {methods.length === 0 && (

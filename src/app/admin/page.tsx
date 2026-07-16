@@ -25,6 +25,7 @@ async function confirmedRevenuePiasters(): Promise<number> {
       .from("orders")
       .select("total")
       .in("status", ["paid", "fulfilled"])
+      .order("id")
       .range(from, from + 999);
     if (error) {
       console.error("revenue query failed:", error.message);

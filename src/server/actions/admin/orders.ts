@@ -74,6 +74,20 @@ async function recomputeOrderTotals(orderId: string): Promise<void> {
     })
     .eq("id", orderId);
   if (updateError) throw new Error(`Failed to update order totals: ${updateError.message}`);
+
+  // Any already-issued receipt now shows a stale total — regenerate it so the
+  // customer's download link never contradicts the amount they must transfer.
+  const { data: existingInvoices } = await service
+    .from("invoices")
+    .select("kind")
+    .eq("order_id", orderId);
+  for (const inv of (existingInvoices ?? []) as Array<{ kind: "preliminary" | "final" }>) {
+    try {
+      await ensureInvoice(orderId, inv.kind);
+    } catch (e) {
+      console.error(`invoice regeneration (${inv.kind}) failed for ${orderId}:`, e);
+    }
+  }
 }
 
 async function insertHistory(
@@ -122,8 +136,18 @@ export async function transitionOrderStatusAction(
   }
 
   const service = supabaseService();
-  const { error } = await service.from("orders").update({ status: toStatus }).eq("id", orderId);
+  // Conditional on the status the transition was validated against, so two
+  // concurrent admins cannot materialize an illegal path (e.g. cancelled→paid).
+  const { data: updated, error } = await service
+    .from("orders")
+    .update({ status: toStatus })
+    .eq("id", orderId)
+    .eq("status", order.status)
+    .select("id");
   if (error) return failure(`Update failed: ${error.message}`);
+  if (!updated?.length) {
+    return failure("The order status changed while you were editing — reload and try again.");
+  }
 
   await insertHistory(orderId, order.status, toStatus, admin.id, reason || null);
 
@@ -278,7 +302,19 @@ export async function reviewProofAction(
   if (!order) return failure("Order not found");
 
   if (decision === "approved") {
-    const { error } = await service
+    // A proof may only be approved when the order can actually become paid —
+    // otherwise a "payment confirmed" receipt would go out for an order that
+    // is cancelled / already handled.
+    const alreadyPaid = order.status === "paid" || order.status === "fulfilled";
+    if (!alreadyPaid && !ORDER_TRANSITIONS[order.status].includes("paid")) {
+      return failure(
+        `Order is ${ORDER_STATUS_LABELS[order.status]} — approve is only possible while the payment can still be confirmed.`,
+      );
+    }
+
+    // Optimistic guard: only flip a proof that is still pending (a concurrent
+    // admin may have reviewed it between our read and this write).
+    const { data: updatedProof, error } = await service
       .from("payment_proofs")
       .update({
         status: "approved",
@@ -286,18 +322,32 @@ export async function reviewProofAction(
         reviewed_by: admin.id,
         reviewed_at: new Date().toISOString(),
       })
-      .eq("id", proofId);
+      .eq("id", proofId)
+      .eq("status", "pending")
+      .select("id");
     if (error) return failure(`Update failed: ${error.message}`);
+    if (!updatedProof?.length) return failure("This proof was reviewed by someone else just now.");
 
     let statusNote = "";
-    if (ORDER_TRANSITIONS[order.status].includes("paid")) {
-      const { error: orderError } = await service
+    let paidNow = alreadyPaid;
+    if (!alreadyPaid) {
+      // Conditional on the status we validated against — a concurrent
+      // transition (e.g. cancelled) must not be overwritten to paid.
+      const { data: updatedOrder, error: orderError } = await service
         .from("orders")
         .update({ status: "paid" })
-        .eq("id", order.id);
+        .eq("id", order.id)
+        .eq("status", order.status)
+        .select("id");
       if (orderError) return failure(`Order update failed: ${orderError.message}`);
+      if (!updatedOrder?.length) {
+        return failure(
+          "The order status changed while reviewing — reload the page and check before approving again.",
+        );
+      }
       await insertHistory(order.id, order.status, "paid", admin.id, "Payment proof approved");
       statusNote = " Order marked Paid.";
+      paidNow = true;
     }
 
     await auditLog(admin.id, "proof.approve", "payment_proofs", proofId, {
@@ -305,11 +355,14 @@ export async function reviewProofAction(
       order_ref: order.order_ref,
     });
 
-    // Best-effort final receipt email.
-    const result = await sendOrderEmail(order.id, "final");
-    const emailNote = result.sent
-      ? " Final receipt email sent."
-      : ` Final email failed (${result.error ?? "unknown"}) — resend from the Invoices panel.`;
+    // Best-effort final receipt email — only when the order really is paid.
+    let emailNote = "";
+    if (paidNow) {
+      const result = await sendOrderEmail(order.id, "final");
+      emailNote = result.sent
+        ? " Final receipt email sent."
+        : ` Final email failed (${result.error ?? "unknown"}) — resend from the Invoices panel.`;
+    }
     refresh();
     return success(`Proof approved.${statusNote}${emailNote}`);
   }
@@ -317,7 +370,7 @@ export async function reviewProofAction(
   // decision === "rejected"
   if (!reason) return failure("A rejection reason is required", { reason: "Required" });
 
-  const { error } = await service
+  const { data: rejectedProof, error } = await service
     .from("payment_proofs")
     .update({
       status: "rejected",
@@ -325,15 +378,19 @@ export async function reviewProofAction(
       reviewed_by: admin.id,
       reviewed_at: new Date().toISOString(),
     })
-    .eq("id", proofId);
+    .eq("id", proofId)
+    .eq("status", "pending")
+    .select("id");
   if (error) return failure(`Update failed: ${error.message}`);
+  if (!rejectedProof?.length) return failure("This proof was reviewed by someone else just now.");
 
   let statusNote = "";
   if (order.status === "awaiting_verification") {
     const { error: orderError } = await service
       .from("orders")
       .update({ status: "awaiting_payment" })
-      .eq("id", order.id);
+      .eq("id", order.id)
+      .eq("status", "awaiting_verification");
     if (orderError) return failure(`Order update failed: ${orderError.message}`);
     await insertHistory(
       order.id,

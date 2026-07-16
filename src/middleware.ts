@@ -2,13 +2,13 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 /**
- * Next.js 16 proxy (successor of middleware):
+ * Edge middleware (OpenNext Cloudflare requires edge middleware; Next 16's Node proxy.ts is not yet supported by the adapter):
  *  1. Refreshes the Supabase auth session cookie on every matched request.
  *  2. Redirects unauthenticated visitors away from account/checkout/admin.
  * Admin MEMBERSHIP is enforced server-side in requireAdmin() — the proxy only
  * guarantees a session exists.
  */
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(

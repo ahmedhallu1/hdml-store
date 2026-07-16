@@ -296,3 +296,5 @@ begin
   return v_count <= p_limit;
 end $$;
 revoke all on function public.rate_limit_hit(text, int, int) from public;
+-- The server calls this via the service role; nothing else may execute it.
+grant execute on function public.rate_limit_hit(text, int, int) to service_role;

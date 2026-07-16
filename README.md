@@ -117,5 +117,5 @@ src/app/(store)/            home, catalog, category, product, cart, checkout,
 src/app/admin/              dashboard, orders + proof review, products (+CSV),
                             needs-review queue, taxonomy, settings, audit log
 src/app/api/                cart-products, proof upload, receipt download, admin CSV/uploads
-src/proxy.ts                session refresh + auth-gated routes (Next 16 proxy)
+src/middleware.ts           session refresh + auth-gated routes (edge middleware)
 ```

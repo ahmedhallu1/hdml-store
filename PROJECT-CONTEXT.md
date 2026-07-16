@@ -17,7 +17,7 @@ the owner verifies the payment. 100% free-tier stack.
 ## Non-negotiable conventions
 
 1. **Next 16 rules**: `cookies()`/`headers()`/`params`/`searchParams` are
-   ASYNC (`await props.params`). File `src/proxy.ts` replaces middleware.
+   ASYNC (`await props.params`). Auth gating lives in `src/middleware.ts` (edge — the OpenNext Cloudflare adapter does not support Node `proxy.ts` yet).
    `revalidateTag(tag, "max")` needs a profile; prefer `updateTag`/`refresh`
    in server actions. Docs live in `node_modules/next/dist/docs/`.
 2. **Money**: integer piasters via `src/lib/money.ts` ONLY. DB stores

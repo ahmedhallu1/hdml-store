@@ -1,12 +1,14 @@
 import { defineConfig } from "vitest/config";
-import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const r = (p: string) => fileURLToPath(new URL(p, import.meta.url));
 
 export default defineConfig({
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
+      "@": r("./src"),
       // Unit tests run in Node; neutralize the RSC-only guard.
-      "server-only": path.resolve(__dirname, "tests/mocks/server-only.ts"),
+      "server-only": r("./tests/mocks/server-only.ts"),
     },
   },
   test: {

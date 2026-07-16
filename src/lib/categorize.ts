@@ -95,8 +95,10 @@ export function reviewFlags(name: string): string[] {
   const flags: string[] = [];
   if (/_/.test(name)) flags.push("generic_name");
   if (name.trim().length < 12) flags.push("very_short_name");
-  // Mojibake: mangled Arabic shows up as dense Latin-1 supplement noise.
-  const weird = (name.match(/[À-ÿ]/g) ?? []).length;
+  // Mojibake: mangled Arabic shows up as dense Latin-1 supplement noise
+  // (¡–ÿ covers §, ³, ¹, ©, Ù … while a threshold of 3 spares the odd
+  // legitimate accented character).
+  const weird = (name.match(/[¡-ÿŒ-˜]/g) ?? []).length;
   if (weird >= 3) flags.push("corrupted_text");
   if (/[؀-ۿ]/.test(name)) flags.push("arabic_text");
   return flags;

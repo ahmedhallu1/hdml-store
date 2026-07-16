@@ -120,6 +120,119 @@ export const paymentMethodSchema = z.object({
   sort: z.number().int().min(0).max(1000),
 });
 
+// --- Customer accounts / cart / checkout / order tracking (add-only) -------
+
+export const forgotPasswordSchema = z.object({ email: emailSchema });
+
+export const updatePasswordSchema = z
+  .object({ password: passwordSchema, confirm: z.string() })
+  .refine((v) => v.password === v.confirm, {
+    message: "Passwords do not match",
+    path: ["confirm"],
+  });
+
+/** POST /api/cart-products body. */
+export const cartProductsSchema = z.object({
+  productIds: z.array(z.string().uuid()).min(1).max(200),
+});
+
+/** orders.tracking_token = encode(gen_random_bytes(24), 'hex') → 48 hex chars. */
+export const TRACKING_TOKEN_PATTERN = /^[a-f0-9]{48}$/;
+
+/** Non-file fields of the payment-proof upload form. */
+export const proofUploadFieldsSchema = z.object({
+  token: z.string().regex(TRACKING_TOKEN_PATTERN, "Invalid tracking token"),
+  turnstileToken: z.string().min(1, "Verification failed — please retry"),
+});
+
+// ---------------------------------------------------------------------------
+// Admin module schemas (additive — owned by the admin dashboard module)
+// ---------------------------------------------------------------------------
+
+export const adminProductSaveSchema = adminProductSchema.extend({
+  productId: z.string().uuid().optional(),
+  regenerateSlug: z.boolean().optional(),
+});
+
+export const adminProductToggleSchema = z.object({
+  productId: z.string().uuid(),
+  active: z.boolean(),
+});
+
+export const adminProductIdSchema = z.object({
+  productId: z.string().uuid(),
+});
+
+export const adminOrderItemRemoveSchema = z.object({
+  orderId: z.string().uuid(),
+  itemId: z.string().uuid(),
+});
+
+export const adminInvoiceActionSchema = z.object({
+  orderId: z.string().uuid(),
+  kind: z.enum(["preliminary", "final"]),
+});
+
+export const adminCategorySaveSchema = z.object({
+  categoryId: z.string().uuid().optional(),
+  name: z.string().trim().min(2).max(80),
+  icon: z.string().trim().max(40).optional().or(z.literal("")),
+  sort: z.coerce.number().int().min(0).max(1000),
+});
+
+export const adminBrandSaveSchema = z.object({
+  brandId: z.string().uuid().optional(),
+  name: z.string().trim().min(1).max(80),
+});
+
+export const adminEntityDeleteSchema = z.object({
+  id: z.string().uuid(),
+});
+
+export const adminSellerInfoSchema = z.object({
+  name: z.string().trim().min(2).max(160),
+  taxId: z.string().trim().max(40).optional().or(z.literal("")),
+  address: z.string().trim().max(300).optional().or(z.literal("")),
+});
+
+export const adminDeliverySettingsSchema = z.object({
+  message: z.string().trim().min(2).max(500),
+  regions: z.string().trim().max(200).optional().or(z.literal("")),
+  time: z.string().trim().max(100).optional().or(z.literal("")),
+  feeNote: z.string().trim().max(300).optional().or(z.literal("")),
+});
+
+export const adminOrderingSettingsSchema = z.object({
+  minOrderEgp: z.coerce.number().int().min(0).max(10000000),
+  vatNote: z.string().trim().max(300).optional().or(z.literal("")),
+});
+
+export const adminContactSettingsSchema = z.object({
+  phone: z.string().trim().max(40).optional().or(z.literal("")),
+  whatsapp: z.string().trim().max(40).optional().or(z.literal("")),
+  email: z.string().trim().max(254).optional().or(z.literal("")),
+  facebook: z.string().trim().max(300).optional().or(z.literal("")),
+  instagram: z.string().trim().max(300).optional().or(z.literal("")),
+});
+
+export const adminPaymentMethodSaveSchema = paymentMethodSchema.extend({
+  methodId: z.string().uuid().optional(),
+});
+
+export const adminPaymentMethodToggleSchema = z.object({
+  methodId: z.string().uuid(),
+  active: z.boolean(),
+});
+
+export const adminPaymentMethodQrClearSchema = z.object({
+  methodId: z.string().uuid(),
+});
+
+/** Raw CSV text for the product importer (cap enforced again on rows). */
+export const adminCsvTextSchema = z.object({
+  csv: z.string().min(1).max(8_000_000),
+});
+
 /** Parse a FormData/JSON payload and return typed data or a flat error map. */
 export function parseOrErrors<T extends z.ZodTypeAny>(
   schema: T,

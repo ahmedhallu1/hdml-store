@@ -1,6 +1,6 @@
 # HDML Catalog Audit Report
 
-Generated: 2026-07-16T15:19:34.712Z · Source: `data/catalog_source.csv`
+Generated: 2026-07-16T15:32:53.074Z · Source: `data/catalog_source.csv`
 
 ## Source data
 
@@ -17,8 +17,8 @@ Generated: 2026-07-16T15:19:34.712Z · Source: `data/catalog_source.csv`
 | Outcome | Count |
 |---|---|
 | Products created (total) | 9082 |
-| Active immediately | 8841 |
-| Inactive, needs review | 241 |
+| Active immediately | 8791 |
+| Inactive, needs review | 291 |
 
 Products are **never merged silently**: names with conflicting prices are kept as separate inactive variants for manual review. Re-running the import is idempotent — existing SKUs are left untouched (admin edits preserved).
 
@@ -64,7 +64,7 @@ Products are **never merged silently**: names with conflicting prices are kept a
 | Flag | Names affected | Meaning |
 |---|---|---|
 | generic_name | 44 | Underscore-style generic title (may represent several real products) |
-| corrupted_text | 116 | Mojibake — Arabic text corrupted at export time; needs manual renaming |
+| corrupted_text | 166 | Mojibake — Arabic text corrupted at export time; needs manual renaming |
 | very_short_name | 8 | Name too short to identify the product |
 
 ### generic_name — sample
@@ -89,21 +89,21 @@ Products are **never merged silently**: names with conflicting prices are kept a
 ### corrupted_text — sample
 
 - 10 Nfc Cards ¹¯¯ 10 Ùƒ±Ùˆª §Ù† §Ù ³Ù‰
+- 7 Port USB 3.0 Hub Ï¼ˆ12V 2A Power Supplyï¼‰
+- Aimery Active Stylus Pen For Touchscreen Android iPhone Tablet Phoneï¼Œtouch Screen Pen For iPhone/iPad/Pencil/Samsung/Ios/Lenovo/Huawei/Vivo - White
 - Anna Is War Series - Because She Kiara - Kingdom Of Nightmares And Fog - Black Throne Ù„£Ù†Ù‡§ Ùƒùš§±§ - Ù…Ù…Ù„Ùƒ© §Ù„Ùƒùˆ§¨Ùš³ Ùˆ§Ù„¶¨§¨ - §Ù„¹±´ §Ù„£³Ùˆ¯ ³Ù…§ ³§Ù…Ùš
+- Anoowkoa Designed For Samsung Galaxy A16 5G Caseï¼ˆAnti Yellowingï¼‰ Clear Phone Case.Military-Grade Shockproof.Ultra-Thin. For Galaxy A16 5G Clear Phone Case
 - Anoowkoa Designed For Samsung Galaxy A26 5G Case Clear Galaxy A26 5G Cover Phone Caseï¼ˆAnti Yellowingï¼‰[Military-Grade Shockproof ].Ultra-Thin .Drop-Proofï¼ˆTransparentlyï¼‰
 - Anrdoid 12, Smart Carplay Video Box With Netflix Youtube Support, Wireless/USB, Android Auto Apple Car Play, Wi-Fi & Bluetooth, Gt4S Model ­ÙˆÙ„ ´§´© ¹±¨Ùšªùƒ Ù„ Android 12 Ù…¹ ¬Ù‡§² §Ù„³Ùš§±© §Ù„³Ù…§±ª §Ù„¬¯Ùš¯
+- Aqqa Chmij Large Mouse Pad Matã¯¼Ë†11.8X31.5 In Extended Gaming Mouse Pad With Non-Slip Rubber Base,Background Topographic Map Lines Contour Geographic For Gaming Office Laptop Computer Men Women
 - Arabic Keyboard Sticker - Clear Transparent Glossy Overlay | Ã™€¦Ã™€Žµã™€Š Ã™€Žã™Ë†­© Ã™€¦Ù§ªã™Å ­ ¹±¨Ã™Å  ´Ù§Ù Ã™€Žã™€¦§¹ | Easy To Apply, Durable, And Compatible With All Keyboards (White)
+- Asus Tuf Gaming [Fa401Uu-Rg028W] Amd Ryzenâ„¢ 7 8845Hs / Lpddr5X 16GB / 512GB Ssd/Rtxâ„¢ 4050 6GB / Win 11
 - Asus Vivobook S 15 Oled S5507Qa#B08H1Gnqw9 Aluminium Notebook With 15.6" Gloss Monitor, 120Hz, Snapdragonâ® X Plus Processor, 16GB Ram, 512GB Ssd Pcie, Qualcommâ® Adrenoâ„¢ Gpu, Win 11 Home, Silver
+- Baseus Elf Digital Display Fast Charge Power Bank 10000mAh 22.5W Purpleï¼ˆ*Ï¼‰
+- Canon Rf 24 105mm F4L Is Usm Lensœ Professional L Seriesœ Nano Usmœ 5 Stop Image Stabilizerœ Great For Portraitœ Travel & Landscape, Black
+- Compatible With Airtag Case Keychain Air Tag Holder Silicone Airtags Key Ring Cases Tags Chain Apple Airtag Gps Item Finders Accessoriesï¼Œblack
 - Darkness Red Moon Schreibtischunterlage, Japanisches Mauspad, Groãÿe Kirschblã¼Ten-Schreibtischmatte, Xl-Anime-Gaming-Tastaturmatte, Rutschfeste Gummiunterseite, Groãÿer Erweiterter Schreibtischschutz
-- Electric Iron Cord Terminator 2Meter - ³Ù„Ùƒ §Ù„·§Ù‚© Ù„Ù„Ù…Ùƒùˆ§Ù‡ §Ù„¬§Ù© Ùˆ§Ù„Ù…Ùƒùˆ§Ù‡ §Ù„¨®§± ³Ù„Ùƒ ­±§±Ù‰ £µù„Ùš 2 Ù…ª± -³Ù„Ùƒ Ù…Ùƒùˆ§Ù‡ - Ùùš´Ù‡ Ù…Ùƒùˆ§Ù‡ - ³Ù„Ùƒ Ù…Ùƒùˆ§© - Ùùš´© Ù…Ùƒùˆ§© - Ù‚·¹ ºùš§± §Ù„Ù…Ùƒùˆ§Ù‡ £Ù…¨Ùš±
-- Elmo3Ezz ³Ùˆ§± ±Ùš§¶Ùš Ù„³§¹© ´§ÙˆÙ…Ùš ±Ùš¯Ù…Ùš 2 / Ù…Ùš ÙˆÙˆª´ Ù„§Ùšª 2 / ±Ùš¯Ù…Ùš ÙˆÙˆª´ 2 Ù„§Ùšªœ ³Ùˆ§± Ù…¹µù… Ù…Ù† §Ù„³Ùšù„ÙšùƒùˆÙ† §Ù„Ù†§¹Ù… Ù„³§¹© ´§ÙˆÙ…Ùš ±Ùš¯Ù…Ùš 2 Ù„Ù„±¬§Ù„ Ùˆ§Ù„Ù†³§¡ (Dark Blue)
-- Energizer Lithium Battery, Size Aa, Pack Of 2 Blister Card - 2 ­¬± Ù„Ùš«Ùšù… Ù‚Ù„Ù…
-- Energizer Lithium Battery, Size Aaa, 1.5 Volt, Pack Of 2 Blister Card - 2 ­¬± Ù„Ùš«Ùšù… ±Ùšù…Ùˆª
-- Energizer Max Battery, Size 1 Max 9 Volt - ­¬± 9 ÙùˆÙ„·
-- Energizer Max Battery, Size Aa, Pack Of 2 Blister Card - 2 ­¬± Ù‚Ù„Ù…
-- Energizer Max Battery, Size Aa, Pack Of 4 Blister Card - 4 ­¬± Ù‚Ù„Ù…
-- Energizer Max Plus Battery, Size Aa, 1.5V, Pack Of 2 Blister Card - 2 ­¬± ªùšªù†ÙšùˆÙ… Ù‚Ù„Ù…
-- …and 101 more
+- …and 151 more
 
 ### very_short_name — sample
 

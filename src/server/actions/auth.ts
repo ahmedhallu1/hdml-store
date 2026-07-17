@@ -192,10 +192,11 @@ export async function requestPasswordReset(
   }
 
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/+$/, "");
-  // /auth/confirm exchanges the emailed code for a session, then forwards to
-  // /account/update-password (which the proxy would otherwise bounce to /login,
-  // dropping the code).
-  const redirectTo = `${siteUrl}/auth/confirm?next=${encodeURIComponent("/account/update-password")}`;
+  // generateLink('recovery') returns an IMPLICIT-flow link — after Supabase
+  // verifies it, the session lands in the URL fragment (#access_token=…), which
+  // a server route can't read. So it must land on the client-side /auth/recovery
+  // handler, which reads the fragment and lets the user set a new password.
+  const redirectTo = `${siteUrl}/auth/recovery`;
 
   // Generate the recovery link with the service role and deliver it through
   // Brevo (reliable) instead of Supabase's rate-limited built-in SMTP.

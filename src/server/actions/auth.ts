@@ -30,6 +30,7 @@ export interface AuthFormState {
 }
 
 import { safeNextPath } from "@/lib/safe-path";
+import { sendPasswordResetEmail, sendWelcomeEmail } from "@/lib/email/notifications";
 
 // ---------------------------------------------------------------------------
 // Register
@@ -110,6 +111,13 @@ export async function register(
     console.error("register profile upsert failed:", profileError.message);
   }
 
+  // Best-effort welcome email — must never block or fail registration.
+  try {
+    await sendWelcomeEmail(created.user.id, input.email, input.fullName);
+  } catch {
+    // Swallowed: sendWelcomeEmail already logs; delivery is not critical here.
+  }
+
   redirect(safeNextPath(formData.get("next")));
 }
 
@@ -184,16 +192,28 @@ export async function requestPasswordReset(
   }
 
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/+$/, "");
-  const supabase = await supabaseServer();
   // /auth/confirm exchanges the emailed code for a session, then forwards to
   // /account/update-password (which the proxy would otherwise bounce to /login,
   // dropping the code).
-  const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-    redirectTo: `${siteUrl}/auth/confirm?next=${encodeURIComponent("/account/update-password")}`,
+  const redirectTo = `${siteUrl}/auth/confirm?next=${encodeURIComponent("/account/update-password")}`;
+
+  // Generate the recovery link with the service role and deliver it through
+  // Brevo (reliable) instead of Supabase's rate-limited built-in SMTP.
+  const service = supabaseService();
+  const { data, error } = await service.auth.admin.generateLink({
+    type: "recovery",
+    email: parsed.data.email,
+    options: { redirectTo },
   });
   if (error) {
-    // Log, but never reveal anything to the caller (no user enumeration).
-    console.error("resetPasswordForEmail failed:", error.message);
+    // Typically "user not found" — log, but never reveal it (no enumeration).
+    console.error("generateLink recovery failed:", error.message);
+  } else if (data?.properties?.action_link) {
+    try {
+      await sendPasswordResetEmail(parsed.data.email, data.properties.action_link);
+    } catch {
+      // Swallowed: sendPasswordResetEmail already logs; still return generically.
+    }
   }
   return { success: GENERIC_RESET_MESSAGE };
 }

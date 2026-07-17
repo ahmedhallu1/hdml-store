@@ -27,10 +27,28 @@ export default async function TermsPage() {
 
       <h2 className={h2}>1. Who you are buying from</h2>
       <p className={p}>
-        The store is operated by {seller_info.name}, {seller_info.address} (tax ID{" "}
-        {seller_info.tax_id}). We sell wholesale electronics and accessories to businesses and
-        resellers across Egypt.
+        The store is operated by {seller_info.name}, {seller_info.address}. We sell wholesale
+        electronics and accessories to businesses and resellers across Egypt.
       </p>
+      <p className={p}>
+        {branding.store_name} is a registered business with the Egyptian Ministry of Finance — Tax
+        Authority (Damanhour). Registration details:
+      </p>
+      <ul className="mt-2 space-y-1 text-gray-700">
+        <li>
+          <strong>Registered owner:</strong> {seller_info.name}
+        </li>
+        <li>
+          <strong>Tax Registration No.:</strong> {seller_info.tax_id}
+        </li>
+        <li>
+          <strong>Registered activity:</strong> Retail trade via order-fulfilment houses and the
+          internet (activity code 4791)
+        </li>
+        <li>
+          <strong>Registered address:</strong> {seller_info.address}
+        </li>
+      </ul>
 
       <h2 className={h2}>2. Wholesale ordering &amp; minimums</h2>
       <p className={p}>

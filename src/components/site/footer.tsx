@@ -24,22 +24,6 @@ export async function Footer() {
               className="h-6 w-auto"
             />
             <p className="mt-3 text-sm text-gray-600">{branding.tagline}</p>
-            <p className="mt-4 inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-gray-700">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="size-4 text-brand-600"
-                aria-hidden
-              >
-                <rect x="3" y="6" width="18" height="13" rx="2" />
-                <path d="M3 10h18M7 15h4" />
-              </svg>
-              Instapay &amp; mobile wallet accepted
-            </p>
           </div>
 
           <nav aria-label="Store">
@@ -114,8 +98,7 @@ export async function Footer() {
 
         <div className="mt-10 border-t border-gray-200 pt-6">
           <p className="text-xs text-gray-500">
-            © {year} {branding.store_name}. All rights reserved. Orders are paid by manual
-            Instapay or mobile-wallet transfer and verified by our team before processing.
+            © {year} {branding.store_name}. All rights reserved.
           </p>
         </div>
       </div>

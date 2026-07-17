@@ -252,3 +252,76 @@ ${button(trackingUrl, "Upload a new payment proof")}
 
   return layout(body, contact);
 }
+
+// ---------------------------------------------------------------------------
+// Welcome email (sent once, on registration)
+// ---------------------------------------------------------------------------
+
+export function welcomeEmailSubject(): string {
+  return "Welcome to HDML — your wholesale account is ready";
+}
+
+export function welcomeEmailHtml(args: {
+  customerName: string;
+  catalogUrl: string;
+  contact: EmailContact;
+}): string {
+  const { customerName, catalogUrl, contact } = args;
+
+  const body = `
+<p style="margin:0 0 16px;">Hi ${escapeHtml(customerName)},</p>
+<p style="margin:0 0 16px;${FONT}font-size:14px;line-height:22px;color:#374151;">
+Your HDML wholesale account is ready — welcome aboard! You can now browse our full catalog of
+around <strong>9,000 wholesale products</strong> and place bulk orders straight from your account.
+</p>
+<p style="margin:0 0 16px;${FONT}font-size:14px;line-height:22px;color:#374151;">
+Pay easily by <strong>Instapay or mobile wallet</strong>, upload your transfer, and track every
+order online from start to delivery.
+</p>
+${noticeBox(
+  `<strong>Order minimum:</strong> orders start at <strong>EGP 1,000</strong>. ` +
+    `Add the items you need and check out whenever you are ready.`,
+  "#ecfeff",
+  "#004754",
+  "#0f5561",
+)}
+${button(catalogUrl, "Browse the catalog")}
+`;
+
+  return layout(body, contact);
+}
+
+// ---------------------------------------------------------------------------
+// Password reset
+// ---------------------------------------------------------------------------
+
+export function passwordResetSubject(): string {
+  return "Reset your HDML password";
+}
+
+export function passwordResetHtml(args: {
+  customerName?: string;
+  resetUrl: string;
+  contact: EmailContact;
+}): string {
+  const { customerName, resetUrl, contact } = args;
+  const greeting = customerName ? `Hi ${escapeHtml(customerName)},` : "Hi there,";
+
+  const body = `
+<p style="margin:0 0 16px;">${greeting}</p>
+<p style="margin:0 0 16px;${FONT}font-size:14px;line-height:22px;color:#374151;">
+Someone (hopefully you) asked to reset the password for your HDML account. Click the button below
+to set a new password.
+</p>
+${button(resetUrl, "Set a new password")}
+${noticeBox(
+  `For your security, this link will <strong>expire soon</strong>. ` +
+    `If you did not request a password reset, you can safely ignore this email — your password will not change.`,
+  "#fef3c7",
+  "#f59e0b",
+  "#92400e",
+)}
+`;
+
+  return layout(body, contact);
+}

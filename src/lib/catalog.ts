@@ -162,3 +162,29 @@ export async function getBrandBySlug(slug: string): Promise<Brand | null> {
     .maybeSingle();
   return (data as Brand) ?? null;
 }
+
+/**
+ * Other active products in the same category, for the "Similar products" rail
+ * on a product page. RLS already restricts to active rows; the filter is kept
+ * explicit for clarity.
+ */
+export async function listSimilarProducts(
+  categoryId: string,
+  excludeId: string,
+  limit = 8,
+): Promise<ProductListItem[]> {
+  const supabase = await supabaseServer();
+  const { data, error } = await supabase
+    .from("products")
+    .select(LIST_SELECT)
+    .eq("category_id", categoryId)
+    .neq("id", excludeId)
+    .eq("active", true)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) {
+    console.error("listSimilarProducts failed:", error.message);
+    return [];
+  }
+  return (data ?? []) as unknown as ProductListItem[];
+}

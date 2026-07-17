@@ -5,9 +5,9 @@ import { getProductBySlug } from "@/lib/catalog";
 import { publicImageUrl } from "@/lib/image-url";
 import { formatEgp, toPiasters } from "@/lib/money";
 import { getSiteSettings } from "@/lib/settings";
-import { StockBadge } from "@/components/ui/badge";
 import { AddToCart } from "@/components/site/add-to-cart";
-import { ProductPlaceholder } from "@/components/site/product-placeholder";
+import { CatalogImage } from "@/components/site/catalog-image";
+import { SimilarProducts } from "@/components/site/similar-products";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -28,7 +28,8 @@ export default async function ProductPage(props: Props) {
   const [product, settings] = await Promise.all([getProductBySlug(slug), getSiteSettings()]);
   if (!product) notFound();
 
-  const image = product.images?.[0];
+  const imagePath =
+    product.images?.[0] ?? `_category/${product.categories?.slug ?? "other"}.png`;
   const basePiasters = toPiasters(String(product.price));
   const tiers = [...(product.product_price_tiers ?? [])].sort((a, b) => a.min_qty - b.min_qty);
   const showBaseTierRow = tiers.length > 0 && tiers[0].min_qty > product.moq;
@@ -61,18 +62,15 @@ export default async function ProductPage(props: Props) {
 
       <div className="mt-6 grid gap-8 lg:grid-cols-2">
         {/* Image */}
-        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
-          {image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={publicImageUrl(image)}
+        <div className="mx-auto w-full max-w-sm">
+          <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+            <CatalogImage
+              src={publicImageUrl(imagePath)}
               alt={product.name}
-              loading="lazy"
-              className="aspect-square w-full object-contain"
+              icon={product.categories?.icon}
+              className="aspect-square w-full object-contain p-4"
             />
-          ) : (
-            <ProductPlaceholder icon={product.categories?.icon} label={product.name} />
-          )}
+          </div>
         </div>
 
         {/* Details */}
@@ -108,7 +106,9 @@ export default async function ProductPage(props: Props) {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <StockBadge status={product.stock_status} />
+            {product.stock_status === "out_of_stock" && (
+              <span className="text-sm font-medium text-red-600">Out of stock</span>
+            )}
             {product.moq > 1 && (
               <span className="text-sm text-gray-600">
                 Minimum order quantity: {product.moq.toLocaleString("en-US")}
@@ -191,6 +191,12 @@ export default async function ProductPage(props: Props) {
           )}
         </div>
       </div>
+
+      <SimilarProducts
+        categoryId={product.category_id}
+        categorySlug={product.categories?.slug}
+        excludeId={product.id}
+      />
     </div>
   );
 }

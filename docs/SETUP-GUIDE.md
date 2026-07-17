@@ -55,18 +55,27 @@ No test keys anywhere. Nothing to do here.
 
 ---
 
-## ⚠️ One security chore (soon, not urgent)
+## ⚠️ Rotate your keys — recommended soon
 
-The Supabase service key and Brevo key were pasted into our chat. Chat
-transcripts aren't a safe permanent home for master keys, so when convenient:
+Your Supabase service-role key and Brevo key were exposed in two ways: pasted
+into our chat, and briefly baked into the Cloudflare build output that got
+committed to the (private) GitHub repo. **I've already removed them from GitHub**
+— untracked the build folder and scrubbed it from all git history (force-pushed
+clean) — but because plaintext copies existed, best practice is to rotate them:
 
-- Supabase → Settings → API → **Reset service_role key**
-- Brevo → SMTP & API → delete the old key, **generate a new one**
+- Supabase → **Settings → API → Reset `service_role` key**
+- Brevo → **SMTP & API → API Keys** → delete the old key, **generate a new one**
+- (Optional) Cloudflare → **Turnstile** → your widget → **Rotate secret**
 
 Then put the new values in `.env.local`, run
-`npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY` and
-`npx wrangler secret put BREVO_API_KEY` (paste when asked), and `npm run deploy`.
-(Or just send word and I'll walk through it with you.)
+`npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY`,
+`npx wrangler secret put BREVO_API_KEY`
+(and `TURNSTILE_SECRET_KEY` if you rotated it), pasting each when asked, then
+`npm run deploy`. Or just send word and I'll walk through it with you — the app
+keeps running on the current keys until you do.
+
+> The `.open-next/` build folder is now git-ignored, so future deploys can't
+> leak env values again.
 
 ---
 

@@ -105,5 +105,11 @@ proof upload; admin approval calls `sendOrderEmail(id, "final")`; admin UI uses
 ## Catalog data
 
 `data/catalog_source.csv` → `npm run import:catalog` (idempotent; audit report
-at `docs/catalog-audit.md`). 9,082 products: 8,841 active, 241 inactive
+at `docs/catalog-audit.md`). 9,082 products: 8,791 active, 291 inactive
 needs_review (conflicting prices / mojibake / generic names).
+
+**Live Supabase project**: `hdml-store` (ref `wdetsgxbdmldbzokqlaw`, eu-west-3).
+Migrations 0001–0005 applied; categories, payment methods and settings seeded.
+`.env.local` has the URL + anon key; only `SUPABASE_SERVICE_ROLE_KEY` (owner
+pastes from the dashboard) remains before `npm run import:catalog` + admin
+bootstrap.

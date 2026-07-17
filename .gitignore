@@ -46,3 +46,6 @@ playwright-report/
 
 # wrangler local secrets
 .dev.vars
+
+# generated import SQL (regenerate with scripts/emit-import-sql.ts)
+data/import-sql/

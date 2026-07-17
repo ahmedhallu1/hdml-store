@@ -103,7 +103,7 @@ HDML-branded category placeholder that cannot be mistaken for a real photo.
 ## Repository map
 
 ```
-supabase/migrations/   0001_init 0002_rls 0003_storage 0004_seed (run in order)
+supabase/migrations/   0001_init 0002_rls 0003_storage 0004_seed 0005_hardening (in order)
 data/catalog_source.csv     canonical catalog input
 scripts/import-catalog.ts   importer + audit generator
 docs/                       setup guide, operations, catalog audit

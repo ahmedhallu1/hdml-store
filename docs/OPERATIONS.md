@@ -38,7 +38,7 @@ Do this **weekly** (5 minutes):
    Supabase dashboard → Storage → bucket → select → Download. (Invoices can
    always be regenerated from order data; proofs cannot.)
 
-**Restore**: create a fresh Supabase project, run migrations 0001–0004, then
+**Restore**: create a fresh Supabase project, run migrations 0001–0005, then
 `psql "<connection-string>" -f hdml-backup-YYYYMMDD.sql` (it will report
 harmless "already exists" notices for seeded rows), re-upload storage files,
 update `.env.local` + Cloudflare secrets with the new keys, redeploy.

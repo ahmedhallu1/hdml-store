@@ -1,6 +1,6 @@
 # HDML Catalog Audit Report
 
-Generated: 2026-07-16T15:32:53.074Z · Source: `data/catalog_source.csv`
+Generated: 2026-07-17T11:54:58.700Z · Source: `data/catalog_source.csv`
 
 ## Source data
 
@@ -19,6 +19,7 @@ Generated: 2026-07-16T15:32:53.074Z · Source: `data/catalog_source.csv`
 | Products created (total) | 9082 |
 | Active immediately | 8791 |
 | Inactive, needs review | 291 |
+| Newly inserted this run | 0 |
 
 Products are **never merged silently**: names with conflicting prices are kept as separate inactive variants for manual review. Re-running the import is idempotent — existing SKUs are left untouched (admin edits preserved).
 

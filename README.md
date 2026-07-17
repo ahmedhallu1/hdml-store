@@ -5,6 +5,8 @@ bulk ordering, manual payment via **Instapay / Egyptian mobile wallets** with
 screenshot verification, PDF receipts by email, and a full admin dashboard.
 Runs entirely on free tiers: **Cloudflare Workers + Supabase + Brevo**.
 
+**Live**: https://hdml-store.hdml.workers.dev
+
 > **New here?** The click-by-click setup instructions for a non-technical
 > owner are in **[docs/SETUP-GUIDE.md](docs/SETUP-GUIDE.md)**. Operations
 > (backups, email retries, free-tier limits, acceptance checklist) are in

@@ -109,7 +109,7 @@ at `docs/catalog-audit.md`). 9,082 products: 8,791 active, 291 inactive
 needs_review (conflicting prices / mojibake / generic names).
 
 **Live Supabase project**: `hdml-store` (ref `wdetsgxbdmldbzokqlaw`, eu-west-3).
-Migrations 0001–0005 applied; categories, payment methods and settings seeded.
-`.env.local` has the URL + anon key; only `SUPABASE_SERVICE_ROLE_KEY` (owner
-pastes from the dashboard) remains before `npm run import:catalog` + admin
-bootstrap.
+Migrations 0001–0005 applied; catalog imported (9,082 products); owner admin account created.
+Live at **https://hdml-store.hdml.workers.dev** (Cloudflare Worker `hdml-store`,
+account subdomain `hdml`; secrets set via wrangler). Owner admin:
+ahmedthalool0@gmail.com (password via forgot-password flow).

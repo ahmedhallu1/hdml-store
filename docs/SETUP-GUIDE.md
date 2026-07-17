@@ -1,95 +1,93 @@
-# HDML Store — What You Need To Do
+# HDML Store — Final Steps
 
-The whole app is built and your Supabase database is fully set up and secured.
-There are **3 short things only you can do** — they need passwords and a login
-that live only in your own accounts. After those, I do everything else (import
-the 9,082 products, make you admin, test, and deploy the site) with no more
-input from you.
+## 🎉 Your store is LIVE
 
-`THIS` means: type it into the file **`.env.local`** in the project folder. That
-file never leaves your computer. **Never paste a secret key into a chat.**
+**https://hdml-store.hdml.workers.dev**
 
----
+Everything is deployed and working: all 9,082 products, ordering, payment
+instructions with your Instapay/wallet numbers and QR codes, screenshot upload,
+the admin panel, PDF receipts, and email. The full order lifecycle was tested
+end-to-end (a receipt from the test run should be in your Gmail).
 
-## ✅ Already done for you
-
-- Supabase project **hdml-store** created (Paris region), database + security +
-  storage + login all set up, categories / your Instapay & wallet numbers /
-  seller info / delivery text loaded, and a security scan passed.
-- `.env.local` already has your Supabase URL and public key filled in.
+Only **three short dashboard settings** remain — they live behind your own
+logins, so only you can flip them.
 
 ---
 
-## Thing 1 — Supabase service-role key  ⏱️ 2 min
+## 1. Let password-reset emails point at the live site  ⏱️ 2 min — do this first
 
-1. **supabase.com/dashboard** → project **hdml-store** → **Project Settings** →
-   **API Keys**.
-2. Find **`service_role`** → **Reveal** → **Copy**.
-3. In `.env.local`, paste it after `SUPABASE_SERVICE_ROLE_KEY=`. Save.
+Right now Supabase still thinks the site is on localhost, so sign-in recovery
+links would go to the wrong place — including YOUR first login.
 
-*(This one key runs the app and lets me load the catalog.)*
+1. Open **supabase.com/dashboard** → project **hdml-store** →
+   **Authentication** → **URL Configuration**.
+2. Set **Site URL** to: `https://hdml-store.hdml.workers.dev`
+3. Under **Redirect URLs**, add: `https://hdml-store.hdml.workers.dev/**`
+4. Save.
 
----
-
-## Thing 2 — Brevo email key  ⏱️ 3 min
-
-Your Brevo account is ready. Just create the key:
-
-1. **app.brevo.com** → **Settings** → **SMTP & API** → **API Keys** →
-   **Generate a new API key** → copy it.
-2. In `.env.local`: paste after `BREVO_API_KEY=`, and change `EMAIL_MOCK=1` to
-   `EMAIL_MOCK=0`. Save.
-3. Make sure your sender is confirmed: **Settings → Senders** → if
-   `ahmedthalool0@gmail.com` isn't there, add it and click the email link Brevo
-   sends you.
-
-*(Skip this for now if you like — the shop still works and just logs emails
-until you add the key.)*
+**Then log yourself in** (your admin account is already created):
+open https://hdml-store.hdml.workers.dev/login → **Forgot password?** →
+`ahmedthalool0@gmail.com` → click the link in the email → set your password.
+After that, **/admin** is yours.
 
 ---
 
-## Thing 3 — Log in to Cloudflare  ⏱️ 1 min
+## 2. Stop Brevo from blocking emails  ⏱️ 1 min
 
-In a terminal, in the project folder, run:
+Brevo blocks API calls from IP addresses it hasn't seen before. Your website
+runs on Cloudflare's network, which uses **many different IPs**, so this
+protection would randomly block your receipt emails.
 
-```bash
-npx wrangler login
-```
+1. Open **https://app.brevo.com/security/authorised_ips**
+2. Make sure the authorised-IPs restriction is **deactivated** (if there's a
+   list of IPs with the feature enabled, turn the feature **off**).
 
-A browser opens — click **Allow**. That's it; I handle the rest of the deploy.
-
----
-
-## Then tell me "go"
-
-I will, with no further steps from you:
-
-1. Import all **9,082 products** (8,791 live, 291 flagged for your review).
-2. Make your account the store **admin**.
-3. Run the live security + database tests.
-4. Push the site to Cloudflare, set the secret keys there, and give you the live
-   web address.
-5. Do the small post-deploy wiring (point Supabase's login settings at the live
-   address).
-
-### One optional extra: bot protection (Turnstile)
-
-I'll deploy with safe test protection first so the site is live fast. To turn on
-real bot-blocking afterwards: **dash.cloudflare.com** → **Turnstile** → **Add
-widget** (name `hdml`, mode Managed) → copy the **Site Key** and **Secret Key**,
-send them to me, and I'll re-deploy with them. (Cloudflare only shows these in
-the dashboard, so I can't create them for you.)
+Also confirm `ahmedthalool0@gmail.com` is a **verified sender**
+(Settings → Senders — click the confirmation email if it's still pending).
 
 ---
 
-### The `.env.local` keys, in one place
+## 3. Real bot protection (Turnstile)  ⏱️ 5 min — before sharing the site widely
 
-| Line | Where it comes from | Secret? |
-|---|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | ✅ already filled | no |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ already filled | no |
-| `SUPABASE_SERVICE_ROLE_KEY` | Thing 1 | **yes** |
-| `BREVO_API_KEY` | Thing 2 | **yes** |
-| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY` | optional Turnstile step | secret half yes |
+The site currently runs with Cloudflare's *test* protection (functional but
+passes everyone). To arm it for real:
 
-Day-to-day admin, backups and free-tier limits: **[OPERATIONS.md](OPERATIONS.md)**.
+1. **dash.cloudflare.com** → **Turnstile** → **Add widget**
+   - Name: `hdml` · Mode: **Managed** · Hostname: `hdml-store.hdml.workers.dev`
+2. Copy the **Site Key** and **Secret Key** and send them to me — I'll wire
+   them in and redeploy. (Or do it yourself: put both in `.env.local`, delete
+   the `TURNSTILE_ALLOW_TEST_KEYS=1` line, run
+   `npx wrangler secret put TURNSTILE_SECRET_KEY`, paste the secret,
+   `npx wrangler secret delete TURNSTILE_ALLOW_TEST_KEYS`, then `npm run deploy`.)
+
+---
+
+## ⚠️ One security chore (soon, not urgent)
+
+The Supabase service key and Brevo key were pasted into our chat. Chat
+transcripts aren't a safe permanent home for master keys, so when convenient:
+
+- Supabase → Settings → API → **Reset service_role key**
+- Brevo → SMTP & API → delete the old key, **generate a new one**
+
+Then put the new values in `.env.local`, run
+`npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY` and
+`npx wrangler secret put BREVO_API_KEY` (paste when asked), and `npm run deploy`.
+(Or just send word and I'll walk through it with you.)
+
+---
+
+## Daily use
+
+- **Admin panel**: https://hdml-store.hdml.workers.dev/admin — orders, proof
+  review (approve = order Paid + final receipt emailed), products, the
+  291-item "Needs review" queue, settings (payment numbers, minimum order,
+  delivery text), audit log.
+- **Routine, backups, free-tier limits**: see [OPERATIONS.md](OPERATIONS.md).
+
+## When you buy a real domain
+
+Cloudflare → **Workers & Pages** → **hdml-store** → Settings → **Domains &
+Routes** → add the domain. Then tell me the domain and I'll update the site
+URL, Supabase auth settings, and redeploy (or follow step 1 again plus
+`NEXT_PUBLIC_SITE_URL` in `.env.local` + `npm run deploy`).

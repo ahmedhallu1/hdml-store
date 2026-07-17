@@ -7,6 +7,12 @@ import { createClient } from "@supabase/supabase-js";
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { WebSocket } from "ws";
+
+// Node 20 has no native WebSocket; supabase-js requires one at construction.
+if (typeof globalThis.WebSocket === "undefined") {
+  (globalThis as { WebSocket?: unknown }).WebSocket = WebSocket;
+}
 
 // Load .env.local the same way the importer does (tests run outside Next).
 const envPath = resolve(__dirname, "../.env.local");

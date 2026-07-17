@@ -1,50 +1,54 @@
-# HDML Store — Final Steps
+# HDML Store — Status & Notes
 
 ## 🎉 Your store is LIVE
 
 **https://hdml-store.hdml.workers.dev**
 
-Everything is deployed and working: all 9,082 products, ordering, payment
-instructions with your Instapay/wallet numbers and QR codes, screenshot upload,
-the admin panel, PDF receipts, email, and **real Cloudflare Turnstile bot
-protection** (installed and verified on the live site). The full order lifecycle
-was tested end-to-end (a receipt from the test run should be in your Gmail).
-
-Only **two short dashboard settings** remain — they live behind your own
-logins, so only you can flip them.
+Everything is deployed, tested end-to-end on the live site, and working:
+~8,700 active products with branded per-category images, ordering, Instapay/
+wallet payment + QR, screenshot upload, the admin panel, PDF receipts, email
+(welcome-on-signup + receipts), reliable password reset, and Cloudflare
+Turnstile bot protection.
 
 ---
 
-## 1. Let password-reset emails point at the live site  ⏱️ 2 min — do this first
+## 1. Log into your admin account  ⏱️ 1 min
 
-Right now Supabase still thinks the site is on localhost, so sign-in recovery
-links would go to the wrong place — including YOUR first login.
+Password reset now works reliably (emails go out through Brevo, not Supabase).
 
-1. Open **supabase.com/dashboard** → project **hdml-store** →
-   **Authentication** → **URL Configuration**.
-2. Set **Site URL** to: `https://hdml-store.hdml.workers.dev`
-3. Under **Redirect URLs**, add: `https://hdml-store.hdml.workers.dev/**`
-4. Save.
+**I've emailed you a “Set your HDML admin password (updated link)” email** —
+open it, click **Set your password**, choose a password, and you're in. Then
+open **https://hdml-store.hdml.workers.dev/admin**.
 
-**Then log yourself in** (your admin account is already created):
-open https://hdml-store.hdml.workers.dev/login → **Forgot password?** →
-`ahmedthalool0@gmail.com` → click the link in the email → set your password.
-After that, **/admin** is yours.
+> If that email got buried, just go to
+> https://hdml-store.hdml.workers.dev/login → **Forgot password?** →
+> `ahmedthalool0@gmail.com` → a fresh link arrives in seconds.
+
+*(The earlier "Set your HDML admin password" email had a broken link — ignore
+it and use the newer "(updated link)" one.)*
 
 ---
 
-## 2. Stop Brevo from blocking emails  ⏱️ 1 min
+## 2. Keep Brevo emails flowing  ⏱️ 1 min (recommended)
 
-Brevo blocks API calls from IP addresses it hasn't seen before. Your website
-runs on Cloudflare's network, which uses **many different IPs**, so this
-protection would randomly block your receipt emails.
+Brevo can block API calls from unfamiliar IPs. Cloudflare uses many IPs, so if
+receipts ever stop arriving:
 
 1. Open **https://app.brevo.com/security/authorised_ips**
-2. Make sure the authorised-IPs restriction is **deactivated** (if there's a
-   list of IPs with the feature enabled, turn the feature **off**).
+2. Make sure the authorised-IPs restriction is **off**.
 
-Also confirm `ahmedthalool0@gmail.com` is a **verified sender**
-(Settings → Senders — click the confirmation email if it's still pending).
+Also confirm `ahmedthalool0@gmail.com` is a **verified sender** (Settings →
+Senders). Emails are sending fine right now, so this is just insurance.
+
+---
+
+## 3. Instapay QR (optional)
+
+The Instapay payment shows your InstaPay address **`ahmedhallulcib@instapay`**
+plus an auto-generated QR of that address. If you want your **exact official
+InstaPay QR image** on the page instead (more reliable to scan), upload it in
+**Admin → Settings → Payment methods → Instapay → QR image**. The address text
+always works regardless.
 
 ---
 

@@ -2,7 +2,8 @@ import Link from "next/link";
 import { listCategories, listProducts } from "@/lib/catalog";
 import { getSiteSettings } from "@/lib/settings";
 import { ProductCard } from "@/components/site/product-card";
-import { ProductPlaceholder } from "@/components/site/product-placeholder";
+import { CatalogImage } from "@/components/site/catalog-image";
+import { publicImageUrl } from "@/lib/image-url";
 
 const STEPS = [
   {
@@ -95,7 +96,14 @@ export default async function HomePage() {
                   href={`/category/${category.slug}`}
                   className="group block overflow-hidden rounded-xl border border-gray-200 bg-white transition hover:border-brand-300 hover:shadow-md"
                 >
-                  <ProductPlaceholder icon={category.icon} label={category.name} />
+                  <div className="aspect-square w-full overflow-hidden bg-gray-50">
+                    <CatalogImage
+                      src={publicImageUrl(`_category/${category.slug}.png`)}
+                      alt={category.name}
+                      icon={category.icon}
+                      className="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                    />
+                  </div>
                   <p className="p-3 text-center text-sm font-medium text-gray-800 group-hover:text-brand-700">
                     {category.name}
                   </p>

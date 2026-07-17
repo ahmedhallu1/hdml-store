@@ -49,3 +49,7 @@ playwright-report/
 
 # generated import SQL (regenerate with scripts/emit-import-sql.ts)
 data/import-sql/
+
+# Cloudflare / OpenNext build output (contains inlined env — NEVER commit)
+.open-next/
+.wrangler/

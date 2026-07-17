@@ -6,10 +6,11 @@
 
 Everything is deployed and working: all 9,082 products, ordering, payment
 instructions with your Instapay/wallet numbers and QR codes, screenshot upload,
-the admin panel, PDF receipts, and email. The full order lifecycle was tested
-end-to-end (a receipt from the test run should be in your Gmail).
+the admin panel, PDF receipts, email, and **real Cloudflare Turnstile bot
+protection** (installed and verified on the live site). The full order lifecycle
+was tested end-to-end (a receipt from the test run should be in your Gmail).
 
-Only **three short dashboard settings** remain — they live behind your own
+Only **two short dashboard settings** remain — they live behind your own
 logins, so only you can flip them.
 
 ---
@@ -47,18 +48,10 @@ Also confirm `ahmedthalool0@gmail.com` is a **verified sender**
 
 ---
 
-## 3. Real bot protection (Turnstile)  ⏱️ 5 min — before sharing the site widely
+## ✅ Bot protection (Turnstile) — DONE
 
-The site currently runs with Cloudflare's *test* protection (functional but
-passes everyone). To arm it for real:
-
-1. **dash.cloudflare.com** → **Turnstile** → **Add widget**
-   - Name: `hdml` · Mode: **Managed** · Hostname: `hdml-store.hdml.workers.dev`
-2. Copy the **Site Key** and **Secret Key** and send them to me — I'll wire
-   them in and redeploy. (Or do it yourself: put both in `.env.local`, delete
-   the `TURNSTILE_ALLOW_TEST_KEYS=1` line, run
-   `npx wrangler secret put TURNSTILE_SECRET_KEY`, paste the secret,
-   `npx wrangler secret delete TURNSTILE_ALLOW_TEST_KEYS`, then `npm run deploy`.)
+Real Cloudflare Turnstile is live on registration, checkout and proof upload.
+No test keys anywhere. Nothing to do here.
 
 ---
 

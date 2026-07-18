@@ -2,7 +2,7 @@
 
 ## 🎉 Your store is LIVE
 
-**https://hdml-store.hdml.workers.dev**
+**https://hdmlstore.com**
 
 Everything is deployed, tested end-to-end on the live site, and working:
 ~8,700 active products with branded per-category images, ordering, Instapay/

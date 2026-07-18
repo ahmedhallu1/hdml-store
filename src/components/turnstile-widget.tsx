@@ -22,7 +22,8 @@ interface TurnstileApi {
       sitekey: string;
       callback: (token: string) => void;
       "expired-callback"?: () => void;
-      "error-callback"?: () => void;
+      /** Returning true tells Turnstile we handled it and to skip its retry. */
+      "error-callback"?: () => boolean | void;
       theme?: "light" | "dark" | "auto";
     },
   ) => string;
@@ -126,9 +127,14 @@ export function TurnstileWidget({
             if (widgetIdRef.current !== null) window.turnstile?.reset(widgetIdRef.current);
           },
           "error-callback": () => {
+            // Do NOT reset here: a persistent error (e.g. 110200 "domain not
+            // allowed", or a network failure) would loop error→reset→error and
+            // make the widget flicker forever. Surface it instead. Turnstile
+            // retries transient errors internally before this fires.
             setToken("");
             onTokenRef.current?.(null);
-            if (widgetIdRef.current !== null) window.turnstile?.reset(widgetIdRef.current);
+            setFailed(true);
+            return true; // tell Turnstile we handled it (skip its own retry)
           },
         });
       })

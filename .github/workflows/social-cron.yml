@@ -1,0 +1,25 @@
+name: Social auto-poster cron
+
+# Pings the store's /api/cron/social endpoint on a schedule. That endpoint:
+#   - sends review emails for posts whose slot is within the review lead time,
+#   - publishes approved posts whose slot time has arrived (to FB + Instagram).
+# GitHub's scheduled runs can be delayed a few minutes under load — fine for a
+# weekly poster. The CRON_SECRET repo secret authenticates the call.
+
+on:
+  schedule:
+    - cron: "*/15 * * * *" # every 15 minutes (UTC)
+  workflow_dispatch: {} # allow manual runs from the Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger social cron
+        run: |
+          code=$(curl -s -o /tmp/out.txt -w "%{http_code}" -m 60 \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
+            "https://hdml-store.hdml.workers.dev/api/cron/social")
+          echo "HTTP $code"
+          cat /tmp/out.txt
+          test "$code" = "200"

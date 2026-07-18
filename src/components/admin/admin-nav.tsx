@@ -11,6 +11,7 @@ const ITEMS = [
   { href: "/admin/products", label: "Products" },
   { href: "/admin/products/review", label: "Needs review" },
   { href: "/admin/taxonomy", label: "Categories & Brands" },
+  { href: "/admin/social", label: "Social" },
   { href: "/admin/settings", label: "Settings" },
   { href: "/admin/audit", label: "Audit log" },
 ] as const;

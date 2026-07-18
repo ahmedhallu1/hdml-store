@@ -234,6 +234,41 @@ export const adminCsvTextSchema = z.object({
   csv: z.string().min(1).max(8_000_000),
 });
 
+// ---------------------------------------------------------------------------
+// Social auto-poster schemas (additive — owned by the social module)
+// ---------------------------------------------------------------------------
+
+export const socialPlatformSchema = z.enum(["facebook", "instagram"]);
+
+export const socialPostCreateSchema = z.object({
+  coreCaption: z.string().trim().min(1, "Write a caption").max(2000),
+  hashtags: z.string().trim().max(500).optional().or(z.literal("")),
+  link: z
+    .string()
+    .trim()
+    .max(500)
+    .url("Enter a valid link (including https://)")
+    .optional()
+    .or(z.literal("")),
+  imagePath: z.string().trim().min(1, "Upload an image first").max(500),
+  platforms: z.array(socialPlatformSchema).min(1, "Choose at least one platform"),
+});
+
+export const socialPostIdSchema = z.object({
+  postId: z.string().uuid(),
+});
+
+export const socialConfigFormSchema = z.object({
+  dayOfWeek: z.coerce.number().int().min(0).max(6),
+  hour: z.coerce.number().int().min(0).max(23),
+  minute: z.coerce.number().int().min(0).max(59),
+  reviewLeadHours: z.coerce.number().int().min(0).max(168),
+  defaultHashtags: z.string().trim().max(500).optional().or(z.literal("")),
+  facebook: z.boolean(),
+  instagram: z.boolean(),
+  enabled: z.boolean(),
+});
+
 /** Parse a FormData/JSON payload and return typed data or a flat error map. */
 export function parseOrErrors<T extends z.ZodTypeAny>(
   schema: T,

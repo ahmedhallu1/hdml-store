@@ -35,6 +35,11 @@ export async function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/about" className={colLink}>
+                  About us
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className={colLink}>
                   Contact us
                 </Link>
@@ -91,6 +96,18 @@ export async function Footer() {
                   {contact.email}
                 </a>
               </li>
+              {contact.telegram && (
+                <li>
+                  <a
+                    href={`https://t.me/${contact.telegram.replace(/^@/, "")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-brand-700"
+                  >
+                    Telegram: {contact.telegram.startsWith("@") ? contact.telegram : `@${contact.telegram}`}
+                  </a>
+                </li>
+              )}
               <li className="pt-1 text-xs text-gray-500">{seller_info.address}</li>
             </ul>
           </div>

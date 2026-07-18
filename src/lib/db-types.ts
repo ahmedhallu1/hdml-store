@@ -186,6 +186,7 @@ export interface ContactSettings {
   phone: string;
   whatsapp: string;
   email: string;
+  telegram: string;
   facebook: string;
   instagram: string;
 }

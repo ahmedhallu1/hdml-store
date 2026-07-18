@@ -29,7 +29,7 @@ const DEFAULTS: SiteSettings = {
     fee_note: "Shipping is confirmed with you after order review; no online shipping fee is charged.",
   },
   ordering: { min_order_egp: 1000, currency: "EGP", vat_note: "Prices are final (VAT inclusive)." },
-  contact: { phone: "01099019374", whatsapp: "01099019374", email: "ahmedthalool0@gmail.com", facebook: "", instagram: "" },
+  contact: { phone: "01099019374", whatsapp: "01099019374", email: "elsherka53@gmail.com", telegram: "", facebook: "", instagram: "" },
   branding: { store_name: "HDML", tagline: "Wholesale Electronics & Accessories", primary_color: "#004754" },
 };
 

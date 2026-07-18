@@ -32,6 +32,17 @@ export default async function ContactPage() {
       label: contact.email,
       external: false,
     },
+    ...(contact.telegram
+      ? [
+          {
+            title: "Telegram",
+            note: "Message us on Telegram for quick chats and updates.",
+            href: `https://t.me/${contact.telegram.replace(/^@/, "")}`,
+            label: contact.telegram.startsWith("@") ? contact.telegram : `@${contact.telegram}`,
+            external: true,
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -42,7 +53,7 @@ export default async function ContactPage() {
         channels below — WhatsApp is usually the fastest.
       </p>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-3">
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {channels.map((channel) => (
           <a
             key={channel.title}

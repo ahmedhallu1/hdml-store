@@ -60,10 +60,11 @@ export default async function TermsPage() {
 
       <h2 className={h2}>3. Pricing &amp; VAT</h2>
       <p className={p}>
-        All prices are in {ordering.currency}. {ordering.vat_note} Wholesale tier prices apply
-        automatically based on quantity where a product defines them. Catalog prices can change at
-        any time, but the prices captured when your order is placed are the ones that count for
-        that order.
+        All prices are in {ordering.currency}. {ordering.vat_note} Prices do{" "}
+        <strong>not</strong> include customs clearance or import duties, which are the buyer&rsquo;s
+        responsibility and are non-refundable. Wholesale tier prices apply automatically based on
+        quantity where a product defines them. Catalog prices can change at any time, but the prices
+        captured when your order is placed are the ones that count for that order.
       </p>
 
       <h2 className={h2}>4. Payment — manual transfer, manual verification</h2>
@@ -97,8 +98,10 @@ export default async function TermsPage() {
 
       <h2 className={h2}>7. Cancellations &amp; returns</h2>
       <p className={p}>
-        You can cancel an order any time before it is marked paid — after that, contact us and we
-        will do our best to help before dispatch. Returns and defect claims are governed by the{" "}
+        You can cancel an order any time before it is marked paid — after that, contact us with your
+        order ID and we will do our best to help. Report damaged, defective or wrong items within{" "}
+        <strong>48 hours of receiving your order</strong> through any of our contact channels;
+        customs clearance and import duties are non-refundable. Full details are in the{" "}
         <Link href="/returns" className="font-medium text-brand-700 hover:text-brand-600">
           returns policy
         </Link>

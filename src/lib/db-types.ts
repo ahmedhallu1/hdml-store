@@ -218,10 +218,13 @@ export const STOCK_STATUS_LABELS: Record<StockStatus, string> = {
 };
 
 /** Legal admin-driven status transitions (server enforces). */
+// "Paid" is the last status HDML tracks: after payment is verified the customer
+// completes the order + shipping on an external platform and a courier delivers,
+// so HDML never sees "fulfilled". The enum value is kept (legacy) but unreachable.
 export const ORDER_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
   awaiting_payment: ["awaiting_verification", "cancelled"],
   awaiting_verification: ["paid", "awaiting_payment", "cancelled"],
-  paid: ["fulfilled", "cancelled"],
+  paid: ["cancelled"],
   fulfilled: [],
   cancelled: [],
 };

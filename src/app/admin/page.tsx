@@ -9,11 +9,12 @@ import { EmptyState, PageHeader, StatCard, TableShell, Td, Th } from "@/componen
 
 export const metadata = { title: "Dashboard" };
 
+// "fulfilled" is intentionally omitted — HDML's flow ends at "paid" (delivery
+// is completed off-site), so no order ever reaches that legacy status.
 const STATUSES: OrderStatus[] = [
   "awaiting_payment",
   "awaiting_verification",
   "paid",
-  "fulfilled",
   "cancelled",
 ];
 
@@ -82,11 +83,7 @@ export default async function AdminDashboardPage() {
       <PageHeader title="Dashboard" description="Store health at a glance." />
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
-        <StatCard
-          label="Confirmed revenue"
-          value={formatEgp(revenue)}
-          hint="Paid + fulfilled orders"
-        />
+        <StatCard label="Confirmed revenue" value={formatEgp(revenue)} hint="Paid orders" />
         <StatCard
           label="Pending proofs"
           value={String(proofsPending.count ?? 0)}

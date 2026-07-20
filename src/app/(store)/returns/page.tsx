@@ -29,7 +29,8 @@ export default async function ReturnsPage() {
 
       <h2 className={h2}>2. Report within 48 hours</h2>
       <p className={p}>
-        Report damaged, defective or wrong items within <strong>48 hours of delivery</strong> on
+        Report damaged, defective or wrong items within{" "}
+        <strong>48 hours of receiving your order</strong>. Contact us any way that suits you —
         WhatsApp at{" "}
         <a
           href={waLink(contact.whatsapp)}
@@ -39,8 +40,8 @@ export default async function ReturnsPage() {
         >
           {contact.whatsapp}
         </a>
-        , including your order reference and clear photos of the item and its packaging. Reports
-        made after 48 hours are handled case by case.
+        , phone, email or Telegram — with your <strong>order ID</strong> and clear photos of the
+        item and its packaging. Reports made after 48 hours are handled case by case.
       </p>
 
       <h2 className={h2}>3. What we cover</h2>
@@ -70,8 +71,9 @@ export default async function ReturnsPage() {
       <h2 className={h2}>5. Refunds</h2>
       <p className={p}>
         Approved refunds are sent by Instapay or mobile-wallet transfer to the same number the
-        payment came from, within 5 working days of us receiving and inspecting the returned
-        goods. Replacement shipments follow the normal delivery timeline.
+        payment came from, within 5 working days of us receiving and inspecting the returned goods.
+        Replacement shipments follow the normal delivery timeline.{" "}
+        <strong>Customs clearance and import duties are non-refundable.</strong>
       </p>
     </div>
   );

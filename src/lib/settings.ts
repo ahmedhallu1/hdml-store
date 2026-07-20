@@ -26,8 +26,8 @@ const DEFAULTS: SiteSettings = {
     message:
       "Thank you for ordering from us. After your payment is confirmed, a courier service handles delivery and will contact you with the next steps.",
     regions: "All Egypt",
-    time: "5 working days",
-    fee_note: "Shipping is confirmed with you after order review; no online shipping fee is charged.",
+    time: "15 to 30 days",
+    fee_note: "No shipping fee is charged on this site — the courier arranges delivery with you. Prices do not include customs clearance or import duties.",
   },
   ordering: { min_order_egp: 1000, currency: "EGP", vat_note: "Prices are final (VAT inclusive)." },
   contact: { phone: "01099019374", whatsapp: "01099019374", email: "elsherka53@gmail.com", telegram: "", facebook: "", instagram: "" },

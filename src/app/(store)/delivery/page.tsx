@@ -32,13 +32,19 @@ export default async function DeliveryPage() {
 
       <h2 className={h2}>How long it takes</h2>
       <p className={p}>
-        Once your payment is confirmed and your order is completed, delivery typically takes around{" "}
-        <strong>{delivery.time}</strong>. Bulk orders with many cartons can occasionally take a
-        little longer — the courier keeps you posted.
+        Delivery time depends on several factors — your location, customs clearance and the courier
+        — but is typically <strong>{delivery.time}</strong> once your payment is confirmed and your
+        order is completed. The courier keeps you posted.
       </p>
 
       <h2 className={h2}>Delivery fees</h2>
       <p className={p}>{delivery.fee_note}</p>
+
+      <h2 className={h2}>Customs &amp; duties</h2>
+      <p className={p}>
+        Prices on this site do <strong>not</strong> include customs clearance or import duties. Any
+        customs charges are the buyer&rsquo;s responsibility, and customs fees are non-refundable.
+      </p>
 
       <h2 className={h2}>How tracking works</h2>
       <p className={p}>
@@ -55,18 +61,17 @@ export default async function DeliveryPage() {
           checking it manually.
         </li>
         <li>
-          <strong>Paid</strong> — payment confirmed. Complete your order via the emailed link; a
-          courier service then handles delivery and contacts you with the next steps.
-        </li>
-        <li>
-          <strong>Fulfilled</strong> — the order was delivered.
+          <strong>Paid</strong> — payment confirmed. We send you a link to complete your order and
+          shipping details; a courier service then handles delivery and contacts you with the next
+          steps.
         </li>
       </ol>
 
       <h2 className={h2}>Receiving your shipment</h2>
       <p className={p}>
-        Please inspect the cartons when they arrive and report any visible damage or shortage to us
-        on WhatsApp ({contact.whatsapp}) within 48 hours, ideally with photos — see our{" "}
+        Please inspect the cartons when they arrive and report any visible damage or shortage within
+        48 hours — contact us any way (WhatsApp {contact.whatsapp}, phone, email or Telegram) with
+        your order ID and photos. See our{" "}
         <Link href="/returns" className="font-medium text-brand-700 hover:text-brand-600">
           returns policy
         </Link>{" "}

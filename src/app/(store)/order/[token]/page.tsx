@@ -482,17 +482,20 @@ export default async function OrderTrackingPage(props: Props) {
   );
 }
 
+// "Paid" is the final step HDML tracks — after that the customer completes the
+// order + shipping on an external platform and a courier delivers.
 const TIMELINE_STEPS: Array<{ status: OrderStatus; label: string; hint: string }> = [
   { status: "awaiting_payment", label: "Awaiting payment", hint: "Transfer & upload proof" },
   { status: "awaiting_verification", label: "Under review", hint: "We verify your transfer" },
   { status: "paid", label: "Paid", hint: "Confirm order & shipping" },
-  { status: "fulfilled", label: "Fulfilled", hint: "Order shipped" },
 ];
 
 function StatusTimeline({ status }: { status: Exclude<OrderStatus, "cancelled"> }) {
-  const current = TIMELINE_STEPS.findIndex((s) => s.status === status);
+  // Any legacy "fulfilled" order lands on the last (Paid) step.
+  const idx = TIMELINE_STEPS.findIndex((s) => s.status === status);
+  const current = idx === -1 ? TIMELINE_STEPS.length - 1 : idx;
   return (
-    <ol className="grid grid-cols-2 gap-y-6 sm:grid-cols-4" aria-label="Order progress">
+    <ol className="grid grid-cols-3 gap-y-6" aria-label="Order progress">
       {TIMELINE_STEPS.map((step, i) => {
         const state = i < current ? "done" : i === current ? "current" : "todo";
         return (

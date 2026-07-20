@@ -65,7 +65,6 @@ export default async function AdminOrderDetailPage(props: {
   const nextStatuses = ORDER_TRANSITIONS[order.status];
   const finalAllowed = order.status === "paid" || order.status === "fulfilled";
   const invoiceByKind = new Map(invoices.map((i) => [i.kind, i]));
-  const shippingSubmitted = Boolean(order.shipping_submitted_at);
 
   return (
     <div className="rise-in">
@@ -326,18 +325,6 @@ export default async function AdminOrderDetailPage(props: {
                 <dd className="font-medium text-gray-900">{order.customer_name}</dd>
               </div>
               <div>
-                <dt className="text-xs text-gray-400">Phone</dt>
-                <dd>
-                  {order.phone ? (
-                    <a href={`tel:${order.phone}`} className="text-brand-700 hover:underline">
-                      {order.phone}
-                    </a>
-                  ) : (
-                    <span className="text-gray-400">Not submitted yet</span>
-                  )}
-                </dd>
-              </div>
-              <div>
                 <dt className="text-xs text-gray-400">Email</dt>
                 <dd>
                   <a href={`mailto:${order.email}`} className="break-all text-brand-700 hover:underline">
@@ -345,38 +332,10 @@ export default async function AdminOrderDetailPage(props: {
                   </a>
                 </dd>
               </div>
-              {order.company_name && (
-                <div>
-                  <dt className="text-xs text-gray-400">Company</dt>
-                  <dd>{order.company_name}</dd>
-                </div>
-              )}
-              {order.tax_id && (
-                <div>
-                  <dt className="text-xs text-gray-400">Tax ID</dt>
-                  <dd>{order.tax_id}</dd>
-                </div>
-              )}
               <div>
-                <dt className="text-xs text-gray-400">Delivery address</dt>
-                <dd>
-                  {shippingSubmitted ? (
-                    `${order.governorate} — ${order.address}`
-                  ) : (
-                    <span className="text-gray-400">
-                      Not submitted — the customer adds this after payment is confirmed.
-                    </span>
-                  )}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-xs text-gray-400">Shipping details</dt>
-                <dd>
-                  {shippingSubmitted ? (
-                    <Badge tone="green">Submitted {fmtDateTime(order.shipping_submitted_at!)}</Badge>
-                  ) : (
-                    <Badge tone="amber">Awaiting customer</Badge>
-                  )}
+                <dt className="text-xs text-gray-400">Shipping &amp; delivery</dt>
+                <dd className="text-gray-500">
+                  Collected on the external order platform after payment.
                 </dd>
               </div>
               {order.customer_note && (

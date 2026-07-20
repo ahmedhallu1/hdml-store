@@ -90,14 +90,13 @@ export interface Order {
   payment_method_id: string | null;
   payment_method_label: string;
   customer_name: string;
-  /** Null until the customer submits shipping details after payment. */
+  // Contact/delivery fields are not collected on this site — shipping is done
+  // on an external platform after payment. They stay null here.
   phone: string | null;
   email: string;
   company_name: string | null;
   tax_id: string | null;
-  /** Null until the customer submits shipping details after payment. */
   governorate: string | null;
-  /** Null until the customer submits shipping details after payment. */
   address: string | null;
   subtotal: number;
   adjustment_total: number;
@@ -105,7 +104,7 @@ export interface Order {
   currency: string;
   customer_note: string | null;
   admin_note: string | null;
-  /** Set when the customer confirms the order + shipping details post-payment. */
+  /** Reserved column (shipping now happens off-site); unused by the app. */
   shipping_submitted_at: string | null;
   created_at: string;
   updated_at: string;
@@ -187,6 +186,12 @@ export interface OrderingSettings {
   min_order_egp: number;
   currency: string;
   vat_note: string;
+  /**
+   * External platform where the customer confirms the order + enters shipping
+   * details after payment is verified. Empty = not configured (customers are
+   * told the link will arrive by email). No shipping is collected on this site.
+   */
+  external_order_url: string;
 }
 
 export interface ContactSettings {

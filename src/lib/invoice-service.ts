@@ -228,14 +228,14 @@ export async function sendOrderEmail(
     // Generate (or regenerate) the PDF and keep the bytes for the attachment.
     const { bytes, order, items } = await buildAndStoreInvoice(orderId, kind);
     recipient = order.email;
-    // The "payment confirmed" email doubles as the prompt to confirm the order
-    // and add shipping details, until the customer has done so.
-    const needsShipping = kind === "final" && !order.shipping_submitted_at;
-    subject = orderEmailSubject(kind, order.order_ref, needsShipping);
 
     const settings = await getSiteSettings();
     const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/+$/, "");
     const trackingUrl = `${siteUrl}/order/${order.tracking_token}`;
+    // The "payment confirmed" email carries the link to the EXTERNAL platform
+    // where the customer confirms the order + enters shipping details.
+    const externalOrderUrl = kind === "final" ? settings.ordering.external_order_url : "";
+    subject = orderEmailSubject(kind, order.order_ref, Boolean(externalOrderUrl));
 
     const html = orderEmailHtml({
       kind,
@@ -256,7 +256,7 @@ export async function sendOrderEmail(
         whatsapp: settings.contact.whatsapp,
       },
       deliveryMessage: settings.delivery.message,
-      needsShipping,
+      externalOrderUrl,
     });
 
     const result = await sendEmail({

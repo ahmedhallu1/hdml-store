@@ -1,12 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { normalizeEgyptMobile, waLink } from "@/lib/egypt";
-import {
-  checkoutSchema,
-  egyptMobileSchema,
-  parseOrErrors,
-  registerSchema,
-  shippingSubmitSchema,
-} from "@/lib/validation";
+import { checkoutSchema, egyptMobileSchema, parseOrErrors, registerSchema } from "@/lib/validation";
 
 describe("normalizeEgyptMobile", () => {
   it("accepts local and international forms", () => {
@@ -83,35 +77,6 @@ describe("checkoutSchema", () => {
         items: [{ productId: validCheckout.items[0].productId, qty: 1.5 }],
       }).ok,
     ).toBe(false);
-  });
-});
-
-const validShipping = {
-  token: "a".repeat(48),
-  phone: "01012345678",
-  governorate: "Cairo" as const,
-  address: "12 Example Street, Nasr City",
-  companyName: "",
-  taxId: "",
-  turnstileToken: "tok",
-};
-
-describe("shippingSubmitSchema", () => {
-  it("accepts a valid shipping payload and normalizes the phone", () => {
-    const r = shippingSubmitSchema.safeParse({ ...validShipping, phone: "+20 101 234 5678" });
-    expect(r.success).toBe(true);
-    if (r.success) expect(r.data.phone).toBe("01012345678");
-  });
-  it("rejects a bad token, phone, governorate, short address and missing turnstile", () => {
-    expect(parseOrErrors(shippingSubmitSchema, { ...validShipping, token: "short" }).ok).toBe(false);
-    expect(parseOrErrors(shippingSubmitSchema, { ...validShipping, phone: "123" }).ok).toBe(false);
-    expect(parseOrErrors(shippingSubmitSchema, { ...validShipping, governorate: "Paris" }).ok).toBe(
-      false,
-    );
-    expect(parseOrErrors(shippingSubmitSchema, { ...validShipping, address: "x" }).ok).toBe(false);
-    expect(parseOrErrors(shippingSubmitSchema, { ...validShipping, turnstileToken: "" }).ok).toBe(
-      false,
-    );
   });
 });
 

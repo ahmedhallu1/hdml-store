@@ -95,6 +95,7 @@ export async function updateOrderingSettingsAction(
   const parsed = parseOrErrors(adminOrderingSettingsSchema, {
     minOrderEgp: fdString(formData, "minOrderEgp") || "0",
     vatNote: fdString(formData, "vatNote"),
+    externalOrderUrl: fdString(formData, "externalOrderUrl"),
   });
   if (!parsed.ok) return failure("Invalid input", parsed.errors);
 
@@ -102,6 +103,7 @@ export async function updateOrderingSettingsAction(
     min_order_egp: parsed.data.minOrderEgp,
     currency: "EGP",
     vat_note: parsed.data.vatNote ?? "",
+    external_order_url: parsed.data.externalOrderUrl ?? "",
   };
   try {
     await updateSetting("ordering", value);

@@ -111,6 +111,15 @@ export default async function AdminSettingsPage() {
               maxLength={300}
               defaultValue={settings.ordering.vat_note}
             />
+            <TextField
+              label="External order platform link"
+              name="externalOrderUrl"
+              type="url"
+              maxLength={500}
+              placeholder="https://…"
+              defaultValue={settings.ordering.external_order_url}
+              hint="After you verify a payment, the customer is emailed this link to confirm the order and enter shipping details. Leave empty until it's ready."
+            />
           </ActionForm>
         </Card>
 

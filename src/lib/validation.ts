@@ -53,8 +53,8 @@ export const cartItemSchema = z.object({
 });
 
 // Checkout collects NO contact/delivery details: the customer's name + email
-// come from their account, and shipping details are entered after payment is
-// verified (see shippingSubmitSchema). Only a note + payment method here.
+// come from their account, and shipping details are entered on an external
+// platform after payment is verified. Only a note + payment method here.
 export const checkoutSchema = z.object({
   items: z.array(cartItemSchema).min(1).max(200),
   paymentMethodId: z.string().uuid(),
@@ -144,22 +144,6 @@ export const proofUploadFieldsSchema = z.object({
   turnstileToken: z.string().min(1, "Verification failed — please retry"),
 });
 
-/**
- * Post-payment "confirm your order + shipping details" form. Reached through
- * the tracking link emailed after the admin verifies payment; the 48-hex
- * token is the credential (checked server-side against a paid order).
- */
-export const shippingSubmitSchema = z.object({
-  token: z.string().regex(TRACKING_TOKEN_PATTERN, "Invalid tracking token"),
-  phone: egyptMobileSchema,
-  governorate: z.enum(GOVERNORATES),
-  address: z.string().trim().min(5, "Enter your full delivery address").max(500),
-  companyName: z.string().trim().max(160).optional().or(z.literal("")),
-  taxId: z.string().trim().max(40).optional().or(z.literal("")),
-  turnstileToken: z.string().min(1, "Verification failed — please retry"),
-});
-export type ShippingSubmitInput = z.infer<typeof shippingSubmitSchema>;
-
 // ---------------------------------------------------------------------------
 // Admin module schemas (additive — owned by the admin dashboard module)
 // ---------------------------------------------------------------------------
@@ -220,6 +204,13 @@ export const adminDeliverySettingsSchema = z.object({
 export const adminOrderingSettingsSchema = z.object({
   minOrderEgp: z.coerce.number().int().min(0).max(10000000),
   vatNote: z.string().trim().max(300).optional().or(z.literal("")),
+  externalOrderUrl: z
+    .string()
+    .trim()
+    .max(500)
+    .url("Enter a valid link (including https://)")
+    .optional()
+    .or(z.literal("")),
 });
 
 export const adminContactSettingsSchema = z.object({

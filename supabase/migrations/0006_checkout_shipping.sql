@@ -4,11 +4,13 @@
 -- The buying flow changes: customers no longer enter contact/delivery details
 -- at checkout. Name + email come from their account, they may only add a note
 -- and pick a payment method. After the admin VERIFIES the payment, an email
--- link brings them back to confirm the order and enter their shipping details.
+-- link sends them to an EXTERNAL platform to confirm the order and enter their
+-- shipping details (no shipping is collected on this site).
 --
 -- Consequences:
---   * orders.phone / governorate / address become nullable (filled post-payment)
---   * orders.shipping_submitted_at records the final confirmation moment
+--   * orders.phone / governorate / address become nullable (never collected here)
+--   * orders.shipping_submitted_at added (reserved; unused now that shipping is
+--     handled off-site)
 --   * a "bank" payment kind + per-method min_order_egp let a CIB bank-transfer
 --     option appear only for large orders (>= EGP 70,000)
 

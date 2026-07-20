@@ -27,8 +27,12 @@ export interface OrderEmailArgs {
   trackingUrl: string;
   contact: EmailContact;
   deliveryMessage: string;
-  /** Final email only: prompt the customer to confirm + add shipping details. */
-  needsShipping?: boolean;
+  /**
+   * Final email only: the external platform link where the customer confirms
+   * the order + enters shipping details. When set, it becomes the email's
+   * primary call to action.
+   */
+  externalOrderUrl?: string;
 }
 
 export interface ProofRejectedArgs {
@@ -162,12 +166,12 @@ ${moreRow}
 export function orderEmailSubject(
   kind: InvoiceKind,
   orderRef: string,
-  needsShipping = false,
+  hasExternalStep = false,
 ): string {
   if (kind === "preliminary") {
     return `HDML Order ${orderRef} — received, payment pending verification`;
   }
-  return needsShipping
+  return hasExternalStep
     ? `HDML Order ${orderRef} — payment confirmed ✔ Confirm your order & shipping`
     : `HDML Order ${orderRef} — payment confirmed ✔`;
 }
@@ -184,10 +188,10 @@ export function orderEmailHtml(args: OrderEmailArgs): string {
     trackingUrl,
     contact,
     deliveryMessage,
-    needsShipping,
+    externalOrderUrl,
   } = args;
 
-  const finalNeedsShipping = kind === "final" && needsShipping;
+  const hasExternalStep = kind === "final" && Boolean(externalOrderUrl);
 
   const notice =
     kind === "preliminary"
@@ -207,26 +211,28 @@ export function orderEmailHtml(args: OrderEmailArgs): string {
           "#065f46",
         );
 
-  // After payment, the customer's final step is to confirm the order and add
-  // their shipping details on the tracking page.
-  const shippingCta = finalNeedsShipping
+  // After payment, the customer's final step is on an EXTERNAL platform: they
+  // confirm the order and enter shipping details there (nothing is collected on
+  // the store site). The email carries that link.
+  const shippingCta = hasExternalStep
     ? noticeBox(
         `<strong>One last step — confirm your order.</strong> Please click the button below to ` +
           `confirm your order and enter your <strong>shipping details</strong> so we can arrange ` +
-          `delivery. Your order is only finalized once we have them.`,
+          `delivery. Your order reference is <strong>${escapeHtml(orderRef)}</strong> — keep it handy.`,
         "#eff6ff",
         "#2563eb",
         "#1e3a8a",
       )
     : "";
 
-  const ctaLabel = finalNeedsShipping
+  const ctaHref = hasExternalStep ? externalOrderUrl! : trackingUrl;
+  const ctaLabel = hasExternalStep
     ? "Confirm your order & add shipping details"
     : kind === "final"
       ? "View your order"
       : "Track your order";
 
-  const deliveryLine = finalNeedsShipping
+  const deliveryLine = hasExternalStep
     ? ""
     : `<p style="margin:0 0 4px;${FONT}font-size:13px;line-height:20px;color:#374151;">
 <strong>Delivery:</strong> ${escapeHtml(deliveryMessage)}
@@ -247,7 +253,7 @@ ${itemsTable(items, totalLabel)}
 Your ${kind === "preliminary" ? "preliminary receipt" : "receipt"} is attached to this email as a PDF.
 </p>
 ${deliveryLine}
-${button(trackingUrl, ctaLabel)}
+${button(ctaHref, ctaLabel)}
 `;
 
   return layout(body, contact);
@@ -287,52 +293,6 @@ ${button(trackingUrl, "Upload a new payment proof")}
 `;
 
   return layout(body, contact);
-}
-
-// ---------------------------------------------------------------------------
-// Shipping details submitted — internal notice to the store owner
-// ---------------------------------------------------------------------------
-
-export function shippingReceivedAdminSubject(orderRef: string): string {
-  return `HDML Order ${orderRef} — shipping details submitted (ready to fulfill)`;
-}
-
-export function shippingReceivedAdminHtml(args: {
-  orderRef: string;
-  customerName: string;
-  phone: string;
-  governorate: string;
-  address: string;
-  companyName?: string;
-  taxId?: string;
-  adminUrl: string;
-  contact: EmailContact;
-}): string {
-  const rows: Array<[string, string]> = [
-    ["Order", args.orderRef],
-    ["Customer", args.customerName],
-    ["Phone", args.phone],
-    ["Governorate", args.governorate],
-  ];
-  if (args.companyName) rows.push(["Company", args.companyName]);
-  if (args.taxId) rows.push(["Tax ID", args.taxId]);
-
-  const body = `
-<p style="margin:0 0 16px;">Hi,</p>
-${noticeBox(
-  `<strong>Order confirmed by the customer.</strong> They have submitted their shipping details for order ` +
-    `<strong>${escapeHtml(args.orderRef)}</strong>. It is ready to fulfill.`,
-  "#ecfdf5",
-  "#047857",
-  "#065f46",
-)}
-${metaTable(rows)}
-<p style="margin:0 0 4px;${FONT}font-size:13px;line-height:20px;color:#374151;"><strong>Delivery address</strong></p>
-<p style="margin:0 0 16px;${FONT}font-size:13px;line-height:20px;color:#111827;">${escapeHtml(args.address)}</p>
-${button(args.adminUrl, "Open the order in admin")}
-`;
-
-  return layout(body, args.contact);
 }
 
 // ---------------------------------------------------------------------------

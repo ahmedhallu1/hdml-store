@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabaseService } from "@/lib/supabase/server";
+import { getSiteSettings } from "@/lib/settings";
 import { qrSvg } from "@/lib/qr";
 import { formatEgp, toPiasters } from "@/lib/money";
 import { TRACKING_TOKEN_PATTERN } from "@/lib/validation";
@@ -16,7 +17,6 @@ import type {
 import { Badge, OrderStatusBadge } from "@/components/ui/badge";
 import { CopyButton } from "@/components/order/copy-button";
 import { ProofUpload } from "@/components/order/proof-upload";
-import { ShippingForm, type ShippingDefaults } from "@/components/order/shipping-form";
 
 export const metadata: Metadata = {
   title: "Order tracking",
@@ -90,17 +90,12 @@ export default async function OrderTrackingPage(props: Props) {
     (m) => totalPiasters >= toPiasters(String(m.min_order_egp ?? 0)),
   );
 
-  // Post-payment: the customer confirms the order + enters shipping details.
-  const shippingSubmitted = Boolean(order.shipping_submitted_at);
-  const showShippingForm = order.status === "paid" && !shippingSubmitted;
-  const shippingDefaults: ShippingDefaults = {
-    phone: order.phone ?? "",
-    governorate: order.governorate ?? "",
-    address: order.address ?? "",
-    companyName: order.company_name ?? "",
-    taxId: order.tax_id ?? "",
-  };
-  // The step the customer is still waiting on before shipping.
+  // After payment, the customer confirms the order + enters shipping details on
+  // an EXTERNAL platform (nothing is collected on this site). They receive that
+  // link by email; we also surface it here for convenience.
+  const settings = await getSiteSettings();
+  const externalOrderUrl = settings.ordering.external_order_url;
+  // The step the customer is still on before the external order step.
   const awaitingPaymentStage =
     order.status === "awaiting_payment" || order.status === "awaiting_verification";
 
@@ -193,58 +188,34 @@ export default async function OrderTrackingPage(props: Props) {
         </section>
       )}
 
-      {/* Post-payment: confirm the order + shipping details */}
+      {/* Post-payment: confirm the order + shipping on the external platform */}
       {order.status === "paid" && (
         <section
-          aria-labelledby="shipping-heading"
-          className={`rise-in mt-6 rounded-xl border p-5 sm:p-6 ${
-            showShippingForm ? "border-brand-300 bg-brand-50/40" : "border-gray-200 bg-white"
-          }`}
+          aria-labelledby="confirm-heading"
+          className="rise-in mt-6 rounded-xl border border-brand-300 bg-brand-50/40 p-5 sm:p-6"
         >
-          {showShippingForm ? (
-            <>
-              <h2 id="shipping-heading" className="text-base font-semibold text-gray-900">
-                Confirm your order &amp; shipping details
-              </h2>
-              <p className="mt-1 text-sm text-gray-600">
-                Your payment is confirmed 🎉 — this is the last step. Enter your delivery details so
-                we can ship your order.
-              </p>
-              <ShippingForm token={token} defaults={shippingDefaults} />
-            </>
+          <h2 id="confirm-heading" className="text-base font-semibold text-gray-900">
+            Confirm your order &amp; shipping details
+          </h2>
+          <p className="mt-1 text-sm text-gray-600">
+            Your payment is confirmed 🎉 — one last step. We&rsquo;ve emailed you a link to confirm
+            your order and enter your shipping details. Keep your order reference{" "}
+            <strong className="font-mono text-brand-800">{order.order_ref}</strong> handy.
+          </p>
+          {externalOrderUrl ? (
+            <a
+              href={externalOrderUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-600"
+            >
+              Confirm order &amp; add shipping details
+            </a>
           ) : (
-            <>
-              <h2 id="shipping-heading" className="text-base font-semibold text-gray-900">
-                Shipping details received ✓
-              </h2>
-              <p className="mt-1 text-sm text-gray-600">
-                Thank you — we have your delivery details and are preparing your order.
-              </p>
-              <dl className="mt-4 grid gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
-                <div>
-                  <dt className="text-gray-500">Phone</dt>
-                  <dd className="mt-0.5 font-medium text-gray-900">{order.phone}</dd>
-                </div>
-                <div>
-                  <dt className="text-gray-500">Governorate</dt>
-                  <dd className="mt-0.5 font-medium text-gray-900">{order.governorate}</dd>
-                </div>
-                <div className="sm:col-span-2">
-                  <dt className="text-gray-500">Delivery address</dt>
-                  <dd className="mt-0.5 font-medium text-gray-900">{order.address}</dd>
-                </div>
-              </dl>
-              <details className="mt-4">
-                <summary className="cursor-pointer text-sm font-medium text-brand-700">
-                  Edit shipping details
-                </summary>
-                <ShippingForm
-                  token={token}
-                  defaults={shippingDefaults}
-                  submitLabel="Update shipping details"
-                />
-              </details>
-            </>
+            <p className="mt-3 text-sm text-gray-500">
+              Please check your email for the confirmation link. If it hasn&rsquo;t arrived, contact
+              us and mention your order reference.
+            </p>
           )}
         </section>
       )}
@@ -479,13 +450,13 @@ export default async function OrderTrackingPage(props: Props) {
         </div>
       </section>
 
-      {/* Customer & delivery */}
+      {/* Customer & order details (shipping is handled on the external platform) */}
       <section
-        aria-labelledby="delivery-heading"
+        aria-labelledby="details-heading"
         className="rise-in mt-6 rounded-xl border border-gray-200 bg-white p-5 sm:p-6"
       >
-        <h2 id="delivery-heading" className="text-base font-semibold text-gray-900">
-          Customer & delivery
+        <h2 id="details-heading" className="text-base font-semibold text-gray-900">
+          Order details
         </h2>
         <dl className="mt-4 grid gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
           <div>
@@ -493,33 +464,13 @@ export default async function OrderTrackingPage(props: Props) {
             <dd className="mt-0.5 font-medium text-gray-900">{order.customer_name}</dd>
           </div>
           <div>
-            <dt className="text-gray-500">Phone</dt>
-            <dd className="mt-0.5 font-medium text-gray-900">
-              {order.phone ?? <span className="font-normal text-gray-400">Added after payment</span>}
-            </dd>
-          </div>
-          <div>
             <dt className="text-gray-500">Email</dt>
             <dd className="mt-0.5 font-medium text-gray-900">{order.email}</dd>
           </div>
-          {order.company_name && (
-            <div>
-              <dt className="text-gray-500">Company</dt>
-              <dd className="mt-0.5 font-medium text-gray-900">{order.company_name}</dd>
-            </div>
-          )}
           <div className="sm:col-span-2">
-            <dt className="text-gray-500">Delivery address</dt>
+            <dt className="text-gray-500">Payment method</dt>
             <dd className="mt-0.5 font-medium text-gray-900">
-              {shippingSubmitted ? (
-                `${order.governorate} — ${order.address}`
-              ) : (
-                <span className="font-normal text-gray-400">
-                  {awaitingPaymentStage
-                    ? "You’ll add this after your payment is confirmed."
-                    : "Add your delivery details above to complete your order."}
-                </span>
-              )}
+              {order.payment_method_label || "Manual transfer"}
             </dd>
           </div>
           {order.customer_note && (
@@ -529,9 +480,9 @@ export default async function OrderTrackingPage(props: Props) {
             </div>
           )}
           <div className="sm:col-span-2">
-            <dt className="text-gray-500">Payment method</dt>
-            <dd className="mt-0.5 font-medium text-gray-900">
-              {order.payment_method_label || "Manual transfer"}
+            <dt className="text-gray-500">Shipping &amp; delivery</dt>
+            <dd className="mt-0.5 text-gray-500">
+              Collected after payment via the order-confirmation link we email you.
             </dd>
           </div>
         </dl>

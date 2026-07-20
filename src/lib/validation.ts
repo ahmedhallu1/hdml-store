@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { GOVERNORATES, normalizeEgyptMobile } from "@/lib/egypt";
+import { normalizeEgyptMobile } from "@/lib/egypt";
 
 export const emailSchema = z.string().trim().toLowerCase().email().max(254);
 
@@ -43,8 +43,6 @@ export const profileSchema = z.object({
   phone: egyptMobileSchema,
   companyName: z.string().trim().max(160).optional().or(z.literal("")),
   taxId: z.string().trim().max(40).optional().or(z.literal("")),
-  governorate: z.enum(GOVERNORATES).optional(),
-  address: z.string().trim().max(500).optional().or(z.literal("")),
 });
 
 export const cartItemSchema = z.object({

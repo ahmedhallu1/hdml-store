@@ -40,7 +40,7 @@ export default async function AccountPage() {
   const [{ data: profile }, { data: orderRows, error: ordersError }] = await Promise.all([
     supabase
       .from("customer_profiles")
-      .select("full_name, phone, company_name, tax_id, governorate, address")
+      .select("full_name, phone, company_name, tax_id")
       .eq("user_id", user.id)
       .maybeSingle(),
     supabase
@@ -55,8 +55,6 @@ export default async function AccountPage() {
     phone: profile?.phone ?? "",
     companyName: profile?.company_name ?? "",
     taxId: profile?.tax_id ?? "",
-    governorate: profile?.governorate ?? "",
-    address: profile?.address ?? "",
   };
   const orders = (orderRows ?? []) as OrderRow[];
 

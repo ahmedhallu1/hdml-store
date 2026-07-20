@@ -25,9 +25,9 @@ export default async function DeliveryPage() {
       <p className={p}>
         Delivery is handled by a <strong>courier service</strong>, available across{" "}
         <strong>{delivery.regions}</strong> — every governorate, including remote areas. After your
-        payment is confirmed, you complete your order and provide your delivery address through the
-        confirmation link we email you, and the courier service then contacts you with the next
-        steps.
+        payment is confirmed, you complete your order and provide your delivery address on a
+        separate platform through the link we send you, and the courier service then contacts you
+        with the next steps.
       </p>
 
       <h2 className={h2}>How long it takes</h2>

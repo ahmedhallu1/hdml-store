@@ -23,12 +23,12 @@ export default async function PrivacyPage() {
       <h2 className={h2}>What we collect</h2>
       <ul className="mt-2 list-disc space-y-1.5 pl-6 text-gray-700">
         <li>
-          <strong>Account details</strong>: your name, email, phone number and (optionally) company
-          name and tax ID when you register.
+          <strong>Account details</strong>: your name, email and phone number, plus an optional
+          company name and tax ID for invoices. We do <strong>not</strong> collect your delivery
+          address — that is handled off-site (see “Shipping &amp; delivery” below).
         </li>
         <li>
-          <strong>Order details</strong>: delivery governorate and address, the items you order,
-          and any notes you add.
+          <strong>Order details</strong>: the items you order and any notes you add.
         </li>
         <li>
           <strong>Payment proof</strong>: the transfer screenshot you upload so we can verify your
@@ -39,10 +39,10 @@ export default async function PrivacyPage() {
 
       <h2 className={h2}>How we use it</h2>
       <p className={p}>
-        Your data is used to process and deliver orders, verify payments, send order emails
-        (confirmations and receipts), and contact you when something about your order needs
-        attention. We do not send marketing emails you did not ask for, and we do not use
-        third-party advertising trackers.
+        Your data is used to process your orders, verify payments, send order emails (confirmations
+        and receipts), and contact you when something about your order needs attention. We do not
+        send marketing emails you did not ask for, and we do not use third-party advertising
+        trackers.
       </p>
 
       <h2 className={h2}>Where it is stored</h2>
@@ -53,11 +53,18 @@ export default async function PrivacyPage() {
         ownership check.
       </p>
 
+      <h2 className={h2}>Shipping &amp; delivery</h2>
+      <p className={p}>
+        We do <strong>not</strong> collect or store your delivery address. After your payment is
+        confirmed, we send you a link to complete your order and enter your shipping details on a
+        separate platform, and a courier service handles delivery from there — you provide those
+        details to them, not to us.
+      </p>
+
       <h2 className={h2}>Who we share it with</h2>
       <p className={p}>
-        We share your name, phone number and delivery address with the courier that delivers your
-        order — nothing more. We use a transactional email provider to send order emails. We do not
-        sell, rent or trade your personal data.
+        We use a transactional email provider to send your order emails, and store your data with
+        our database provider (above). We do not sell, rent or trade your personal data.
       </p>
 
       <h2 className={h2}>Cookies</h2>

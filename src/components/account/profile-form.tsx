@@ -3,9 +3,8 @@
 import { useActionState } from "react";
 import { updateProfile } from "@/server/actions/profile";
 import type { AuthFormState } from "@/server/actions/auth";
-import { GOVERNORATES } from "@/lib/egypt";
 import { Button } from "@/components/ui/button";
-import { SelectField, TextAreaField, TextField } from "@/components/ui/field";
+import { TextField } from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
 
 const initialState: AuthFormState = {};
@@ -15,8 +14,6 @@ export interface ProfileDefaults {
   phone: string;
   companyName: string;
   taxId: string;
-  governorate: string;
-  address: string;
 }
 
 export function ProfileForm({ defaults }: { defaults: ProfileDefaults }) {
@@ -75,28 +72,6 @@ export function ProfileForm({ defaults }: { defaults: ProfileDefaults }) {
           hint="Optional — for tax invoices."
           error={state.fieldErrors?.taxId}
         />
-        <SelectField
-          label="Governorate"
-          name="governorate"
-          defaultValue={defaults.governorate}
-          error={state.fieldErrors?.governorate}
-        >
-          <option value="">Select…</option>
-          {GOVERNORATES.map((g) => (
-            <option key={g} value={g}>
-              {g}
-            </option>
-          ))}
-        </SelectField>
-        <div className="sm:col-span-2">
-          <TextAreaField
-            label="Delivery address"
-            name="address"
-            autoComplete="street-address"
-            defaultValue={defaults.address}
-            error={state.fieldErrors?.address}
-          />
-        </div>
       </div>
 
       <Button type="submit" disabled={pending}>

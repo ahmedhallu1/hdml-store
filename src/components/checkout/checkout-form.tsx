@@ -1,10 +1,12 @@
 "use client";
 
 /**
- * Checkout form: contact + delivery details, payment method choice, live
- * order summary. Submits product ids + quantities only — the server
- * re-fetches and re-prices everything. The idempotency key is generated ONCE
- * per mount so double submissions cannot create duplicate orders.
+ * Checkout form. Collects NO contact/delivery details — the customer's name
+ * and email come from their account, shipping details are entered after the
+ * payment is verified. The customer only adds an optional note and picks a
+ * payment method. Submits product ids + quantities only; the server re-fetches
+ * and re-prices everything. The idempotency key is generated ONCE per mount so
+ * double submissions cannot create duplicate orders.
  */
 
 import Link from "next/link";
@@ -13,21 +15,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useCart } from "@/lib/cart";
 import { fetchCartProducts, previewUnitPiasters, type CartProduct } from "@/lib/cart-products";
 import { formatEgp, lineAmount, sumPiasters } from "@/lib/money";
-import { GOVERNORATES } from "@/lib/egypt";
 import { placeOrder } from "@/server/actions/checkout";
 import { Button } from "@/components/ui/button";
-import { SelectField, TextAreaField, TextField } from "@/components/ui/field";
+import { TextAreaField } from "@/components/ui/field";
 import { PageLoading, Spinner } from "@/components/ui/spinner";
 import { TurnstileWidget, type TurnstileHandle } from "@/components/turnstile-widget";
 
-export interface CheckoutPrefill {
-  fullName: string;
+export interface CheckoutAccount {
+  name: string;
   email: string;
-  phone: string;
-  companyName: string;
-  taxId: string;
-  governorate: string;
-  address: string;
 }
 
 export interface CheckoutPaymentMethod {
@@ -36,15 +32,18 @@ export interface CheckoutPaymentMethod {
   label: string;
   number: string;
   display_name: string | null;
+  instructions: string | null;
+  /** Whole-EGP order minimum for the method to be offered (0 = always). */
+  min_order_egp: number;
 }
 
 export function CheckoutForm({
-  prefill,
+  account,
   paymentMethods,
   minOrderPiasters,
   vatNote,
 }: {
-  prefill: CheckoutPrefill;
+  account: CheckoutAccount;
   paymentMethods: CheckoutPaymentMethod[];
   minOrderPiasters: number;
   vatNote: string;
@@ -130,9 +129,20 @@ export function CheckoutForm({
       return { product: p, qty, unit, total: lineAmount(unit, qty) };
     });
   const subtotal = sumPiasters(summary.map((s) => s.total));
+  const subtotalEgp = subtotal / 100;
   const belowMin = subtotal < minOrderPiasters;
   const hasOutOfStock = summary.some((s) => s.product.stock_status === "out_of_stock");
   const blocked = missing.length > 0 || hasOutOfStock || belowMin;
+
+  // A method is offered only when the cart meets its order minimum (bank
+  // transfer, for example, appears only for large orders).
+  const availableMethods = paymentMethods.filter((m) => subtotalEgp >= (m.min_order_egp ?? 0));
+  // Methods hidden purely because the cart is below their threshold — surfaced
+  // as a hint so large-order buyers know the option unlocks.
+  const lockedMethods = paymentMethods.filter((m) => subtotalEgp < (m.min_order_egp ?? 0));
+  const effectiveMethodId = availableMethods.some((m) => m.id === paymentMethodId)
+    ? paymentMethodId
+    : (availableMethods[0]?.id ?? "");
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -142,15 +152,8 @@ export function CheckoutForm({
     const form = new FormData(event.currentTarget);
     const payload = {
       items: summary.map((s) => ({ productId: s.product.id, qty: s.qty })),
-      paymentMethodId,
+      paymentMethodId: effectiveMethodId,
       idempotencyKey,
-      customerName: String(form.get("customerName") ?? ""),
-      phone: String(form.get("phone") ?? ""),
-      email: String(form.get("email") ?? ""),
-      companyName: String(form.get("companyName") ?? ""),
-      taxId: String(form.get("taxId") ?? ""),
-      governorate: String(form.get("governorate") ?? ""),
-      address: String(form.get("address") ?? ""),
       customerNote: String(form.get("customerNote") ?? ""),
       turnstileToken,
     };
@@ -194,80 +197,28 @@ export function CheckoutForm({
           </div>
         )}
 
-        {/* Contact & delivery */}
+        {/* Account + note */}
         <section
-          aria-labelledby="contact-heading"
+          aria-labelledby="account-heading"
           className="rise-in rounded-xl border border-gray-200 bg-white p-5 sm:p-6"
         >
-          <h2 id="contact-heading" className="text-base font-semibold text-gray-900">
-            Contact & delivery
+          <h2 id="account-heading" className="text-base font-semibold text-gray-900">
+            Your details
           </h2>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            <TextField
-              label="Full name"
-              name="customerName"
-              autoComplete="name"
-              required
-              defaultValue={prefill.fullName}
+          <div className="mt-3 rounded-lg bg-gray-50 p-3 text-sm">
+            <p className="font-medium text-gray-900">{account.name || "Your account"}</p>
+            <p className="text-gray-500">{account.email}</p>
+          </div>
+          <p className="mt-3 text-sm text-gray-500">
+            No delivery details are needed now. After we <strong>verify your payment</strong>, we
+            email you a link to confirm your order and add your shipping details.
+          </p>
+          <div className="mt-4">
+            <TextAreaField
+              label="Order note"
+              name="customerNote"
+              hint="Optional — anything we should know about this order."
             />
-            <TextField
-              label="Mobile number"
-              name="phone"
-              type="tel"
-              inputMode="tel"
-              autoComplete="tel"
-              placeholder="01012345678"
-              required
-              defaultValue={prefill.phone}
-            />
-            <TextField
-              label="Email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              defaultValue={prefill.email}
-              hint="Your receipts are sent here."
-            />
-            <TextField
-              label="Company name"
-              name="companyName"
-              autoComplete="organization"
-              defaultValue={prefill.companyName}
-            />
-            <TextField label="Tax ID" name="taxId" defaultValue={prefill.taxId} hint="Optional." />
-            <SelectField
-              label="Governorate"
-              name="governorate"
-              required
-              defaultValue={prefill.governorate}
-            >
-              <option value="" disabled>
-                Select…
-              </option>
-              {GOVERNORATES.map((g) => (
-                <option key={g} value={g}>
-                  {g}
-                </option>
-              ))}
-            </SelectField>
-            <div className="sm:col-span-2">
-              <TextAreaField
-                label="Delivery address"
-                name="address"
-                autoComplete="street-address"
-                required
-                defaultValue={prefill.address}
-                hint="Street, building, floor — anything the courier needs."
-              />
-            </div>
-            <div className="sm:col-span-2">
-              <TextAreaField
-                label="Order note"
-                name="customerNote"
-                hint="Optional — anything we should know about this order."
-              />
-            </div>
           </div>
         </section>
 
@@ -284,7 +235,7 @@ export function CheckoutForm({
             here.
           </p>
 
-          {paymentMethods.length === 0 ? (
+          {availableMethods.length === 0 ? (
             <p className="mt-4 text-sm text-red-600" role="alert">
               No payment methods are available right now. Please contact us to order.
             </p>
@@ -292,11 +243,11 @@ export function CheckoutForm({
             <fieldset className="mt-4">
               <legend className="sr-only">Choose a payment method</legend>
               <div className="space-y-2">
-                {paymentMethods.map((m) => (
+                {availableMethods.map((m) => (
                   <label
                     key={m.id}
                     className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-colors ${
-                      paymentMethodId === m.id
+                      effectiveMethodId === m.id
                         ? "border-brand-500 bg-brand-50/50 ring-1 ring-brand-200"
                         : "border-gray-200 hover:border-gray-300"
                     }`}
@@ -305,7 +256,7 @@ export function CheckoutForm({
                       type="radio"
                       name="paymentMethod"
                       value={m.id}
-                      checked={paymentMethodId === m.id}
+                      checked={effectiveMethodId === m.id}
                       onChange={() => setPaymentMethodId(m.id)}
                       className="mt-1 size-4 accent-brand-700"
                     />
@@ -317,11 +268,25 @@ export function CheckoutForm({
                           Account name: {m.display_name}
                         </span>
                       )}
+                      {m.instructions && (
+                        <span className="mt-0.5 block text-xs text-gray-500">{m.instructions}</span>
+                      )}
                     </span>
                   </label>
                 ))}
               </div>
             </fieldset>
+          )}
+
+          {lockedMethods.length > 0 && (
+            <p className="mt-3 text-xs text-gray-400">
+              {lockedMethods
+                .map(
+                  (m) =>
+                    `${m.label} unlocks for orders of ${formatEgp((m.min_order_egp ?? 0) * 100)} and above.`,
+                )
+                .join(" ")}
+            </p>
           )}
         </section>
       </div>
@@ -378,7 +343,9 @@ export function CheckoutForm({
               type="submit"
               size="lg"
               className="mt-4 w-full"
-              disabled={blocked || submitting || !turnstileToken || paymentMethods.length === 0}
+              disabled={
+                blocked || submitting || !turnstileToken || availableMethods.length === 0
+              }
             >
               {submitting && <Spinner className="size-4 border-white/40 border-t-white" />}
               {submitting ? "Placing order…" : "Place order"}

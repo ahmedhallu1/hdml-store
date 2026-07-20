@@ -52,17 +52,13 @@ export const cartItemSchema = z.object({
   qty: z.number().int().min(1).max(100000),
 });
 
+// Checkout collects NO contact/delivery details: the customer's name + email
+// come from their account, and shipping details are entered after payment is
+// verified (see shippingSubmitSchema). Only a note + payment method here.
 export const checkoutSchema = z.object({
   items: z.array(cartItemSchema).min(1).max(200),
   paymentMethodId: z.string().uuid(),
   idempotencyKey: z.string().uuid(),
-  customerName: z.string().trim().min(2).max(120),
-  phone: egyptMobileSchema,
-  email: emailSchema,
-  companyName: z.string().trim().max(160).optional().or(z.literal("")),
-  taxId: z.string().trim().max(40).optional().or(z.literal("")),
-  governorate: z.enum(GOVERNORATES),
-  address: z.string().trim().min(5).max(500),
   customerNote: z.string().trim().max(1000).optional().or(z.literal("")),
   turnstileToken: z.string().min(1, "Verification failed — please retry"),
 });
@@ -112,13 +108,15 @@ export const customLineItemSchema = z.object({
 });
 
 export const paymentMethodSchema = z.object({
-  kind: z.enum(["instapay", "wallet"]),
+  kind: z.enum(["instapay", "wallet", "bank"]),
   label: z.string().trim().min(2).max(80),
   number: z.string().trim().min(5).max(40),
   displayName: z.string().trim().max(120).optional().or(z.literal("")),
   instructions: z.string().trim().max(1000).optional().or(z.literal("")),
   active: z.boolean(),
   sort: z.number().int().min(0).max(1000),
+  // Whole-EGP order minimum for the method to be offered (0 = always shown).
+  minOrderEgp: z.coerce.number().int().min(0).max(100_000_000).default(0),
 });
 
 // --- Customer accounts / cart / checkout / order tracking (add-only) -------
@@ -145,6 +143,22 @@ export const proofUploadFieldsSchema = z.object({
   token: z.string().regex(TRACKING_TOKEN_PATTERN, "Invalid tracking token"),
   turnstileToken: z.string().min(1, "Verification failed — please retry"),
 });
+
+/**
+ * Post-payment "confirm your order + shipping details" form. Reached through
+ * the tracking link emailed after the admin verifies payment; the 48-hex
+ * token is the credential (checked server-side against a paid order).
+ */
+export const shippingSubmitSchema = z.object({
+  token: z.string().regex(TRACKING_TOKEN_PATTERN, "Invalid tracking token"),
+  phone: egyptMobileSchema,
+  governorate: z.enum(GOVERNORATES),
+  address: z.string().trim().min(5, "Enter your full delivery address").max(500),
+  companyName: z.string().trim().max(160).optional().or(z.literal("")),
+  taxId: z.string().trim().max(40).optional().or(z.literal("")),
+  turnstileToken: z.string().min(1, "Verification failed — please retry"),
+});
+export type ShippingSubmitInput = z.infer<typeof shippingSubmitSchema>;
 
 // ---------------------------------------------------------------------------
 // Admin module schemas (additive — owned by the admin dashboard module)

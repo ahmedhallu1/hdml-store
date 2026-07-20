@@ -85,11 +85,7 @@ function input(overrides: Record<string, unknown> = {}) {
     items: [{ productId: P1, qty: 3 }],
     paymentMethodId: METHOD,
     idempotencyKey: "44444444-4444-4444-8444-444444444444",
-    customerName: "Mohamed Ali",
-    phone: "01012345678",
-    email: "buyer@example.com",
-    governorate: "Cairo",
-    address: "12 Example Street, Nasr City",
+    customerNote: "Please call before delivery",
     turnstileToken: "tok",
     ...overrides,
   };
@@ -97,9 +93,11 @@ function input(overrides: Record<string, unknown> = {}) {
 
 const noExisting = { data: null, error: null };
 const methodRow = {
-  data: { id: METHOD, label: "Instapay", number: "01099019374", active: true },
+  data: { id: METHOD, label: "Instapay", number: "01099019374", active: true, min_order_egp: 0 },
   error: null,
 };
+// placeOrder reads the profile name right after validating the payment method.
+const profileRow = { data: { full_name: "Mohamed Ali" }, error: null };
 const insertedOrder = {
   data: { id: "order-1", tracking_token: "a".repeat(48) },
   error: null,
@@ -129,6 +127,7 @@ describe("placeOrder", () => {
       noExisting,
       { data: [productRow()], error: null },
       methodRow,
+      profileRow,
       insertedOrder,
       ok, // items
       ok, // history
@@ -172,6 +171,7 @@ describe("placeOrder", () => {
         error: null,
       },
       methodRow,
+      profileRow,
       insertedOrder,
       ok,
       ok,
@@ -231,6 +231,7 @@ describe("placeOrder", () => {
       noExisting,
       { data: [productRow()], error: null },
       methodRow,
+      profileRow,
       { data: null, error: { code: "23505", message: "duplicate key value violates unique constraint \"orders_order_ref_key\"" } },
       insertedOrder,
       ok,
@@ -253,6 +254,7 @@ describe("placeOrder", () => {
       noExisting,
       { data: [productRow()], error: null },
       methodRow,
+      profileRow,
       insertedOrder,
       { data: null, error: { message: "boom" } }, // items insert fails
       ok, // compensating delete
@@ -273,6 +275,31 @@ describe("placeOrder", () => {
 
     H.turnstileOk = true;
     expect(await placeOrder(input({ items: [] }))).toMatchObject({ error: expect.any(String) });
-    expect(await placeOrder(input({ phone: "123" }))).toMatchObject({ error: expect.any(String) });
+    expect(await placeOrder(input({ paymentMethodId: "not-a-uuid" }))).toMatchObject({
+      error: expect.any(String),
+    });
+  });
+
+  it("rejects a payment method whose order minimum the cart does not meet", async () => {
+    // Bank transfer requires EGP 70,000; a 3 × EGP 500 = EGP 1,500 cart cannot use it.
+    H.queue.push(
+      noExisting,
+      { data: [productRow()], error: null },
+      {
+        data: {
+          id: METHOD,
+          label: "Bank transfer (CIB)",
+          number: "100070715613",
+          active: true,
+          min_order_egp: 70000,
+        },
+        error: null,
+      },
+    );
+    const result = await placeOrder(input());
+    expect(result).toMatchObject({
+      error: expect.stringContaining("only available for orders of"),
+    });
+    expect(findInsert("orders")).toBeUndefined();
   });
 });

@@ -20,13 +20,14 @@ function siteAssetUrl(path: string): string {
 
 interface EditState {
   methodId?: string;
-  kind: "instapay" | "wallet";
+  kind: "instapay" | "wallet" | "bank";
   label: string;
   number: string;
   displayName: string;
   instructions: string;
   active: boolean;
   sort: string;
+  minOrderEgp: string;
 }
 
 const EMPTY: EditState = {
@@ -37,6 +38,7 @@ const EMPTY: EditState = {
   instructions: "",
   active: true,
   sort: "0",
+  minOrderEgp: "0",
 };
 
 export function PaymentMethodsManager({ methods }: { methods: PaymentMethod[] }) {
@@ -60,6 +62,7 @@ export function PaymentMethodsManager({ methods }: { methods: PaymentMethod[] })
       instructions: m.instructions ?? "",
       active: m.active,
       sort: String(m.sort),
+      minOrderEgp: String(m.min_order_egp ?? 0),
     });
   }
 
@@ -75,6 +78,7 @@ export function PaymentMethodsManager({ methods }: { methods: PaymentMethod[] })
         instructions: editing.instructions.trim(),
         active: editing.active,
         sort: Number.parseInt(editing.sort, 10) || 0,
+        minOrderEgp: Number.parseInt(editing.minOrderEgp, 10) || 0,
       });
       if (result.ok) {
         setEditing(null);
@@ -170,9 +174,16 @@ export function PaymentMethodsManager({ methods }: { methods: PaymentMethod[] })
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-sm font-semibold text-gray-900">{m.label}</span>
-                <Badge tone={m.kind === "instapay" ? "brand" : "blue"}>{m.kind}</Badge>
+                <Badge tone={m.kind === "instapay" ? "brand" : m.kind === "bank" ? "green" : "blue"}>
+                  {m.kind}
+                </Badge>
                 <Badge tone={m.active ? "green" : "gray"}>{m.active ? "active" : "inactive"}</Badge>
                 <span className="text-xs text-gray-400">sort {m.sort}</span>
+                {m.min_order_egp > 0 && (
+                  <span className="text-xs text-gray-400">
+                    · from EGP {m.min_order_egp.toLocaleString("en-US")}
+                  </span>
+                )}
               </div>
               <p className="mt-0.5 text-sm text-gray-600">
                 <span className="font-mono">{m.number}</span>
@@ -242,11 +253,15 @@ export function PaymentMethodsManager({ methods }: { methods: PaymentMethod[] })
               label="Kind"
               value={editing.kind}
               onChange={(e) =>
-                setEditing({ ...editing, kind: e.target.value as "instapay" | "wallet" })
+                setEditing({
+                  ...editing,
+                  kind: e.target.value as "instapay" | "wallet" | "bank",
+                })
               }
             >
               <option value="instapay">Instapay</option>
               <option value="wallet">Mobile wallet</option>
+              <option value="bank">Bank transfer</option>
             </SelectField>
             <TextField
               label="Label"
@@ -284,7 +299,7 @@ export function PaymentMethodsManager({ methods }: { methods: PaymentMethod[] })
               onChange={(e) => setEditing({ ...editing, instructions: e.target.value })}
               error={fieldErrors.instructions}
             />
-            <div className="flex items-end gap-3">
+            <div className="flex flex-wrap items-end gap-3">
               <div className="w-24">
                 <TextField
                   label="Sort"
@@ -294,6 +309,17 @@ export function PaymentMethodsManager({ methods }: { methods: PaymentMethod[] })
                   value={editing.sort}
                   onChange={(e) => setEditing({ ...editing, sort: e.target.value })}
                   error={fieldErrors.sort}
+                />
+              </div>
+              <div className="w-40">
+                <TextField
+                  label="Min order (EGP)"
+                  type="number"
+                  min={0}
+                  value={editing.minOrderEgp}
+                  onChange={(e) => setEditing({ ...editing, minOrderEgp: e.target.value })}
+                  error={fieldErrors.minOrderEgp}
+                  hint="0 = always offered"
                 />
               </div>
               <label className="flex h-10 items-center gap-2 text-sm">

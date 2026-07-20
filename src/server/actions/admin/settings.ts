@@ -168,6 +168,7 @@ export async function savePaymentMethodAction(input: unknown): Promise<SavePayme
     instructions: d.instructions || null,
     active: d.active,
     sort: d.sort,
+    min_order_egp: d.minOrderEgp,
   };
 
   if (d.methodId) {

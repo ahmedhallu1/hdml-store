@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { normalizeEgyptMobile, waLink } from "@/lib/egypt";
-import { checkoutSchema, egyptMobileSchema, parseOrErrors, registerSchema } from "@/lib/validation";
+import {
+  checkoutSchema,
+  egyptMobileSchema,
+  parseOrErrors,
+  registerSchema,
+  shippingSubmitSchema,
+} from "@/lib/validation";
 
 describe("normalizeEgyptMobile", () => {
   it("accepts local and international forms", () => {
@@ -31,24 +37,27 @@ describe("egyptMobileSchema", () => {
   });
 });
 
+// Checkout collects NO contact/delivery details anymore — just cart + method
+// + optional note. Name/email come from the account; shipping comes later.
 const validCheckout = {
   items: [{ productId: "6b1f8f0a-58ea-4c67-9146-95a1f6f0f8f5", qty: 3 }],
   paymentMethodId: "5f0b7a17-84a3-4b8f-a2d5-59e1cfa5f5b2",
   idempotencyKey: "0f0d8f0a-58ea-4c67-9146-95a1f6f0f8f5",
-  customerName: "Mohamed Ali",
-  phone: "01012345678",
-  email: "buyer@example.com",
-  governorate: "Cairo" as const,
-  address: "12 Example Street, Nasr City",
+  customerNote: "Please call before delivery",
   turnstileToken: "tok",
 };
 
 describe("checkoutSchema", () => {
-  it("accepts a valid payload", () => {
+  it("accepts a valid payload (no contact details)", () => {
     const r = parseOrErrors(checkoutSchema, validCheckout);
     expect(r.ok).toBe(true);
   });
-  it("rejects empty carts, bad uuids, bad phones and missing turnstile", () => {
+  it("accepts a payload with no note", () => {
+    const { customerNote: _drop, ...noNote } = validCheckout;
+    void _drop;
+    expect(parseOrErrors(checkoutSchema, noNote).ok).toBe(true);
+  });
+  it("rejects empty carts, bad uuids, bad payment method and missing turnstile", () => {
     expect(parseOrErrors(checkoutSchema, { ...validCheckout, items: [] }).ok).toBe(false);
     expect(
       parseOrErrors(checkoutSchema, {
@@ -56,9 +65,10 @@ describe("checkoutSchema", () => {
         items: [{ productId: "nope", qty: 1 }],
       }).ok,
     ).toBe(false);
-    expect(parseOrErrors(checkoutSchema, { ...validCheckout, phone: "123" }).ok).toBe(false);
+    expect(parseOrErrors(checkoutSchema, { ...validCheckout, paymentMethodId: "nope" }).ok).toBe(
+      false,
+    );
     expect(parseOrErrors(checkoutSchema, { ...validCheckout, turnstileToken: "" }).ok).toBe(false);
-    expect(parseOrErrors(checkoutSchema, { ...validCheckout, governorate: "Paris" }).ok).toBe(false);
   });
   it("rejects fractional and zero quantities", () => {
     expect(
@@ -73,6 +83,35 @@ describe("checkoutSchema", () => {
         items: [{ productId: validCheckout.items[0].productId, qty: 1.5 }],
       }).ok,
     ).toBe(false);
+  });
+});
+
+const validShipping = {
+  token: "a".repeat(48),
+  phone: "01012345678",
+  governorate: "Cairo" as const,
+  address: "12 Example Street, Nasr City",
+  companyName: "",
+  taxId: "",
+  turnstileToken: "tok",
+};
+
+describe("shippingSubmitSchema", () => {
+  it("accepts a valid shipping payload and normalizes the phone", () => {
+    const r = shippingSubmitSchema.safeParse({ ...validShipping, phone: "+20 101 234 5678" });
+    expect(r.success).toBe(true);
+    if (r.success) expect(r.data.phone).toBe("01012345678");
+  });
+  it("rejects a bad token, phone, governorate, short address and missing turnstile", () => {
+    expect(parseOrErrors(shippingSubmitSchema, { ...validShipping, token: "short" }).ok).toBe(false);
+    expect(parseOrErrors(shippingSubmitSchema, { ...validShipping, phone: "123" }).ok).toBe(false);
+    expect(parseOrErrors(shippingSubmitSchema, { ...validShipping, governorate: "Paris" }).ok).toBe(
+      false,
+    );
+    expect(parseOrErrors(shippingSubmitSchema, { ...validShipping, address: "x" }).ok).toBe(false);
+    expect(parseOrErrors(shippingSubmitSchema, { ...validShipping, turnstileToken: "" }).ok).toBe(
+      false,
+    );
   });
 });
 

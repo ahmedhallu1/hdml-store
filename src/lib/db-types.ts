@@ -10,7 +10,7 @@ export type OrderStatus =
 export type ProofStatus = "pending" | "approved" | "rejected";
 export type InvoiceKind = "preliminary" | "final";
 export type EmailStatus = "pending" | "sent" | "failed";
-export type PaymentKind = "instapay" | "wallet";
+export type PaymentKind = "instapay" | "wallet" | "bank";
 export type ActorKind = "customer" | "admin" | "system";
 
 export interface Category {
@@ -77,6 +77,8 @@ export interface PaymentMethod {
   instructions: string | null;
   active: boolean;
   sort: number;
+  /** Whole-EGP order minimum for this method to be offered (0 = always). */
+  min_order_egp: number;
 }
 
 export interface Order {
@@ -88,18 +90,23 @@ export interface Order {
   payment_method_id: string | null;
   payment_method_label: string;
   customer_name: string;
-  phone: string;
+  /** Null until the customer submits shipping details after payment. */
+  phone: string | null;
   email: string;
   company_name: string | null;
   tax_id: string | null;
-  governorate: string;
-  address: string;
+  /** Null until the customer submits shipping details after payment. */
+  governorate: string | null;
+  /** Null until the customer submits shipping details after payment. */
+  address: string | null;
   subtotal: number;
   adjustment_total: number;
   total: number;
   currency: string;
   customer_note: string | null;
   admin_note: string | null;
+  /** Set when the customer confirms the order + shipping details post-payment. */
+  shipping_submitted_at: string | null;
   created_at: string;
   updated_at: string;
 }

@@ -16,6 +16,7 @@ import type {
 import { Badge, OrderStatusBadge } from "@/components/ui/badge";
 import { CopyButton } from "@/components/order/copy-button";
 import { ProofUpload } from "@/components/order/proof-upload";
+import { ShippingForm, type ShippingDefaults } from "@/components/order/shipping-form";
 
 export const metadata: Metadata = {
   title: "Order tracking",
@@ -83,6 +84,26 @@ export default async function OrderTrackingPage(props: Props) {
   const showProofUpload =
     order.status === "awaiting_payment" || order.status === "awaiting_verification";
 
+  // Only payment methods the order actually qualifies for (e.g. bank transfer
+  // is offered only for large orders — same rule as checkout).
+  const payableMethods = methods.filter(
+    (m) => totalPiasters >= toPiasters(String(m.min_order_egp ?? 0)),
+  );
+
+  // Post-payment: the customer confirms the order + enters shipping details.
+  const shippingSubmitted = Boolean(order.shipping_submitted_at);
+  const showShippingForm = order.status === "paid" && !shippingSubmitted;
+  const shippingDefaults: ShippingDefaults = {
+    phone: order.phone ?? "",
+    governorate: order.governorate ?? "",
+    address: order.address ?? "",
+    companyName: order.company_name ?? "",
+    taxId: order.tax_id ?? "",
+  };
+  // The step the customer is still waiting on before shipping.
+  const awaitingPaymentStage =
+    order.status === "awaiting_payment" || order.status === "awaiting_verification";
+
   // Receipts actually downloadable right now (the API re-checks all of this).
   const visibleInvoices = invoices.filter((inv) =>
     inv.kind === "final"
@@ -94,7 +115,11 @@ export default async function OrderTrackingPage(props: Props) {
   // Admin-uploaded QR images take precedence; otherwise generate one from the
   // wallet/Instapay number.
   const methodQrs = showPayment
-    ? await Promise.all(methods.map((m) => (m.qr_path ? Promise.resolve("") : qrSvg(m.number))))
+    ? await Promise.all(
+        payableMethods.map((m) =>
+          m.qr_path || m.kind === "bank" ? Promise.resolve("") : qrSvg(m.number),
+        ),
+      )
     : [];
   const qrImageUrl = (path: string) =>
     `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/site-assets/${path}`;
@@ -143,6 +168,87 @@ export default async function OrderTrackingPage(props: Props) {
         )}
       </div>
 
+      {/* What happens next — the flow explained on the confirmation page */}
+      {awaitingPaymentStage && (
+        <section
+          aria-labelledby="next-heading"
+          className="rise-in mt-6 rounded-xl border border-brand-200 bg-brand-50/40 p-5 sm:p-6"
+        >
+          <h2 id="next-heading" className="text-base font-semibold text-gray-900">
+            What happens next
+          </h2>
+          <ol className="mt-3 list-decimal space-y-1.5 pl-5 text-sm text-gray-700">
+            <li>
+              {showPayment
+                ? "Transfer the total below and upload your payment screenshot."
+                : "We've received your payment screenshot — thank you."}
+            </li>
+            <li>We verify your payment — this is manual and usually quick.</li>
+            <li>
+              Once your payment is validated, we email you a link to{" "}
+              <strong>confirm your order and enter your shipping details</strong>.
+            </li>
+            <li>We arrange delivery and keep you updated by email.</li>
+          </ol>
+        </section>
+      )}
+
+      {/* Post-payment: confirm the order + shipping details */}
+      {order.status === "paid" && (
+        <section
+          aria-labelledby="shipping-heading"
+          className={`rise-in mt-6 rounded-xl border p-5 sm:p-6 ${
+            showShippingForm ? "border-brand-300 bg-brand-50/40" : "border-gray-200 bg-white"
+          }`}
+        >
+          {showShippingForm ? (
+            <>
+              <h2 id="shipping-heading" className="text-base font-semibold text-gray-900">
+                Confirm your order &amp; shipping details
+              </h2>
+              <p className="mt-1 text-sm text-gray-600">
+                Your payment is confirmed 🎉 — this is the last step. Enter your delivery details so
+                we can ship your order.
+              </p>
+              <ShippingForm token={token} defaults={shippingDefaults} />
+            </>
+          ) : (
+            <>
+              <h2 id="shipping-heading" className="text-base font-semibold text-gray-900">
+                Shipping details received ✓
+              </h2>
+              <p className="mt-1 text-sm text-gray-600">
+                Thank you — we have your delivery details and are preparing your order.
+              </p>
+              <dl className="mt-4 grid gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
+                <div>
+                  <dt className="text-gray-500">Phone</dt>
+                  <dd className="mt-0.5 font-medium text-gray-900">{order.phone}</dd>
+                </div>
+                <div>
+                  <dt className="text-gray-500">Governorate</dt>
+                  <dd className="mt-0.5 font-medium text-gray-900">{order.governorate}</dd>
+                </div>
+                <div className="sm:col-span-2">
+                  <dt className="text-gray-500">Delivery address</dt>
+                  <dd className="mt-0.5 font-medium text-gray-900">{order.address}</dd>
+                </div>
+              </dl>
+              <details className="mt-4">
+                <summary className="cursor-pointer text-sm font-medium text-brand-700">
+                  Edit shipping details
+                </summary>
+                <ShippingForm
+                  token={token}
+                  defaults={shippingDefaults}
+                  submitLabel="Update shipping details"
+                />
+              </details>
+            </>
+          )}
+        </section>
+      )}
+
       {/* Rejected proof */}
       {latestProof?.status === "rejected" && showProofUpload && (
         <div
@@ -177,7 +283,7 @@ export default async function OrderTrackingPage(props: Props) {
           </p>
 
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            {methods.map((m, i) => (
+            {payableMethods.map((m, i) => (
               <div
                 key={m.id}
                 className={`rounded-xl border bg-white p-4 ${
@@ -217,7 +323,7 @@ export default async function OrderTrackingPage(props: Props) {
                 ) : null}
               </div>
             ))}
-            {methods.length === 0 && (
+            {payableMethods.length === 0 && (
               <p className="text-sm text-red-600">
                 Payment methods are temporarily unavailable — please contact us.
               </p>
@@ -388,7 +494,9 @@ export default async function OrderTrackingPage(props: Props) {
           </div>
           <div>
             <dt className="text-gray-500">Phone</dt>
-            <dd className="mt-0.5 font-medium text-gray-900">{order.phone}</dd>
+            <dd className="mt-0.5 font-medium text-gray-900">
+              {order.phone ?? <span className="font-normal text-gray-400">Added after payment</span>}
+            </dd>
           </div>
           <div>
             <dt className="text-gray-500">Email</dt>
@@ -403,7 +511,15 @@ export default async function OrderTrackingPage(props: Props) {
           <div className="sm:col-span-2">
             <dt className="text-gray-500">Delivery address</dt>
             <dd className="mt-0.5 font-medium text-gray-900">
-              {order.governorate} — {order.address}
+              {shippingSubmitted ? (
+                `${order.governorate} — ${order.address}`
+              ) : (
+                <span className="font-normal text-gray-400">
+                  {awaitingPaymentStage
+                    ? "You’ll add this after your payment is confirmed."
+                    : "Add your delivery details above to complete your order."}
+                </span>
+              )}
             </dd>
           </div>
           {order.customer_note && (
@@ -434,7 +550,7 @@ export default async function OrderTrackingPage(props: Props) {
 const TIMELINE_STEPS: Array<{ status: OrderStatus; label: string; hint: string }> = [
   { status: "awaiting_payment", label: "Awaiting payment", hint: "Transfer & upload proof" },
   { status: "awaiting_verification", label: "Under review", hint: "We verify your transfer" },
-  { status: "paid", label: "Paid", hint: "Payment confirmed" },
+  { status: "paid", label: "Paid", hint: "Confirm order & shipping" },
   { status: "fulfilled", label: "Fulfilled", hint: "Order shipped" },
 ];
 

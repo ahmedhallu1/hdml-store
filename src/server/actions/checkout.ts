@@ -144,16 +144,40 @@ export async function placeOrder(input: unknown): Promise<PlaceOrderResult> {
   }
 
   // ------------------------------------------------------------------
-  // Payment method label snapshot.
+  // Payment method label snapshot + per-method order minimum (e.g. the bank
+  // transfer option is only offered for large orders — enforced server-side,
+  // never trusting the client to have hidden it).
   // ------------------------------------------------------------------
   const { data: method } = await service
     .from("payment_methods")
-    .select("id, label, number, active")
+    .select("id, label, number, active, min_order_egp")
     .eq("id", order.paymentMethodId)
     .maybeSingle();
   if (!method || !method.active) {
     return { error: "The selected payment method is unavailable. Please pick another." };
   }
+  const methodMinPiasters = toPiasters(String(method.min_order_egp ?? 0));
+  if (subtotal < methodMinPiasters) {
+    return {
+      error: `"${method.label}" is only available for orders of ${formatEgp(methodMinPiasters)} or more.`,
+    };
+  }
+
+  // Name + email come from the account — checkout collects no contact details.
+  // Prefer the (editable) profile name over the frozen registration metadata,
+  // mirroring what the checkout page shows, so an edited name isn't stale on
+  // the invoice PDF / order emails.
+  const { data: profile } = await service
+    .from("customer_profiles")
+    .select("full_name")
+    .eq("user_id", user.id)
+    .maybeSingle();
+  const customerName =
+    ((profile?.full_name as string | null | undefined) ?? "").trim() ||
+    ((user.user_metadata?.full_name as string | undefined) ?? "").trim() ||
+    (user.email ? user.email.split("@")[0] : "") ||
+    "Customer";
+  const customerEmail = user.email ?? "";
 
   // ------------------------------------------------------------------
   // Insert the order; retry the time-based ref on 23505 collisions.
@@ -172,13 +196,14 @@ export async function placeOrder(input: unknown): Promise<PlaceOrderResult> {
         status: "awaiting_payment",
         payment_method_id: method.id,
         payment_method_label: `${method.label} ${method.number}`.trim(),
-        customer_name: order.customerName,
-        phone: order.phone,
-        email: order.email,
-        company_name: order.companyName || null,
-        tax_id: order.taxId || null,
-        governorate: order.governorate,
-        address: order.address,
+        customer_name: customerName,
+        // Shipping details are collected AFTER the payment is verified.
+        phone: null,
+        email: customerEmail,
+        company_name: null,
+        tax_id: null,
+        governorate: null,
+        address: null,
         subtotal: piastersToDecimalString(subtotal),
         adjustment_total: "0",
         total: piastersToDecimalString(subtotal),

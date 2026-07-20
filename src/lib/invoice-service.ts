@@ -83,7 +83,7 @@ async function buildAndStoreInvoice(
     dateLabel: receiptDate(new Date(order.created_at)),
     paymentMethodLabel: order.payment_method_label || "Manual payment",
     customerName: order.customer_name,
-    customerPhone: order.phone,
+    customerPhone: order.phone ?? undefined,
     seller: {
       name: settings.seller_info.name,
       taxId: settings.seller_info.tax_id,
@@ -228,7 +228,10 @@ export async function sendOrderEmail(
     // Generate (or regenerate) the PDF and keep the bytes for the attachment.
     const { bytes, order, items } = await buildAndStoreInvoice(orderId, kind);
     recipient = order.email;
-    subject = orderEmailSubject(kind, order.order_ref);
+    // The "payment confirmed" email doubles as the prompt to confirm the order
+    // and add shipping details, until the customer has done so.
+    const needsShipping = kind === "final" && !order.shipping_submitted_at;
+    subject = orderEmailSubject(kind, order.order_ref, needsShipping);
 
     const settings = await getSiteSettings();
     const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/+$/, "");
@@ -253,6 +256,7 @@ export async function sendOrderEmail(
         whatsapp: settings.contact.whatsapp,
       },
       deliveryMessage: settings.delivery.message,
+      needsShipping,
     });
 
     const result = await sendEmail({

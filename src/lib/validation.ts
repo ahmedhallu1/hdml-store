@@ -204,13 +204,6 @@ export const adminDeliverySettingsSchema = z.object({
 export const adminOrderingSettingsSchema = z.object({
   minOrderEgp: z.coerce.number().int().min(0).max(10000000),
   vatNote: z.string().trim().max(300).optional().or(z.literal("")),
-  externalOrderUrl: z
-    .string()
-    .trim()
-    .max(500)
-    .url("Enter a valid link (including https://)")
-    .optional()
-    .or(z.literal("")),
 });
 
 export const adminContactSettingsSchema = z.object({

@@ -232,10 +232,7 @@ export async function sendOrderEmail(
     const settings = await getSiteSettings();
     const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/+$/, "");
     const trackingUrl = `${siteUrl}/order/${order.tracking_token}`;
-    // The "payment confirmed" email carries the link to the EXTERNAL platform
-    // where the customer confirms the order + enters shipping details.
-    const externalOrderUrl = kind === "final" ? settings.ordering.external_order_url : "";
-    subject = orderEmailSubject(kind, order.order_ref, Boolean(externalOrderUrl));
+    subject = orderEmailSubject(kind, order.order_ref);
 
     const html = orderEmailHtml({
       kind,
@@ -256,7 +253,6 @@ export async function sendOrderEmail(
         whatsapp: settings.contact.whatsapp,
       },
       deliveryMessage: settings.delivery.message,
-      externalOrderUrl,
     });
 
     const result = await sendEmail({

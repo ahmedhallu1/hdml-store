@@ -27,12 +27,6 @@ export interface OrderEmailArgs {
   trackingUrl: string;
   contact: EmailContact;
   deliveryMessage: string;
-  /**
-   * Final email only: the external platform link where the customer confirms
-   * the order + enters shipping details. When set, it becomes the email's
-   * primary call to action.
-   */
-  externalOrderUrl?: string;
 }
 
 export interface ProofRejectedArgs {
@@ -163,17 +157,10 @@ ${moreRow}
 // Order emails (preliminary / final)
 // ---------------------------------------------------------------------------
 
-export function orderEmailSubject(
-  kind: InvoiceKind,
-  orderRef: string,
-  hasExternalStep = false,
-): string {
-  if (kind === "preliminary") {
-    return `HDML Order ${orderRef} — received, payment pending verification`;
-  }
-  return hasExternalStep
-    ? `HDML Order ${orderRef} — payment confirmed ✔ Confirm your order & shipping`
-    : `HDML Order ${orderRef} — payment confirmed ✔`;
+export function orderEmailSubject(kind: InvoiceKind, orderRef: string): string {
+  return kind === "preliminary"
+    ? `HDML Order ${orderRef} — received, payment pending verification`
+    : `HDML Order ${orderRef} — payment confirmed ✔ Confirm your order & shipping`;
 }
 
 export function orderEmailHtml(args: OrderEmailArgs): string {
@@ -188,10 +175,9 @@ export function orderEmailHtml(args: OrderEmailArgs): string {
     trackingUrl,
     contact,
     deliveryMessage,
-    externalOrderUrl,
   } = args;
 
-  const hasExternalStep = kind === "final" && Boolean(externalOrderUrl);
+  const isFinal = kind === "final";
 
   const notice =
     kind === "preliminary"
@@ -211,28 +197,23 @@ export function orderEmailHtml(args: OrderEmailArgs): string {
           "#065f46",
         );
 
-  // After payment, the customer's final step is on an EXTERNAL platform: they
-  // confirm the order and enter shipping details there (nothing is collected on
-  // the store site). The email carries that link.
-  const shippingCta = hasExternalStep
+  // After payment, the customer's final step is to confirm the order + enter
+  // shipping details. We send that link separately (each order uses a different
+  // platform), so this just sets the expectation — no button here.
+  const shippingCta = isFinal
     ? noticeBox(
-        `<strong>One last step — confirm your order.</strong> Please click the button below to ` +
-          `confirm your order and enter your <strong>shipping details</strong> so we can arrange ` +
-          `delivery. Your order reference is <strong>${escapeHtml(orderRef)}</strong> — keep it handy.`,
+        `<strong>One last step — confirm your order.</strong> We&rsquo;ll send you a link to ` +
+          `confirm your order and enter your <strong>shipping details</strong> so a courier can ` +
+          `deliver. Keep your order reference <strong>${escapeHtml(orderRef)}</strong> handy.`,
         "#eff6ff",
         "#2563eb",
         "#1e3a8a",
       )
     : "";
 
-  const ctaHref = hasExternalStep ? externalOrderUrl! : trackingUrl;
-  const ctaLabel = hasExternalStep
-    ? "Confirm your order & add shipping details"
-    : kind === "final"
-      ? "View your order"
-      : "Track your order";
+  const ctaLabel = isFinal ? "View your order" : "Track your order";
 
-  const deliveryLine = hasExternalStep
+  const deliveryLine = isFinal
     ? ""
     : `<p style="margin:0 0 4px;${FONT}font-size:13px;line-height:20px;color:#374151;">
 <strong>Delivery:</strong> ${escapeHtml(deliveryMessage)}
@@ -253,7 +234,7 @@ ${itemsTable(items, totalLabel)}
 Your ${kind === "preliminary" ? "preliminary receipt" : "receipt"} is attached to this email as a PDF.
 </p>
 ${deliveryLine}
-${button(ctaHref, ctaLabel)}
+${button(trackingUrl, ctaLabel)}
 `;
 
   return layout(body, contact);

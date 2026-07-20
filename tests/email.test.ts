@@ -33,10 +33,11 @@ describe("orderEmailHtml", () => {
     expect(html).toContain("verif"); // verification/verified wording
     expect(html).toContain("not");
   });
-  it("final confirms payment and repeats delivery message", () => {
-    const html = orderEmailHtml(args("final"));
-    expect(html.toLowerCase()).toContain("confirmed");
-    expect(html).toContain("5 working days");
+  it("final confirms payment and prompts to confirm the order + shipping", () => {
+    const html = orderEmailHtml(args("final")).toLowerCase();
+    expect(html).toContain("confirmed");
+    expect(html).toContain("shipping details");
+    expect(html).toContain("send you a link");
   });
   it("contains name, ref, total, tracking link; caps items at 10", () => {
     const html = orderEmailHtml(args("preliminary"));

@@ -186,12 +186,6 @@ export interface OrderingSettings {
   min_order_egp: number;
   currency: string;
   vat_note: string;
-  /**
-   * External platform where the customer confirms the order + enters shipping
-   * details after payment is verified. Empty = not configured (customers are
-   * told the link will arrive by email). No shipping is collected on this site.
-   */
-  external_order_url: string;
 }
 
 export interface ContactSettings {

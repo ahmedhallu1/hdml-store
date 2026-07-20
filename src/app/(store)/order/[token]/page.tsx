@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabaseService } from "@/lib/supabase/server";
-import { getSiteSettings } from "@/lib/settings";
 import { qrSvg } from "@/lib/qr";
 import { formatEgp, toPiasters } from "@/lib/money";
 import { TRACKING_TOKEN_PATTERN } from "@/lib/validation";
@@ -91,11 +90,8 @@ export default async function OrderTrackingPage(props: Props) {
   );
 
   // After payment, the customer confirms the order + enters shipping details on
-  // an EXTERNAL platform (nothing is collected on this site). They receive that
-  // link by email; we also surface it here for convenience.
-  const settings = await getSiteSettings();
-  const externalOrderUrl = settings.ordering.external_order_url;
-  // The step the customer is still on before the external order step.
+  // an external platform. We send that link separately (each order can use a
+  // different platform), so this page only sets the expectation.
   const awaitingPaymentStage =
     order.status === "awaiting_payment" || order.status === "awaiting_verification";
 
@@ -180,7 +176,7 @@ export default async function OrderTrackingPage(props: Props) {
             </li>
             <li>We verify your payment — this is manual and usually quick.</li>
             <li>
-              Once your payment is validated, we email you a link to{" "}
+              Once your payment is validated, we send you a link to{" "}
               <strong>confirm your order and enter your shipping details</strong>.
             </li>
             <li>Courier service will contact you with next steps.</li>
@@ -198,25 +194,13 @@ export default async function OrderTrackingPage(props: Props) {
             Confirm your order &amp; shipping details
           </h2>
           <p className="mt-1 text-sm text-gray-600">
-            Your payment is confirmed 🎉 — one last step. We&rsquo;ve emailed you a link to confirm
-            your order and enter your shipping details. Keep your order reference{" "}
-            <strong className="font-mono text-brand-800">{order.order_ref}</strong> handy.
+            Your payment is confirmed 🎉 — one last step. We&rsquo;ll send you a link to confirm
+            your order and enter your shipping details so a courier can deliver. Keep your order
+            reference <strong className="font-mono text-brand-800">{order.order_ref}</strong> handy.
           </p>
-          {externalOrderUrl ? (
-            <a
-              href={externalOrderUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-600"
-            >
-              Confirm order &amp; add shipping details
-            </a>
-          ) : (
-            <p className="mt-3 text-sm text-gray-500">
-              Please check your email for the confirmation link. If it hasn&rsquo;t arrived, contact
-              us and mention your order reference.
-            </p>
-          )}
+          <p className="mt-3 text-sm text-gray-500">
+            If you haven&rsquo;t received it yet, contact us and mention your order reference.
+          </p>
         </section>
       )}
 
@@ -482,7 +466,7 @@ export default async function OrderTrackingPage(props: Props) {
           <div className="sm:col-span-2">
             <dt className="text-gray-500">Shipping &amp; delivery</dt>
             <dd className="mt-0.5 text-gray-500">
-              Collected after payment via the order-confirmation link we email you.
+              Collected after payment via the order-confirmation link we send you.
             </dd>
           </div>
         </dl>

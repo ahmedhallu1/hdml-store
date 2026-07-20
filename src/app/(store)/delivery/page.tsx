@@ -4,7 +4,7 @@ import { getSiteSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "Delivery",
-  description: "HDML delivery coverage, timelines, fees and how order tracking works.",
+  description: "How HDML orders are delivered by courier, timelines, fees and order tracking.",
 };
 
 const h2 = "mt-8 text-xl font-semibold text-gray-900";
@@ -17,22 +17,24 @@ export default async function DeliveryPage() {
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold tracking-tight text-gray-900">Delivery information</h1>
       <p className="mt-3 leading-relaxed text-gray-600">
-        Everything you need to know about where we deliver, how long it takes, and how to follow
-        your order.
+        Everything you need to know about how your order reaches you, how long it takes, and how to
+        follow it.
       </p>
 
-      <h2 className={h2}>Where we deliver</h2>
+      <h2 className={h2}>How delivery works</h2>
       <p className={p}>
-        We deliver across <strong>{delivery.regions}</strong> — every governorate, including remote
-        areas. You provide your governorate and full address at checkout; if a courier needs extra
-        directions we contact you on the phone number on the order.
+        Delivery is handled by a <strong>courier service</strong>, available across{" "}
+        <strong>{delivery.regions}</strong> — every governorate, including remote areas. After your
+        payment is confirmed, you complete your order and provide your delivery address through the
+        confirmation link we email you, and the courier service then contacts you with the next
+        steps.
       </p>
 
       <h2 className={h2}>How long it takes</h2>
       <p className={p}>
-        Orders ship after your payment is verified and typically arrive within{" "}
+        Once your payment is confirmed and your order is completed, delivery typically takes around{" "}
         <strong>{delivery.time}</strong>. Bulk orders with many cartons can occasionally take a
-        little longer — if that happens we tell you in advance rather than leave you guessing.
+        little longer — the courier keeps you posted.
       </p>
 
       <h2 className={h2}>Delivery fees</h2>
@@ -53,7 +55,8 @@ export default async function DeliveryPage() {
           checking it manually.
         </li>
         <li>
-          <strong>Paid</strong> — payment confirmed; we prepare and dispatch your shipment.
+          <strong>Paid</strong> — payment confirmed. Complete your order via the emailed link; a
+          courier service then handles delivery and contacts you with the next steps.
         </li>
         <li>
           <strong>Fulfilled</strong> — the order was delivered.

@@ -23,7 +23,8 @@ const DEFAULTS: SiteSettings = {
     address: "Egypt, Damanhour, Esmail Elhaddad St, 22512",
   },
   delivery: {
-    message: "Thank you for ordering from us, the shipment will be delivered within 5 working days.",
+    message:
+      "Thank you for ordering from us. After your payment is confirmed, a courier service handles delivery and will contact you with the next steps.",
     regions: "All Egypt",
     time: "5 working days",
     fee_note: "Shipping is confirmed with you after order review; no online shipping fee is charged.",

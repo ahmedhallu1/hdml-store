@@ -177,7 +177,8 @@ export default async function ProductPage(props: Props) {
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm text-gray-600">
             <p className="font-medium text-gray-800">Delivery</p>
             <p className="mt-1">
-              {settings.delivery.regions} — {settings.delivery.time}. {settings.delivery.fee_note}
+              Courier delivery across {settings.delivery.regions}, typically {settings.delivery.time}.{" "}
+              {settings.delivery.fee_note}
             </p>
           </div>
 

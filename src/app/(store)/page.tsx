@@ -12,7 +12,7 @@ const STEPS = [
   },
   {
     title: "Place your order",
-    text: "Check out with your delivery details. You receive an order reference and a private tracking link by email.",
+    text: "Check out with just an optional note and your payment method. You receive an order reference and a private tracking link by email.",
   },
   {
     title: "Pay via Instapay or wallet",

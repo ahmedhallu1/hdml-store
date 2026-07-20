@@ -183,7 +183,7 @@ export default async function OrderTrackingPage(props: Props) {
               Once your payment is validated, we email you a link to{" "}
               <strong>confirm your order and enter your shipping details</strong>.
             </li>
-            <li>We arrange delivery and keep you updated by email.</li>
+            <li>Courier service will contact you with next steps.</li>
           </ol>
         </section>
       )}

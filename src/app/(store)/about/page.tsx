@@ -24,7 +24,7 @@ export default async function AboutPage() {
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         {[
           { n: "8,000+", l: "products in stock and growing" },
-          { n: "All Egypt", l: "delivery within a few working days" },
+          { n: "All Egypt", l: "courier delivery, nationwide" },
           { n: "Wholesale", l: "bulk pricing with per-product minimums" },
         ].map((s) => (
           <div key={s.l} className="rounded-xl border border-gray-200 bg-white p-5 text-center">

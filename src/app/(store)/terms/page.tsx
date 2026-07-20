@@ -86,8 +86,9 @@ export default async function TermsPage() {
 
       <h2 className={h2}>6. Delivery</h2>
       <p className={p}>
-        We deliver across {delivery.regions}, typically within {delivery.time} after payment
-        verification. {delivery.fee_note} Full details are on the{" "}
+        Delivery is handled by a courier service across {delivery.regions}, typically within{" "}
+        {delivery.time} after your payment is confirmed and your order is completed. {delivery.fee_note}{" "}
+        Full details are on the{" "}
         <Link href="/delivery" className="font-medium text-brand-700 hover:text-brand-600">
           delivery page
         </Link>

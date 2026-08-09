@@ -36,8 +36,11 @@ export async function GET(
     .from("payment-proofs")
     .createSignedUrl(proof.storage_path as string, 600);
   if (error || !data?.signedUrl) {
+    // The row can outlive its file (deleted from the bucket, or an order that
+    // was reconciled from a bank statement). 404 so <img onError> can swap in
+    // the "file missing or corrupted" tile instead of a broken-image icon.
     console.error("proof signed URL failed:", error?.message);
-    return NextResponse.json({ error: "File unavailable" }, { status: 502 });
+    return NextResponse.json({ error: "File missing or corrupted" }, { status: 404 });
   }
 
   return NextResponse.redirect(data.signedUrl, {

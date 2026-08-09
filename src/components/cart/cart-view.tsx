@@ -19,9 +19,12 @@ import { ProductPlaceholder } from "@/components/site/product-placeholder";
 export function CartView({
   minOrderPiasters,
   vatNote,
+  acceptingOrders = true,
 }: {
   minOrderPiasters: number;
   vatNote: string;
+  /** When false the cart still works but the checkout button is closed. */
+  acceptingOrders?: boolean;
 }) {
   const { lines, ready, setQty, remove } = useCart();
   const [products, setProducts] = useState<Map<string, CartProduct> | null>(null);
@@ -122,7 +125,11 @@ export function CartView({
   const belowMin = subtotal < minOrderPiasters;
   const hasMoqIssue = lineTotals.some((t) => t.line.qty < t.product.moq);
   const canCheckout =
-    !belowMin && unavailableLines.length === 0 && !hasMoqIssue && lineTotals.length > 0;
+    acceptingOrders &&
+    !belowMin &&
+    unavailableLines.length === 0 &&
+    !hasMoqIssue &&
+    lineTotals.length > 0;
   const progress = Math.min(100, Math.round((subtotal / Math.max(minOrderPiasters, 1)) * 100));
 
   return (
@@ -279,9 +286,16 @@ export function CartView({
               Proceed to checkout
             </Link>
           ) : (
-            <Button className="mt-5 w-full" disabled>
-              Proceed to checkout
-            </Button>
+            <>
+              <Button className="mt-5 w-full" disabled>
+                {acceptingOrders ? "Proceed to checkout" : "Ordering is stopped right now"}
+              </Button>
+              {!acceptingOrders && (
+                <p className="mt-2 text-center text-xs text-amber-700">
+                  Your cart is saved. Ask us to notify you using the form above.
+                </p>
+              )}
+            </>
           )}
 
           <p className="mt-3 text-xs text-gray-500">{vatNote}</p>

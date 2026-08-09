@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { TextAreaField } from "@/components/ui/field";
 import { PageLoading, Spinner } from "@/components/ui/spinner";
 import { TurnstileWidget, type TurnstileHandle } from "@/components/turnstile-widget";
+import { ContactBeforePaying } from "@/components/site/contact-before-paying";
 
 export interface CheckoutAccount {
   name: string;
@@ -42,11 +43,14 @@ export function CheckoutForm({
   paymentMethods,
   minOrderPiasters,
   vatNote,
+  telegramUrl = null,
 }: {
   account: CheckoutAccount;
   paymentMethods: CheckoutPaymentMethod[];
   minOrderPiasters: number;
   vatNote: string;
+  /** Resolved https://t.me/... link for the pre-payment warning. */
+  telegramUrl?: string | null;
 }) {
   const router = useRouter();
   const { lines, ready, clear } = useCart();
@@ -234,6 +238,8 @@ export function CheckoutForm({
             You&rsquo;ll pay by bank-app transfer after placing the order — nothing is charged
             here.
           </p>
+
+          <ContactBeforePaying telegram={telegramUrl} className="mt-4" />
 
           {availableMethods.length === 0 ? (
             <p className="mt-4 text-sm text-red-600" role="alert">

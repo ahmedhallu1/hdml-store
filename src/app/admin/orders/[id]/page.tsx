@@ -17,20 +17,27 @@ import { Badge, OrderStatusBadge } from "@/components/ui/badge";
 import { SelectField, TextAreaField, TextField } from "@/components/ui/field";
 import { ActionForm } from "@/components/admin/action-form";
 import { ProofRejectButton } from "@/components/admin/proof-reject-button";
+import { ProofThumb } from "@/components/admin/proof-thumb";
+import { AdminProofUpload } from "@/components/admin/admin-proof-upload";
 import { egp, fmtBytes, fmtDateTime } from "@/components/admin/format";
 import { Card, PageHeader, TableShell, Td, Th } from "@/components/admin/ui";
 import {
   addCustomLineItemAction,
+  deleteOrderAction,
+  deleteProofAction,
   regenerateInvoiceAction,
   removeCustomLineItemAction,
   resendOrderEmailAction,
   reviewProofAction,
+  setOrderStatusAction,
+  setProofStatusAction,
   transitionOrderStatusAction,
 } from "@/server/actions/admin/orders";
 
 export const metadata = { title: "Order detail" };
 
 const PROOF_TONES = { pending: "amber", approved: "green", rejected: "red" } as const;
+const ALL_STATUSES = Object.keys(ORDER_STATUS_LABELS) as Array<keyof typeof ORDER_STATUS_LABELS>;
 
 export default async function AdminOrderDetailPage(props: {
   params: Promise<{ id: string }>;
@@ -196,9 +203,23 @@ export default async function AdminOrderDetailPage(props: {
           </Card>
 
           {/* ------------------------------------------------ proofs */}
-          <Card title={`Payment proofs (${proofs.length})`}>
+          <Card
+            title={`Payment proofs (${proofs.length})`}
+            actions={
+              <Link
+                href={`/admin/orders/${order.id}/proof`}
+                className="rounded-md border border-brand-200 px-2.5 py-1 text-xs font-medium text-brand-700 hover:bg-brand-50"
+              >
+                Open proof page
+              </Link>
+            }
+          >
+            <span id="proofs" className="sr-only" />
             {proofs.length === 0 ? (
-              <p className="text-sm text-gray-400">No payment proof uploaded yet.</p>
+              <p className="text-sm text-gray-400">
+                No payment proof on file — this order was reconciled against the bank statement.
+                Attach one below if the customer sends it.
+              </p>
             ) : (
               <ul className="space-y-4">
                 {proofs.map((p) => (
@@ -206,21 +227,11 @@ export default async function AdminOrderDetailPage(props: {
                     key={p.id}
                     className="flex flex-col gap-3 rounded-lg border border-gray-200 p-3 sm:flex-row"
                   >
-                    <a
-                      href={`/api/admin/proofs/${p.id}/file`}
-                      target="_blank"
-                      rel="noopener"
-                      className="block shrink-0"
-                      title="Open full size"
-                    >
-                      {/* Signed-URL redirect; plain img keeps it simple. */}
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={`/api/admin/proofs/${p.id}/file`}
-                        alt={`Payment proof uploaded ${fmtDateTime(p.created_at)}`}
-                        className="h-40 w-40 rounded-lg border border-gray-200 object-cover"
-                      />
-                    </a>
+                    <ProofThumb
+                      src={`/api/admin/proofs/${p.id}/file`}
+                      href={`/admin/orders/${order.id}/proof`}
+                      alt={`Payment proof uploaded ${fmtDateTime(p.created_at)}`}
+                    />
                     <div className="min-w-0 flex-1 text-sm">
                       <div className="flex flex-wrap items-center gap-2">
                         <Badge tone={PROOF_TONES[p.status]}>{p.status}</Badge>
@@ -254,11 +265,54 @@ export default async function AdminOrderDetailPage(props: {
                           <ProofRejectButton proofId={p.id} />
                         </div>
                       )}
+
+                      {/* Corrections after the fact — these touch the proof only,
+                          never the order status. */}
+                      <details className="mt-3 text-xs">
+                        <summary className="cursor-pointer font-medium text-brand-700">
+                          Correct this record
+                        </summary>
+                        <div className="mt-2 flex flex-wrap items-end gap-2">
+                          <ActionForm
+                            action={setProofStatusAction}
+                            submitLabel="Set state"
+                            submitVariant="outline"
+                            hideMessage
+                            className="flex items-end gap-2"
+                          >
+                            <input type="hidden" name="proofId" value={p.id} />
+                            <SelectField label="State" name="status" defaultValue={p.status}>
+                              <option value="pending">Pending</option>
+                              <option value="approved">Approved</option>
+                              <option value="rejected">Rejected</option>
+                            </SelectField>
+                            <TextField label="Note" name="reason" maxLength={500} />
+                          </ActionForm>
+                          <ActionForm
+                            action={deleteProofAction}
+                            submitLabel="Delete proof"
+                            submitVariant="ghost"
+                            confirmMessage="Delete this payment proof and its stored file? This cannot be undone."
+                            hideMessage
+                          >
+                            <input type="hidden" name="proofId" value={p.id} />
+                          </ActionForm>
+                        </div>
+                      </details>
                     </div>
                   </li>
                 ))}
               </ul>
             )}
+
+            <details className="mt-4 rounded-lg border border-gray-200 p-3">
+              <summary className="cursor-pointer text-sm font-medium text-brand-700">
+                Attach a proof myself
+              </summary>
+              <div className="mt-3">
+                <AdminProofUpload orderId={order.id} />
+              </div>
+            </details>
           </Card>
 
           {/* ------------------------------------------------ email log */}
@@ -376,6 +430,38 @@ export default async function AdminOrderDetailPage(props: {
                 />
               </ActionForm>
             )}
+            {/* Owner override: the normal transition rules are a safety net for
+                the day-to-day flow, not a cage — a wrong record must be
+                fixable. No email is sent from here. */}
+            <details className="mt-4 rounded-lg border border-amber-200 bg-amber-50/50 p-3">
+              <summary className="cursor-pointer text-sm font-medium text-amber-800">
+                Set any status (manual correction)
+              </summary>
+              <ActionForm
+                action={setOrderStatusAction}
+                submitLabel="Force status"
+                submitVariant="outline"
+                confirmMessage="Set this order to the chosen status, ignoring the normal flow? No email is sent."
+                className="mt-3 space-y-3"
+              >
+                <input type="hidden" name="orderId" value={order.id} />
+                <SelectField label="Status" name="toStatus" required defaultValue={order.status}>
+                  {ALL_STATUSES.map((s) => (
+                    <option key={s} value={s}>
+                      {ORDER_STATUS_LABELS[s]}
+                    </option>
+                  ))}
+                </SelectField>
+                <TextAreaField
+                  label="Why (optional)"
+                  name="reason"
+                  maxLength={500}
+                  className="min-h-16"
+                  hint="Recorded in the order history and the audit log."
+                />
+              </ActionForm>
+            </details>
+
             {history.length > 0 && (
               <ol className="mt-4 space-y-2 border-t border-gray-100 pt-3 text-xs text-gray-500">
                 {history.map((h) => (
@@ -448,6 +534,31 @@ export default async function AdminOrderDetailPage(props: {
             <p className="mt-3 text-xs text-gray-400">
               Regenerating rebuilds the PDF from the current order snapshot (custom lines included).
             </p>
+          </Card>
+
+          <Card title="Delete this order" className="border-red-200">
+            <p className="text-sm text-gray-600">
+              Removes the order together with its items, status history, payment proofs and
+              receipts — including the stored files. This cannot be undone.
+            </p>
+            <ActionForm
+              action={deleteOrderAction}
+              submitLabel="Delete order permanently"
+              submitVariant="danger"
+              confirmMessage={`Delete ${order.order_ref} for good?`}
+              className="mt-3 space-y-3"
+            >
+              <input type="hidden" name="orderId" value={order.id} />
+              <input type="hidden" name="returnTo" value="/admin/orders" />
+              <TextField
+                label={`Type ${order.order_ref} to confirm`}
+                name="confirmRef"
+                required
+                maxLength={40}
+                autoComplete="off"
+                placeholder={order.order_ref}
+              />
+            </ActionForm>
           </Card>
         </div>
       </div>

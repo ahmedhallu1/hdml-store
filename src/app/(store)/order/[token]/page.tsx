@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabaseService } from "@/lib/supabase/server";
+import { getSiteSettings, telegramUrl } from "@/lib/settings";
 import { qrSvg } from "@/lib/qr";
 import { formatEgp, toPiasters } from "@/lib/money";
 import { TRACKING_TOKEN_PATTERN } from "@/lib/validation";
@@ -16,6 +17,7 @@ import type {
 import { Badge, OrderStatusBadge } from "@/components/ui/badge";
 import { CopyButton } from "@/components/order/copy-button";
 import { ProofUpload } from "@/components/order/proof-upload";
+import { ContactBeforePaying } from "@/components/site/contact-before-paying";
 
 export const metadata: Metadata = {
   title: "Order tracking",
@@ -45,6 +47,9 @@ export default async function OrderTrackingPage(props: Props) {
     .maybeSingle();
   if (!orderRow) notFound();
   const order = orderRow as Order;
+
+  const settings = await getSiteSettings();
+  const telegram = telegramUrl(settings.contact.telegram);
 
   const [{ data: itemRows }, { data: proofRows }, { data: invoiceRows }, { data: methodRows }] =
     await Promise.all([
@@ -229,12 +234,12 @@ export default async function OrderTrackingPage(props: Props) {
           <h2 id="payment-heading" className="text-base font-semibold text-gray-900">
             How to pay
           </h2>
-          <p className="mt-2 text-sm text-gray-700">
+
+          <ContactBeforePaying telegram={telegram} className="mt-3" />
+
+          <p className="mt-4 text-sm text-gray-700">
             Transfer <strong className="text-brand-800">exactly {formatEgp(totalPiasters)}</strong>{" "}
-            and write your order reference{" "}
-            <strong className="font-mono text-brand-800">{order.order_ref}</strong> as the
-            transfer note.
-            <CopyButton value={order.order_ref} label="Copy order reference" className="ml-1 align-middle" />
+            to one of the accounts below.
           </p>
 
           <div className="mt-4 grid gap-4 sm:grid-cols-2">

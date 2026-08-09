@@ -136,6 +136,18 @@ export async function placeOrder(input: unknown): Promise<PlaceOrderResult> {
   const subtotal = sumPiasters(lines.map((l) => l.amountPiasters));
 
   const settings = await getSiteSettings();
+
+  // Master switch. Checked here — not just in the UI — so a stale tab or a
+  // direct POST cannot slip an order through while ordering is paused.
+  // Only an explicit `false` closes the shop: a settings row written before
+  // this flag existed must not lock ordering out.
+  if (settings.ordering.accepting_orders === false) {
+    return {
+      error:
+        "Ordering is stopped right now. Your cart is saved — ask us to notify you when we reopen.",
+    };
+  }
+
   const minPiasters = toPiasters(String(settings.ordering.min_order_egp));
   if (subtotal < minPiasters) {
     return {

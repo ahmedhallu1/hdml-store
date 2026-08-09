@@ -204,10 +204,50 @@ export const adminOrderingSettingsSchema = z.object({
   vatNote: z.string().trim().max(300).optional().or(z.literal("")),
 });
 
+/** Master ordering switch + the copy shown while it is off. */
+export const adminOrderingPauseSchema = z.object({
+  acceptingOrders: z.boolean(),
+  pausedNote: z.string().trim().max(500).optional().or(z.literal("")),
+});
+
+export const adminOrderDeleteSchema = z.object({
+  orderId: z.string().uuid(),
+  confirmRef: z.string().trim().min(1).max(40),
+});
+
+/**
+ * Admin override: unlike adminOrderStatusSchema this is NOT constrained by
+ * ORDER_TRANSITIONS — the owner can correct an order to any state.
+ */
+export const adminOrderForceStatusSchema = z.object({
+  orderId: z.string().uuid(),
+  toStatus: z.enum(["awaiting_payment", "awaiting_verification", "paid", "fulfilled", "cancelled"]),
+  reason: z.string().trim().max(500).optional().or(z.literal("")),
+});
+
+export const adminProofDecisionSchema = z.object({
+  proofId: z.string().uuid(),
+  status: z.enum(["pending", "approved", "rejected"]),
+  reason: z.string().trim().max(500).optional().or(z.literal("")),
+});
+
+export const adminProofDeleteSchema = z.object({
+  proofId: z.string().uuid(),
+});
+
+/** Public waiting-list signup shown while ordering is paused. */
+export const reopenNotifySchema = z.object({
+  email: emailSchema,
+  name: z.string().trim().max(120).optional().or(z.literal("")),
+  phone: z.string().trim().max(40).optional().or(z.literal("")),
+});
+
 export const adminContactSettingsSchema = z.object({
   phone: z.string().trim().max(40).optional().or(z.literal("")),
   whatsapp: z.string().trim().max(40).optional().or(z.literal("")),
   email: z.string().trim().max(254).optional().or(z.literal("")),
+  /** Handle, @handle or full t.me link — normalised for display by telegramUrl(). */
+  telegram: z.string().trim().max(120).optional().or(z.literal("")),
   facebook: z.string().trim().max(300).optional().or(z.literal("")),
   instagram: z.string().trim().max(300).optional().or(z.literal("")),
 });

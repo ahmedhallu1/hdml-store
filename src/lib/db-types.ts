@@ -186,6 +186,21 @@ export interface OrderingSettings {
   min_order_egp: number;
   currency: string;
   vat_note: string;
+  /** Master switch: when false the site stays browsable but checkout is closed. */
+  accepting_orders: boolean;
+  /** Shown to customers on the cart/checkout while ordering is paused. */
+  paused_note: string;
+}
+
+/** Customer who asked to be told when ordering reopens. */
+export interface ReopenNotification {
+  id: string;
+  email: string;
+  name: string | null;
+  phone: string | null;
+  user_id: string | null;
+  notified_at: string | null;
+  created_at: string;
 }
 
 export interface ContactSettings {

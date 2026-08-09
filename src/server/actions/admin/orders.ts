@@ -9,6 +9,7 @@
  */
 
 import { refresh } from "next/cache";
+import { redirect } from "next/navigation";
 import { requireAdmin, auditLog } from "@/lib/auth";
 import { supabaseService } from "@/lib/supabase/server";
 import { getSiteSettings } from "@/lib/settings";
@@ -18,8 +19,12 @@ import { ensureInvoice, sendOrderEmail } from "@/lib/invoice-service";
 import { lineAmount, piastersToDecimalString, toPiasters } from "@/lib/money";
 import {
   adminInvoiceActionSchema,
+  adminOrderDeleteSchema,
+  adminOrderForceStatusSchema,
   adminOrderItemRemoveSchema,
   adminOrderStatusSchema,
+  adminProofDecisionSchema,
+  adminProofDeleteSchema,
   customLineItemSchema,
   parseOrErrors,
   proofReviewSchema,
@@ -168,6 +173,225 @@ export async function transitionOrderStatusAction(
   });
   refresh();
   return success(`Status changed to ${ORDER_STATUS_LABELS[toStatus]}.${emailNote}`);
+}
+
+// ---------------------------------------------------------------------------
+// Owner overrides: set any status, delete an order outright
+// ---------------------------------------------------------------------------
+
+/**
+ * Set an order to ANY status, bypassing ORDER_TRANSITIONS.
+ *
+ * transitionOrderStatusAction stays the everyday path (it enforces the legal
+ * flow and sends the receipt email); this one exists so the owner can correct a
+ * record that is simply wrong — e.g. an order that was marked paid by mistake,
+ * or one that needs to go back to "awaiting payment" after a chargeback.
+ */
+export async function setOrderStatusAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const admin = await requireAdmin();
+
+  const parsed = parseOrErrors(adminOrderForceStatusSchema, {
+    orderId: fdString(formData, "orderId"),
+    toStatus: fdString(formData, "toStatus"),
+    reason: fdString(formData, "reason"),
+  });
+  if (!parsed.ok) return failure("Invalid input", parsed.errors);
+  const { orderId, toStatus, reason } = parsed.data;
+
+  const order = await loadOrder(orderId);
+  if (!order) return failure("Order not found");
+  if (order.status === toStatus) {
+    return failure(`This order is already ${ORDER_STATUS_LABELS[toStatus]}.`);
+  }
+
+  const service = supabaseService();
+  const { data: updated, error } = await service
+    .from("orders")
+    .update({ status: toStatus })
+    .eq("id", orderId)
+    .eq("status", order.status)
+    .select("id");
+  if (error) return failure(`Update failed: ${error.message}`);
+  if (!updated?.length) {
+    return failure("The order status changed while you were editing — reload and try again.");
+  }
+
+  await insertHistory(
+    orderId,
+    order.status,
+    toStatus,
+    admin.id,
+    reason ? `Manual correction: ${reason}` : "Manual correction by admin",
+  );
+  await auditLog(admin.id, "order.status_override", "orders", orderId, {
+    from: order.status,
+    to: toStatus,
+    reason: reason || null,
+    order_ref: order.order_ref,
+  });
+  refresh();
+  return success(
+    `Status set to ${ORDER_STATUS_LABELS[toStatus]}. No email was sent — use the Invoices panel if the customer should be notified.`,
+  );
+}
+
+/**
+ * Permanently delete an order. Items, status history, proofs and invoices go
+ * with it (ON DELETE CASCADE); the stored proof/invoice files are removed from
+ * their private buckets first so nothing is orphaned. Typing the order
+ * reference is required so a stray click cannot destroy a record.
+ */
+export async function deleteOrderAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const admin = await requireAdmin();
+
+  const parsed = parseOrErrors(adminOrderDeleteSchema, {
+    orderId: fdString(formData, "orderId"),
+    confirmRef: fdString(formData, "confirmRef"),
+  });
+  if (!parsed.ok) {
+    return failure("Type the order reference to confirm", parsed.errors);
+  }
+  const { orderId, confirmRef } = parsed.data;
+  const returnTo = fdString(formData, "returnTo");
+
+  const order = await loadOrder(orderId);
+  if (!order) return failure("Order not found");
+  if (confirmRef.trim().toUpperCase() !== order.order_ref.toUpperCase()) {
+    return failure(`That reference does not match. Type ${order.order_ref} exactly.`, {
+      confirmRef: "Does not match this order",
+    });
+  }
+
+  const service = supabaseService();
+
+  // Files first — a failure here is logged but must not block the deletion.
+  const { data: proofs } = await service
+    .from("payment_proofs")
+    .select("storage_path")
+    .eq("order_id", orderId);
+  const proofPaths = ((proofs ?? []) as Array<{ storage_path: string }>)
+    .map((p) => p.storage_path)
+    .filter(Boolean);
+  if (proofPaths.length) {
+    const { error } = await service.storage.from("payment-proofs").remove(proofPaths);
+    if (error) console.error("proof file cleanup failed:", error.message);
+  }
+
+  const { data: invoices } = await service
+    .from("invoices")
+    .select("pdf_path")
+    .eq("order_id", orderId);
+  const invoicePaths = ((invoices ?? []) as Array<{ pdf_path: string }>)
+    .map((i) => i.pdf_path)
+    .filter(Boolean);
+  if (invoicePaths.length) {
+    const { error } = await service.storage.from("invoices").remove(invoicePaths);
+    if (error) console.error("invoice file cleanup failed:", error.message);
+  }
+
+  const { error: deleteError } = await service.from("orders").delete().eq("id", orderId);
+  if (deleteError) return failure(`Delete failed: ${deleteError.message}`);
+
+  await auditLog(admin.id, "order.delete", "orders", orderId, {
+    order_ref: order.order_ref,
+    customer_name: order.customer_name,
+    email: order.email,
+    total: order.total,
+    status: order.status,
+  });
+
+  if (returnTo && returnTo.startsWith("/admin")) redirect(returnTo);
+  redirect("/admin/orders");
+}
+
+// ---------------------------------------------------------------------------
+// Proof maintenance (owner-side)
+// ---------------------------------------------------------------------------
+
+/** Change a proof's decision after the fact (including re-opening it). */
+export async function setProofStatusAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const admin = await requireAdmin();
+
+  const parsed = parseOrErrors(adminProofDecisionSchema, {
+    proofId: fdString(formData, "proofId"),
+    status: fdString(formData, "status"),
+    reason: fdString(formData, "reason"),
+  });
+  if (!parsed.ok) return failure("Invalid input", parsed.errors);
+  const { proofId, status, reason } = parsed.data;
+
+  const service = supabaseService();
+  const { data: proofRow } = await service
+    .from("payment_proofs")
+    .select("*")
+    .eq("id", proofId)
+    .maybeSingle();
+  const proof = proofRow as PaymentProof | null;
+  if (!proof) return failure("Proof not found");
+
+  const { error } = await service
+    .from("payment_proofs")
+    .update({
+      status,
+      review_reason: reason || null,
+      reviewed_by: status === "pending" ? null : admin.id,
+      reviewed_at: status === "pending" ? null : new Date().toISOString(),
+    })
+    .eq("id", proofId);
+  if (error) return failure(`Update failed: ${error.message}`);
+
+  await auditLog(admin.id, "proof.set_status", "payment_proofs", proofId, {
+    order_id: proof.order_id,
+    to: status,
+    reason: reason || null,
+  });
+  refresh();
+  return success(
+    `Proof marked ${status}. The order status was left untouched — change it separately if needed.`,
+  );
+}
+
+/** Remove a proof record (and its stored file). */
+export async function deleteProofAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const admin = await requireAdmin();
+
+  const parsed = parseOrErrors(adminProofDeleteSchema, { proofId: fdString(formData, "proofId") });
+  if (!parsed.ok) return failure("Invalid input", parsed.errors);
+  const { proofId } = parsed.data;
+
+  const service = supabaseService();
+  const { data: proofRow } = await service
+    .from("payment_proofs")
+    .select("id, order_id, storage_path")
+    .eq("id", proofId)
+    .maybeSingle();
+  if (!proofRow) return failure("Proof not found");
+  const proof = proofRow as { id: string; order_id: string; storage_path: string };
+
+  if (proof.storage_path) {
+    const { error } = await service.storage.from("payment-proofs").remove([proof.storage_path]);
+    if (error) console.error("proof file delete failed:", error.message);
+  }
+  const { error } = await service.from("payment_proofs").delete().eq("id", proofId);
+  if (error) return failure(`Delete failed: ${error.message}`);
+
+  await auditLog(admin.id, "proof.delete", "payment_proofs", proofId, {
+    order_id: proof.order_id,
+  });
+  refresh();
+  return success("Payment proof deleted.");
 }
 
 // ---------------------------------------------------------------------------

@@ -10,6 +10,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const H = vi.hoisted(() => ({
   turnstileOk: true,
   rateLimitOk: true,
+  acceptingOrders: true as boolean,
   /** FIFO of query results, consumed by each awaited supabase call in order. */
   queue: [] as Array<{ data?: unknown; error?: { code?: string; message: string } | null }>,
   /** Recorded calls: { table, ops: [method, args][] } in execution order. */
@@ -31,7 +32,13 @@ vi.mock("@/lib/rate-limit", () => ({
 }));
 vi.mock("@/lib/settings", () => ({
   getSiteSettings: async () => ({
-    ordering: { min_order_egp: 1000, currency: "EGP", vat_note: "" },
+    ordering: {
+      min_order_egp: 1000,
+      currency: "EGP",
+      vat_note: "",
+      accepting_orders: H.acceptingOrders,
+      paused_note: "",
+    },
     seller_info: {}, delivery: {}, contact: {}, branding: {},
   }),
 }));
@@ -116,6 +123,7 @@ function insertPayload(table: string): Record<string, unknown> {
 beforeEach(() => {
   H.turnstileOk = true;
   H.rateLimitOk = true;
+  H.acceptingOrders = true;
   H.queue.length = 0;
   H.calls.length = 0;
 });
@@ -186,6 +194,22 @@ describe("placeOrder", () => {
     const result = await placeOrder(input({ items: [{ productId: P1, qty: 3 }] }));
     expect(result).toMatchObject({ error: expect.stringContaining("minimum order quantity of 5") });
     expect(findInsert("orders")).toBeUndefined();
+  });
+
+  it("refuses every order while the ordering switch is off", async () => {
+    H.acceptingOrders = false;
+    H.queue.push(noExisting, { data: [productRow()], error: null });
+
+    const result = await placeOrder(input({ items: [{ productId: P1, qty: 10 }] }));
+
+    expect(result).toEqual({
+      error:
+        "Ordering is stopped right now. Your cart is saved — ask us to notify you when we reopen.",
+    });
+    // Nothing was written: the guard sits before the order insert.
+    expect(H.calls.some((c) => c.table === "orders" && c.ops.some(([m]) => m === "insert"))).toBe(
+      false,
+    );
   });
 
   it("enforces the EGP 1,000 minimum order", async () => {

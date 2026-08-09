@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { requireUser } from "@/lib/auth";
 import { supabaseServer } from "@/lib/supabase/server";
-import { getSiteSettings } from "@/lib/settings";
+import { getSiteSettings, telegramUrl } from "@/lib/settings";
 import { toPiasters } from "@/lib/money";
+import { OrderingPaused } from "@/components/site/ordering-paused";
 import {
   CheckoutForm,
   type CheckoutAccount,
@@ -39,6 +40,21 @@ export default async function CheckoutPage() {
     email: user.email ?? "",
   };
 
+  // Closed for orders: show the notice + waiting list instead of the form. The
+  // server action refuses too, so this is presentation, not the actual guard.
+  if (!settings.ordering.accepting_orders) {
+    return (
+      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
+        <h1 className="text-2xl font-semibold text-gray-900">Checkout</h1>
+        <OrderingPaused
+          note={settings.ordering.paused_note}
+          defaultEmail={account.email}
+          className="mt-6"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <h1 className="text-2xl font-semibold text-gray-900">Checkout</h1>
@@ -52,6 +68,7 @@ export default async function CheckoutPage() {
           paymentMethods={(methods ?? []) as CheckoutPaymentMethod[]}
           minOrderPiasters={toPiasters(String(settings.ordering.min_order_egp))}
           vatNote={settings.ordering.vat_note}
+          telegramUrl={telegramUrl(settings.contact.telegram)}
         />
       </div>
     </div>

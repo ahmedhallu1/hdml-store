@@ -6,7 +6,9 @@ import { Badge, OrderStatusBadge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Pagination } from "@/components/site/pagination";
 import { egp, fmtDateTime } from "@/components/admin/format";
+import { ActionForm } from "@/components/admin/action-form";
 import { EmptyState, PageHeader, TableShell, Td, Th } from "@/components/admin/ui";
+import { deleteOrderAction } from "@/server/actions/admin/orders";
 
 export const metadata = { title: "Orders" };
 
@@ -140,6 +142,7 @@ export default async function AdminOrdersPage(props: {
               <Th className="text-right">Total</Th>
               <Th>Status</Th>
               <Th>Proof</Th>
+              <Th className="text-right">Actions</Th>
             </tr>
           </thead>
           <tbody>
@@ -165,6 +168,36 @@ export default async function AdminOrdersPage(props: {
                     <OrderStatusBadge status={o.status} />
                   </Td>
                   <Td>{proof ? <Badge tone={proof.tone}>{proof.label}</Badge> : <span className="text-xs text-gray-300">—</span>}</Td>
+                  <Td>
+                    <div className="flex items-center justify-end gap-1.5">
+                      {/* Offered on EVERY order — when there is no usable file the
+                          page explains that instead of hiding the button. */}
+                      <Link
+                        href={`/admin/orders/${o.id}/proof`}
+                        className="inline-flex h-8 items-center rounded-md border border-gray-200 px-2.5 text-xs font-medium text-gray-700 hover:border-brand-300 hover:text-brand-700"
+                      >
+                        Proof
+                      </Link>
+                      <Link
+                        href={`/admin/orders/${o.id}`}
+                        className="inline-flex h-8 items-center rounded-md border border-gray-200 px-2.5 text-xs font-medium text-gray-700 hover:border-brand-300 hover:text-brand-700"
+                      >
+                        Edit
+                      </Link>
+                      <ActionForm
+                        action={deleteOrderAction}
+                        submitLabel="Delete"
+                        submitVariant="ghost"
+                        confirmMessage={`Permanently delete order ${o.order_ref} (${o.customer_name})?\n\nIts items, status history, proofs and receipts are deleted too. This cannot be undone.`}
+                        hideMessage
+                        className="inline"
+                      >
+                        <input type="hidden" name="orderId" value={o.id} />
+                        <input type="hidden" name="confirmRef" value={o.order_ref} />
+                        <input type="hidden" name="returnTo" value="/admin/orders" />
+                      </ActionForm>
+                    </div>
+                  </Td>
                 </tr>
               );
             })}

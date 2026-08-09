@@ -9,9 +9,11 @@ import { refresh } from "next/cache";
 import { requireAdmin, auditLog } from "@/lib/auth";
 import { supabaseService } from "@/lib/supabase/server";
 import { updateSetting } from "@/lib/settings";
+import { getSiteSettings } from "@/lib/settings";
 import {
   adminContactSettingsSchema,
   adminDeliverySettingsSchema,
+  adminOrderingPauseSchema,
   adminOrderingSettingsSchema,
   adminPaymentMethodQrClearSchema,
   adminPaymentMethodSaveSchema,
@@ -98,10 +100,14 @@ export async function updateOrderingSettingsAction(
   });
   if (!parsed.ok) return failure("Invalid input", parsed.errors);
 
+  // Merge, so saving this form never silently flips the master switch.
+  const current = await getSiteSettings();
   const value = {
     min_order_egp: parsed.data.minOrderEgp,
     currency: "EGP",
     vat_note: parsed.data.vatNote ?? "",
+    accepting_orders: current.ordering.accepting_orders,
+    paused_note: current.ordering.paused_note,
   };
   try {
     await updateSetting("ordering", value);
@@ -113,6 +119,48 @@ export async function updateOrderingSettingsAction(
   return success("Ordering settings saved.");
 }
 
+/**
+ * Master switch for taking orders.
+ *
+ * Off = the storefront stays fully browsable (catalog, product pages, cart) but
+ * checkout is closed and placeOrder() refuses; customers can leave their email
+ * to be told when it reopens.
+ */
+export async function setOrderingPausedAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const admin = await requireAdmin();
+
+  const parsed = parseOrErrors(adminOrderingPauseSchema, {
+    acceptingOrders: fdString(formData, "acceptingOrders") === "on",
+    pausedNote: fdString(formData, "pausedNote"),
+  });
+  if (!parsed.ok) return failure("Invalid input", parsed.errors);
+
+  const current = await getSiteSettings();
+  const value = {
+    ...current.ordering,
+    accepting_orders: parsed.data.acceptingOrders,
+    paused_note: parsed.data.pausedNote || current.ordering.paused_note,
+  };
+  try {
+    await updateSetting("ordering", value);
+  } catch (e) {
+    return failure(e instanceof Error ? e.message : "Save failed");
+  }
+
+  await auditLog(admin.id, "settings.ordering_switch", "site_settings", "ordering", {
+    accepting_orders: value.accepting_orders,
+  });
+  refresh();
+  return success(
+    value.accepting_orders
+      ? "Ordering is ON — checkout is open again."
+      : "Ordering is STOPPED. The site still works; checkout is closed and customers can join the waiting list.",
+  );
+}
+
 export async function updateContactSettingsAction(
   _prev: ActionState,
   formData: FormData,
@@ -122,6 +170,7 @@ export async function updateContactSettingsAction(
     phone: fdString(formData, "phone"),
     whatsapp: fdString(formData, "whatsapp"),
     email: fdString(formData, "email"),
+    telegram: fdString(formData, "telegram"),
     facebook: fdString(formData, "facebook"),
     instagram: fdString(formData, "instagram"),
   });
@@ -131,6 +180,7 @@ export async function updateContactSettingsAction(
     phone: parsed.data.phone ?? "",
     whatsapp: parsed.data.whatsapp ?? "",
     email: parsed.data.email ?? "",
+    telegram: parsed.data.telegram ?? "",
     facebook: parsed.data.facebook ?? "",
     instagram: parsed.data.instagram ?? "",
   };

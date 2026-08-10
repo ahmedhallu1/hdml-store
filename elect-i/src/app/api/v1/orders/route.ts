@@ -46,7 +46,10 @@ const externalItemSchema = z.object({
 const bodySchema = z.object({
   idempotency_key: z.string().trim().min(8).max(128),
   external_ref: z.string().trim().min(3).max(64),
-  external_source: z.string().trim().min(2).max(32).default("hdml"),
+  // Never default to a customer's own brand: this value is shown in the
+  // dashboard order list, and naming an integrating merchant there would leak
+  // who they are. "storefront" describes the channel without identifying one.
+  external_source: z.string().trim().min(2).max(32).default("storefront"),
   on_behalf: z.literal(true),
   pay_from: z.enum(["wallet", "credit"]).default("wallet"),
   items: z.array(itemSchema).min(1).max(200),

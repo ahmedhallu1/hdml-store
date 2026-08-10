@@ -5,7 +5,8 @@ import { isLocale, LOCALE_TAGS, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n";
 import { requireAccount } from "@/lib/auth";
 import { supabaseService } from "@/lib/supabase/server";
-import { formatUsd } from "@/lib/money";
+import { formatDisplayAmount } from "@/lib/currency";
+import { resolveDisplayCurrency } from "@/lib/display-currency";
 import { toCents } from "@/lib/money";
 import { atLeast } from "@/lib/tiers";
 import type { OrderStatus } from "@/lib/db-types";
@@ -28,6 +29,11 @@ const TIER_STATUS_KEY = {
 export default async function AccountPage({ params }: PageProps<"/[lang]/account">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
+
+  // Order totals here must read the same as the dashboard's: stored in USD,
+  // shown in the visitor's display currency, exact rather than step-rounded.
+  const display = await resolveDisplayCurrency(lang);
+  const formatUsd = (cents: number) => formatDisplayAmount(cents, display);
   const dict = await getDictionary(lang);
   const account = await requireAccount(lang, `/${lang}/account`);
 

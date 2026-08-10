@@ -74,6 +74,33 @@ export async function addCard(
   return card;
 }
 
+/**
+ * Edit a saved card's holder and expiry.
+ *
+ * The number is deliberately not editable: we only ever hold the last four,
+ * and a different PAN is a different card — add it and remove the old one.
+ */
+export async function updateCard(
+  accountId: string,
+  cardId: string,
+  input: { exp_month: number; exp_year: number; holder: string },
+): Promise<void> {
+  const cards = await getCards(accountId);
+  await saveCards(
+    accountId,
+    cards.map((c) =>
+      c.id === cardId
+        ? {
+            ...c,
+            exp_month: input.exp_month,
+            exp_year: input.exp_year,
+            holder: input.holder.trim().toUpperCase(),
+          }
+        : c,
+    ),
+  );
+}
+
 export async function setDefaultCard(accountId: string, cardId: string): Promise<void> {
   const cards = await getCards(accountId);
   await saveCards(

@@ -4,7 +4,9 @@ import { isLocale, LOCALE_TAGS, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n";
 import { requireTier } from "@/lib/auth";
 import { supabaseService } from "@/lib/supabase/server";
-import { formatUsd, toCents } from "@/lib/money";
+import { toCents } from "@/lib/money";
+import { formatDisplayAmount } from "@/lib/currency";
+import { resolveDisplayCurrency } from "@/lib/display-currency";
 import { onBehalfCountThisMonth } from "@/lib/orders";
 import type { OrderStatus } from "@/lib/db-types";
 import { Reveal } from "@/components/ui/reveal";
@@ -18,6 +20,12 @@ export const metadata: Metadata = { title: "Dashboard" };
 export default async function DashboardPage({ params }: PageProps<"/[lang]/dashboard">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
+
+  // Dashboard money is stored in USD but shown in the account's display
+  // currency (EGP by default); the picker switches it back. Ledger figures use
+  // the exact formatter — a balance is never rounded to a retail step.
+  const display = await resolveDisplayCurrency(lang);
+  const formatUsd = (cents: number) => formatDisplayAmount(cents, display);
   const dict = await getDictionary(lang);
   const { account, privileges } = await requireTier(lang, "merchant");
 

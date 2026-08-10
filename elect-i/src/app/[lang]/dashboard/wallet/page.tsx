@@ -4,7 +4,9 @@ import { isLocale, LOCALE_TAGS, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n";
 import { requireTier } from "@/lib/auth";
 import { supabaseService } from "@/lib/supabase/server";
-import { formatUsd, toCents } from "@/lib/money";
+import { toCents } from "@/lib/money";
+import { formatDisplayAmount } from "@/lib/currency";
+import { resolveDisplayCurrency } from "@/lib/display-currency";
 import { MAX_TOPUP_CENTS, MIN_TOPUP_CENTS, pageParamSchema } from "@/lib/validation";
 import { getDefaultCard } from "@/lib/billing";
 import type { WalletTxnKind } from "@/lib/db-types";
@@ -32,6 +34,12 @@ export default async function WalletPage({
 }: PageProps<"/[lang]/dashboard/wallet">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
+
+  // Dashboard money is stored in USD but shown in the account's display
+  // currency (EGP by default); the picker switches it back. Ledger figures use
+  // the exact formatter — a balance is never rounded to a retail step.
+  const display = await resolveDisplayCurrency(lang);
+  const formatUsd = (cents: number) => formatDisplayAmount(cents, display);
   const sp = await searchParams;
   const dict = await getDictionary(lang);
   const { account, privileges } = await requireTier(lang, "merchant");

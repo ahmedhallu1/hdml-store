@@ -47,16 +47,24 @@ export interface CurrencyMeta {
    * denominations actually in circulation.
    */
   stepMinor: number;
+  /**
+   * Fraction digits for a *ledger* amount — a wallet balance, an order total,
+   * a payment. Money already held or already charged is never rounded to a
+   * retail step: E£10,234.17 is the balance, and showing "E£10,234" would be
+   * a different number. Always 2; `decimals`/`stepMinor` govern shelf prices
+   * only.
+   */
+  exactDecimals: number;
   /** English name, for the picker and the admin editor. */
   name: string;
 }
 
 export const CURRENCIES: Record<CurrencyCode, CurrencyMeta> = {
-  USD: { code: "USD", symbol: "$", decimals: 2, stepMinor: 1, name: "US Dollar" },
-  EGP: { code: "EGP", symbol: "E£", decimals: 0, stepMinor: 100, name: "Egyptian Pound" },
-  EUR: { code: "EUR", symbol: "€", decimals: 2, stepMinor: 1, name: "Euro" },
-  SAR: { code: "SAR", symbol: "SR", decimals: 2, stepMinor: 5, name: "Saudi Riyal" },
-  AED: { code: "AED", symbol: "AED", decimals: 2, stepMinor: 25, name: "UAE Dirham" },
+  USD: { code: "USD", symbol: "$", decimals: 2, stepMinor: 1, exactDecimals: 2, name: "US Dollar" },
+  EGP: { code: "EGP", symbol: "E£", decimals: 0, stepMinor: 100, exactDecimals: 2, name: "Egyptian Pound" },
+  EUR: { code: "EUR", symbol: "€", decimals: 2, stepMinor: 1, exactDecimals: 2, name: "Euro" },
+  SAR: { code: "SAR", symbol: "SR", decimals: 2, stepMinor: 5, exactDecimals: 2, name: "Saudi Riyal" },
+  AED: { code: "AED", symbol: "AED", decimals: 2, stepMinor: 25, exactDecimals: 2, name: "UAE Dirham" },
 };
 
 export function isCurrencyCode(value: unknown): value is CurrencyCode {
@@ -275,4 +283,34 @@ export function formatDisplayPrice(usdCents: number, display: DisplayCurrency): 
     display.code,
     display.locale,
   );
+}
+
+/**
+ * The same conversion for a *ledger* amount: exact, never rounded to a retail
+ * step, always two fraction digits.
+ *
+ * Shelf prices and balances want opposite things. A price of E£1,234.37 reads
+ * as noise, so `formatDisplayPrice` rounds it to the step the trade quotes.
+ * A wallet balance is a fact — round it and the figure on screen stops
+ * matching the ledger it came from. Dashboard money uses this; the catalogue
+ * uses the other.
+ */
+export function formatDisplayAmount(usdCents: number, display: DisplayCurrency): string {
+  const meta = CURRENCIES[display.code];
+  const minor =
+    display.code === BASE_CURRENCY || !isUsableRate(display.rate)
+      ? Math.round(usdCents)
+      : Math.round(usdCents * display.rate);
+  const value = minor / 100;
+  try {
+    return new Intl.NumberFormat(display.locale, {
+      style: "currency",
+      currency: display.code,
+      minimumFractionDigits: meta.exactDecimals,
+      maximumFractionDigits: meta.exactDecimals,
+    }).format(value);
+  } catch {
+    const sign = value < 0 ? "-" : "";
+    return `${sign}${meta.symbol}${Math.abs(value).toFixed(meta.exactDecimals)}`;
+  }
 }

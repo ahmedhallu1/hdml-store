@@ -42,7 +42,8 @@ function readConfig(): EigConfig | null {
     keyId,
     secret,
     egpPerUsd: Number(process.env.EIG_EGP_PER_USD ?? "51") || 51,
-    source: process.env.EIG_SOURCE ?? "hdml",
+    // ELECT-I shows this in its dashboard, so it must never name this store.
+    source: process.env.EIG_SOURCE ?? "storefront",
   };
 }
 

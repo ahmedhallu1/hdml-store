@@ -371,6 +371,39 @@ export async function addCardAction(
   return { ok: true };
 }
 
+/** Holder and expiry only — see `updateCard` for why the number is fixed. */
+export async function updateCardAction(
+  lang: Locale,
+  _prev: DashboardState,
+  formData: FormData,
+): Promise<DashboardState> {
+  const { account } = await requireTier(lang, "merchant");
+  const { dict } = await copy(lang);
+
+  const id = String(formData.get("id") ?? "");
+  if (!id) return { errors: { _form: dict.errors.validation } };
+
+  const parsed = cardSchema.omit({ number: true }).safeParse({
+    holder: formData.get("holder"),
+    exp: formData.get("exp"),
+  });
+  if (!parsed.success) {
+    const first = parsed.error.issues[0];
+    return { errors: { [String(first.path[0] ?? "_form")]: dict.errors.validation } };
+  }
+
+  const [mm, yy] = parsed.data.exp.split("/").map((s) => s.trim());
+  const { updateCard } = await import("@/lib/billing");
+  await updateCard(account.user_id, id, {
+    exp_month: Number(mm),
+    exp_year: 2000 + Number(yy),
+    holder: parsed.data.holder,
+  });
+  await auditLog("merchant", account.user_id, "billing.card_updated", "account", account.user_id);
+  revalidatePath(`/${lang}/dashboard/billing`);
+  return { ok: true };
+}
+
 export async function setDefaultCardAction(lang: Locale, formData: FormData): Promise<void> {
   const { account } = await requireTier(lang, "merchant");
   const id = String(formData.get("id") ?? "");

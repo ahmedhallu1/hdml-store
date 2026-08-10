@@ -1,9 +1,13 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n";
 import { requireTier } from "@/lib/auth";
-import { formatUsd, toCents } from "@/lib/money";
+import { toCents } from "@/lib/money";
+import { formatDisplayAmount } from "@/lib/currency";
+import { resolveDisplayCurrency } from "@/lib/display-currency";
 import { DashboardNav } from "@/components/dashboard/dashboard-nav";
+import { CurrencySwitcher } from "@/components/site/currency-switcher";
 import { TierBadge } from "@/components/ui/badge";
 
 /**
@@ -15,6 +19,11 @@ export default async function DashboardLayout({ children, params }: LayoutProps<
   if (!isLocale(lang)) notFound();
   const dict = await getDictionary(lang);
   const { account, privileges } = await requireTier(lang, "merchant", `/${lang}/dashboard`);
+
+  // Every figure under /dashboard is stored in USD and shown in the account's
+  // display currency. The switcher sits in this header rather than only in the
+  // site footer, so the currency can be changed without leaving the dashboard.
+  const display = await resolveDisplayCurrency(lang);
 
   const tierName = account.tier === "elite" ? dict.tiers.eliteName : dict.tiers.merchantName;
 
@@ -34,8 +43,18 @@ export default async function DashboardLayout({ children, params }: LayoutProps<
               <span className="text-ink-400">{account.email}</span>
             </p>
             <p className="mt-1 font-mono text-sm text-settled-400">
-              {formatUsd(toCents(String(account.wallet_balance)))}
+              {formatDisplayAmount(toCents(String(account.wallet_balance)), display)}
             </p>
+            <div className="mt-3 flex justify-end">
+              <Suspense fallback={null}>
+                <CurrencySwitcher
+                  current={display.code}
+                  available={display.available}
+                  label={dict.common.currency}
+                  apply={dict.common.applyCurrency}
+                />
+              </Suspense>
+            </div>
           </div>
         </header>
 

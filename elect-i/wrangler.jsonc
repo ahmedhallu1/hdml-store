@@ -1,0 +1,44 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "elect-i-global",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-05-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  // Custom domains. Cloudflare provisions DNS + the TLS cert automatically,
+  // but ONLY if the elect-i-global.com zone is already in this account.
+  "routes": [
+    { "pattern": "elect-i-global.com", "custom_domain": true },
+    { "pattern": "www.elect-i-global.com", "custom_domain": true }
+  ],
+  "observability": {
+    "enabled": true
+  },
+  // Public, non-secret runtime vars. The anon key is designed to be exposed in
+  // the browser and is protected by RLS, so it is safe to commit. Secrets (the
+  // service-role key and the two HMAC secrets) are set separately via
+  // `wrangler secret put` and never appear here.
+  "vars": {
+    "NEXT_PUBLIC_SUPABASE_URL": "https://wdetsgxbdmldbzokqlaw.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkZXRzZ3hiZG1sZGJ6b2txbGF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyODIyODMsImV4cCI6MjA5OTg1ODI4M30.K5ZHuKO8kIIiQpbX4F1MeD23c0L4CcKvUivmRoQk_H4",
+    "NEXT_PUBLIC_SITE_URL": "https://elect-i-global.com",
+    "PAYMENT_PROVIDER": "mock",
+    // Must be a sender verified in Brevo. elect-i-global.com is DKIM-authenticated
+    // there, and Cloudflare Email Routing forwards contact@ to the owner's inbox,
+    // so replies to transactional mail actually land somewhere.
+    "EMAIL_FROM": "contact@elect-i-global.com",
+    "EMAIL_FROM_NAME": "ELECT-I Global"
+  }
+  // Secrets (`npx wrangler secret put NAME` from this directory — never commit):
+  //   SUPABASE_SERVICE_ROLE_KEY  — shared with the HDML project
+  //   EIG_SIGNING_SECRET         — HMAC for merchant API request signatures
+  //   EIG_CLAIM_SECRET           — HMAC for claim tokens + order item digests
+  //   PAYMOB_API_KEY / PAYMOB_HMAC_SECRET — only when the live gateway is enabled
+  //
+  // Public vars (`vars` here or the Cloudflare dashboard):
+  //   NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  //   NEXT_PUBLIC_SITE_URL, PAYMENT_PROVIDER (mock | paymob)
+}

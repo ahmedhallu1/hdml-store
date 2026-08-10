@@ -25,6 +25,9 @@ export interface OrderEmailArgs {
   paymentMethodLabel: string;
   items: Array<{ name: string; qty: number; amountLabel: string }>;
   trackingUrl: string;
+  /** Prepaid delivery-details link on ELECT-I Global; only set on final emails
+   *  once the order has been pushed. When present the CTA links straight to it. */
+  claimUrl?: string | null;
   contact: EmailContact;
   deliveryMessage: string;
 }
@@ -173,6 +176,7 @@ export function orderEmailHtml(args: OrderEmailArgs): string {
     paymentMethodLabel,
     items,
     trackingUrl,
+    claimUrl,
     contact,
     deliveryMessage,
   } = args;
@@ -198,20 +202,29 @@ export function orderEmailHtml(args: OrderEmailArgs): string {
         );
 
   // After payment, the customer's final step is to confirm the order + enter
-  // shipping details. We send that link separately (each order uses a different
-  // platform), so this just sets the expectation — no button here.
+  // shipping details on our international fulfilment platform. When the claim
+  // link exists the notice tells them to expect the button below; otherwise it
+  // sets the expectation that a link will follow (manual fallback).
   const shippingCta = isFinal
     ? noticeBox(
-        `<strong>One last step — confirm your order.</strong> We&rsquo;ll send you a link to ` +
-          `confirm your order and enter your <strong>shipping details</strong> so a courier can ` +
-          `deliver. Keep your order reference <strong>${escapeHtml(orderRef)}</strong> handy.`,
+        claimUrl
+          ? `<strong>One last step — confirm your delivery details.</strong> Use the ` +
+              `<strong>Confirm delivery details</strong> button below. You&rsquo;ll enter your ` +
+              `order reference <strong>${escapeHtml(orderRef)}</strong> to open it, and the ` +
+              `amount due is <strong>0 — it&rsquo;s already fully paid</strong>.`
+          : `<strong>One last step — confirm your order.</strong> We&rsquo;ll send you a link to ` +
+              `confirm your order and enter your <strong>shipping details</strong> so a courier can ` +
+              `deliver. Keep your order reference <strong>${escapeHtml(orderRef)}</strong> handy.`,
         "#eff6ff",
         "#2563eb",
         "#1e3a8a",
       )
     : "";
 
-  const ctaLabel = isFinal ? "View your order" : "Track your order";
+  // On the final email, prefer the claim link as the primary CTA when we have
+  // it, so the customer goes straight to entering their address.
+  const primaryUrl = isFinal && claimUrl ? claimUrl : trackingUrl;
+  const ctaLabel = isFinal ? (claimUrl ? "Confirm delivery details" : "View your order") : "Track your order";
 
   const deliveryLine = isFinal
     ? ""
@@ -234,7 +247,7 @@ ${itemsTable(items, totalLabel)}
 Your ${kind === "preliminary" ? "preliminary receipt" : "receipt"} is attached to this email as a PDF.
 </p>
 ${deliveryLine}
-${button(trackingUrl, ctaLabel)}
+${button(primaryUrl, ctaLabel)}
 `;
 
   return layout(body, contact);

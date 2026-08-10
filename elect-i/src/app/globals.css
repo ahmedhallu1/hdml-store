@@ -1,0 +1,811 @@
+@import "tailwindcss";
+
+/*
+ * ELECT-I Global design system.
+ *
+ * Obsidian base + an electric cyan-teal ramp that extends HDML's brand teal
+ * (#004754 sits at --color-accent-800) so the two properties read as siblings.
+ * Amber is reserved exclusively for supplier-verification states; green for
+ * settled money; never mix the two.
+ *
+ * The system is deliberately narrow: one accent hue, one grid rhythm, one
+ * easing family. Depth comes from layered hairlines, light and grain rather
+ * than from more colour.
+ */
+@theme {
+  /* ── Surfaces — darkest to most elevated ─────────────────────────────── */
+  --color-obsidian-950: #05080d;
+  --color-obsidian-900: #070b11;
+  --color-obsidian-800: #0c121b;
+  --color-obsidian-700: #111926;
+  --color-obsidian-600: #16202f;
+  --color-obsidian-500: #1e2a3c;
+  --color-obsidian-400: #2a3849;
+
+  /* ── Accent — cyan-teal. 800 is HDML's #004754 ───────────────────────── */
+  --color-accent-50: #e6fbfb;
+  --color-accent-100: #c0f5f6;
+  --color-accent-200: #86edef;
+  --color-accent-300: #45dfe4;
+  --color-accent-400: #17c8d2;
+  --color-accent-500: #06a6b4;
+  --color-accent-600: #058596;
+  --color-accent-700: #046a7a;
+  --color-accent-800: #004754;
+  --color-accent-900: #04353f;
+  --color-accent-950: #012a33;
+
+  /* Verification / trust — amber only. */
+  --color-verify-300: #fcd34d;
+  --color-verify-400: #fbbf24;
+  --color-verify-500: #f59e0b;
+  --color-verify-600: #d97706;
+  --color-verify-700: #b45309;
+
+  /* Settled money / success. */
+  --color-settled-400: #34d399;
+  --color-settled-500: #10b981;
+  --color-settled-600: #059669;
+
+  --color-danger-400: #f87171;
+  --color-danger-500: #ef4444;
+  --color-danger-600: #dc2626;
+
+  /* ── Text ────────────────────────────────────────────────────────────── */
+  --color-ink-50: #f8fafc;
+  --color-ink-100: #f1f5f9;
+  --color-ink-300: #cbd5e1;
+  --color-ink-400: #94a3b8;
+  --color-ink-500: #64748b;
+  --color-ink-600: #475569;
+  --color-ink-700: #334155;
+
+  /*
+   * Latin comes from Plus Jakarta Sans (self-hosted by next/font). CJK falls
+   * through to the platform's own face — a webfont subset for Simplified
+   * Chinese is several megabytes, and every target platform ships an
+   * excellent native CJK family. Per-glyph fallback handles mixed text.
+   */
+  --font-cjk: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC",
+    "Noto Sans CJK SC", sans-serif;
+  --font-sans: var(--font-jakarta), var(--font-cjk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+
+  --radius-card: 0.875rem;
+  --radius-panel: 1.25rem;
+
+  /* Standard 6/10 density scale. */
+  --spacing-section: 6rem;
+
+  /* ── Motion ──────────────────────────────────────────────────────────── */
+  /* One easing family. Expo-out for entrances, spring only for playful pops. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Durations, named by intent rather than by number. */
+  --duration-instant: 90ms;
+  --duration-fast: 160ms;
+  --duration-base: 260ms;
+  --duration-slow: 420ms;
+  --duration-reveal: 620ms;
+  --duration-cinematic: 1100ms;
+}
+
+/*
+ * Design tokens that are not Tailwind utility sources — layering, lighting and
+ * the hairline vocabulary. Kept on :root so components can read them directly.
+ */
+:root {
+  --background: var(--color-obsidian-900);
+  --foreground: var(--color-ink-100);
+
+  /* Hairlines: the primary depth cue in this system. */
+  --hairline: rgba(255, 255, 255, 0.08);
+  --hairline-strong: rgba(255, 255, 255, 0.16);
+  --hairline-accent: rgba(23, 200, 210, 0.28);
+
+  /* Z-index scale. Nothing in the app may invent its own value. */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 20;
+  --z-header: 40;
+  --z-drawer: 50;
+  --z-overlay: 60;
+  --z-cursor: 90;
+  --z-progress: 100;
+
+  /* Elevation. Dark UIs read depth from glow and rim light, not from shade. */
+  --shadow-panel: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-lift: 0 18px 50px -18px rgba(0, 0, 0, 0.75);
+  --shadow-accent-glow: 0 20px 60px -22px rgba(6, 166, 180, 0.55);
+
+  color-scheme: dark;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* A full-bleed page must never be able to scroll sideways. */
+  overflow-x: clip;
+}
+
+/*
+ * Simplified Chinese leads with the CJK face so Latin fragments inside Chinese
+ * copy (SKUs, "API", brand names) stay visually consistent with their host
+ * paragraph. Slightly looser leading — CJK glyphs are denser than Latin.
+ */
+:lang(zh) {
+  --font-sans: var(--font-cjk), var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-sans);
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+}
+
+/* Keyboard focus must stay visible everywhere (checklist item). */
+:focus-visible {
+  outline: 2px solid var(--color-accent-400);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--color-accent-500);
+  color: #041016;
+}
+
+/* Scrollbar tuned to the surface palette instead of the OS default. */
+* {
+  scrollbar-color: var(--color-obsidian-500) transparent;
+  scrollbar-width: thin;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-obsidian-500);
+  border: 2px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--color-obsidian-400);
+  background-clip: content-box;
+}
+
+/* ── Typography scale ─────────────────────────────────────────────────── */
+
+/*
+ * Display type is fluid so a headline never has to be re-tuned per breakpoint.
+ * clamp() bounds keep it readable at 390px and from becoming a billboard at
+ * 1920px.
+ */
+.type-display {
+  font-size: clamp(2.5rem, 1.4rem + 4.6vw, 5.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 800;
+}
+.type-h2 {
+  font-size: clamp(1.875rem, 1.3rem + 1.9vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  font-weight: 800;
+}
+.type-h3 {
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+}
+.type-lead {
+  font-size: clamp(1rem, 0.95rem + 0.35vw, 1.185rem);
+  line-height: 1.65;
+}
+/* CJK does not want negative tracking — it closes up already-tight glyphs. */
+:lang(zh) .type-display,
+:lang(zh) .type-h2,
+:lang(zh) .type-h3 {
+  letter-spacing: 0;
+}
+
+/* Small caps-ish technical label used above section headings. */
+.type-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+:lang(zh) .type-eyebrow {
+  letter-spacing: 0.12em;
+}
+
+/* ── Utilities ────────────────────────────────────────────────────────── */
+
+.hairline {
+  border-color: var(--hairline);
+}
+
+/* Fine 1px technical grid used behind hero + section breaks. */
+.grid-mesh {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Denser variant for instrument panels and code surfaces. */
+.grid-mesh-fine {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.radial-fade {
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+}
+
+/*
+ * Film grain. An inline fractal-noise SVG rather than a bitmap: ~400 bytes,
+ * resolution-independent, and it stops large dark gradients from banding on
+ * 8-bit displays. Opacity is deliberately near the threshold of perception.
+ */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.028;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/*
+ * Static variant for masked headline lines. Those spans already carry the
+ * line-rise animation, and an element can only run one `animation` shorthand
+ * per rule — declaring the pan here too would mean whichever rule loses the
+ * cascade silently drops its animation. Keeping them separate makes the
+ * outcome explicit instead of order-dependent.
+ */
+.text-gradient-still {
+  background: linear-gradient(
+    100deg,
+    var(--color-ink-50) 0%,
+    var(--color-accent-100) 38%,
+    var(--color-accent-300) 62%,
+    var(--color-ink-50) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Accent text gradient for hero headlines. */
+.text-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--color-ink-50) 0%,
+    var(--color-accent-200) 45%,
+    var(--color-accent-400) 70%,
+    var(--color-ink-50) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 8s linear infinite;
+}
+
+/* Hairline card with a soft inner light — the workhorse surface. */
+.panel {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.035) 0%,
+    rgba(255, 255, 255, 0.012) 100%
+  );
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-card);
+  backdrop-filter: blur(12px);
+}
+
+/* Flatter surface for dense data tables where blur would cost more than it adds. */
+.panel-flat {
+  background: rgba(255, 255, 255, 0.018);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-card);
+}
+
+.panel-hover {
+  transition:
+    border-color var(--duration-base) var(--ease-out-expo),
+    transform var(--duration-base) var(--ease-out-expo),
+    box-shadow var(--duration-base) var(--ease-out-expo);
+}
+.panel-hover:hover {
+  border-color: rgba(23, 200, 210, 0.45);
+  transform: translateY(-3px);
+  box-shadow:
+    0 12px 40px -12px rgba(6, 166, 180, 0.35),
+    0 0 0 1px rgba(23, 200, 210, 0.12);
+}
+
+/* Accent glow behind primary CTAs and key stats. */
+.glow-accent {
+  box-shadow:
+    0 0 0 1px rgba(23, 200, 210, 0.25),
+    0 8px 32px -8px rgba(6, 166, 180, 0.55);
+}
+
+/*
+ * Cursor-reactive rim light. The element publishes --mx/--my (0–100%) from a
+ * pointermove handler; the highlight follows without touching layout, so it
+ * stays on the compositor.
+ */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out-expo);
+  background: radial-gradient(
+    22rem circle at var(--mx, 50%) var(--my, 50%),
+    rgba(23, 200, 210, 0.13),
+    transparent 62%
+  );
+  z-index: -1;
+}
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+/*
+ * Border trace: a light travels once around the edge on hover. Built from a
+ * conic gradient masked to a 1px ring, so it never repaints the card body.
+ */
+.trace {
+  position: relative;
+}
+.trace::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  opacity: 0;
+  background: conic-gradient(
+    from var(--trace-angle, 0deg),
+    transparent 0deg,
+    rgba(23, 200, 210, 0.9) 24deg,
+    transparent 70deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  transition: opacity var(--duration-base) var(--ease-out-expo);
+  pointer-events: none;
+}
+.trace:hover::after {
+  opacity: 1;
+  animation: trace-spin 1.6s linear infinite;
+}
+
+/* Diagonal specular sweep for premium surfaces (tier cards, CTAs). */
+.sweep {
+  position: relative;
+  overflow: hidden;
+}
+.sweep::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40%;
+  left: -60%;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.09) 45%,
+    rgba(134, 237, 239, 0.14) 55%,
+    transparent
+  );
+  transform: skewX(-18deg);
+}
+.sweep:hover::after {
+  animation: sweep-across 900ms var(--ease-out-quart);
+}
+
+/* Hairline that fades at both ends — used for section dividers and rails. */
+.rule-fade {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--hairline-strong) 18%,
+    var(--hairline-strong) 82%,
+    transparent
+  );
+}
+.rule-fade-y {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--hairline) 15%,
+    var(--hairline) 85%,
+    transparent
+  );
+}
+
+/* ── Motion ───────────────────────────────────────────────────────────── */
+
+@keyframes gradient-pan {
+  to {
+    background-position: 200% center;
+  }
+}
+
+@keyframes trace-spin {
+  to {
+    --trace-angle: 360deg;
+  }
+}
+/* --trace-angle must be a registered property or it cannot be interpolated. */
+@property --trace-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes sweep-across {
+  to {
+    left: 130%;
+  }
+}
+
+/* Scroll reveal: small y-offset so it reads as a fade, not a slide. */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*
+ * Entrance states are built so that VISIBLE is the resting default and the
+ * hidden state is something we opt into, never something content has to
+ * animate its way out of.
+ *
+ * The naive pattern (`opacity: 0` plus an `animation … both` that ends at 1)
+ * fails hard wherever the animation timeline does not advance: headless
+ * renderers, screenshot services, some battery-saver modes. The animation sits
+ * at frame zero and the fill mode pins the element to `opacity: 0` — a
+ * permanently blank page. Staggering here is done in JS (a timer before the
+ * class flips) precisely so no `animation-delay` + `backwards` fill is needed.
+ *
+ * So: `.is-armed` is applied during render and removed the moment the element
+ * should appear. If the animation plays, it plays. If it cannot, the element
+ * simply is where it belongs.
+ */
+.reveal {
+  opacity: 1;
+}
+.reveal.is-armed {
+  opacity: 0;
+}
+.reveal.is-visible {
+  animation: reveal-up var(--duration-reveal) var(--ease-out-expo);
+}
+
+/*
+ * Masked type reveal. Each line sits in an overflow-hidden clip and rises into
+ * frame — the signature entrance for display headlines. Lines are produced by
+ * the SplitLines component, which keeps the full string in the DOM for
+ * crawlers and assistive tech.
+ */
+.line-mask {
+  display: block;
+  overflow: hidden;
+  /* Descenders would otherwise be clipped by the mask. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.line-mask > span {
+  display: block;
+}
+.line-mask.is-armed > span {
+  transform: translateY(105%);
+  opacity: 0;
+}
+.line-mask.is-visible > span {
+  animation: line-rise var(--duration-cinematic) var(--ease-out-expo);
+}
+@keyframes line-rise {
+  from {
+    transform: translateY(105%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Mobile navigation sheet slides in from the inline end. */
+@keyframes sheet-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/*
+ * Content fade that keeps the resting state visible. The keyframes only ADD a
+ * short intro (starting slightly down/faded) and end at the natural state; with
+ * no fill mode, a paused timeline shows the element at its normal, visible CSS.
+ */
+@keyframes fade-in-soft {
+  from {
+    opacity: 0.35;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fade-in-soft {
+  animation: fade-in-soft 380ms var(--ease-out-expo);
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.float-slow {
+  animation: float-slow 7s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.pulse-ring::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 1px solid var(--color-accent-400);
+  animation: pulse-ring 2.6s var(--ease-out-expo) infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+  will-change: transform;
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+/* Scanning line for the verification/inspection visuals. */
+@keyframes scan-y {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  15%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(1000%);
+    opacity: 0;
+  }
+}
+.scan-line {
+  animation: scan-y 3.2s var(--ease-out-expo) infinite;
+}
+
+/*
+ * Value pulse for live-updating money (quantity stepper, line totals). The
+ * emphasis lives in the MIDDLE of the timeline and both ends are the resting
+ * state, so a frozen timeline shows the plain final value rather than a
+ * stuck-enlarged one.
+ */
+@keyframes value-pop {
+  0%,
+  100% {
+    transform: none;
+    color: inherit;
+  }
+  35% {
+    transform: translateY(-2px) scale(1.05);
+    color: var(--color-accent-200);
+  }
+}
+.value-pop {
+  animation: value-pop 460ms var(--ease-out-expo);
+}
+
+/* Data packet travelling along an SVG path (journey + API flow diagrams). */
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+.dash-flow {
+  stroke-dasharray: 4 10;
+  animation: dash-flow 14s linear infinite;
+}
+
+/*
+ * Short connector segment (journey rail): a base hairline with a bright cyan
+ * pulse sweeping left→right. Lives only in the gap between two cards, so it can
+ * never overlap a card. The sweep sits in the MIDDLE of the keyframes so a
+ * frozen timeline shows a plain hairline, never a stuck-bright bar.
+ */
+.dash-flow-x {
+  background:
+    linear-gradient(90deg, transparent, rgba(69, 223, 228, 0.9), transparent) 0 0 / 50% 100% no-repeat,
+    rgba(255, 255, 255, 0.1);
+  animation: dash-flow-x 2.4s var(--ease-in-out-soft) infinite;
+}
+@keyframes dash-flow-x {
+  0% {
+    background-position:
+      -60% 0,
+      0 0;
+  }
+  60%,
+  100% {
+    background-position:
+      160% 0,
+      0 0;
+  }
+}
+
+/* Card tilt driven by pointer coords set in JS custom properties. */
+.tilt {
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform 140ms var(--ease-out-expo);
+}
+
+/* ── Custom cursor ────────────────────────────────────────────────────── */
+
+/*
+ * The native cursor is hidden only once the JS cursor has mounted AND only on
+ * devices with a precise pointer. If the script never runs, the class is never
+ * added and the native cursor stays — a fallback that cannot fail open.
+ */
+@media (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor body {
+    cursor: none;
+  }
+  /*
+   * Text entry is the one place a real caret beats any custom shape: people
+   * aim between characters. Selectable prose keeps its I-beam for the same
+   * reason.
+   */
+  html.has-custom-cursor input,
+  html.has-custom-cursor textarea,
+  html.has-custom-cursor select,
+  html.has-custom-cursor [contenteditable="true"],
+  html.has-custom-cursor pre,
+  html.has-custom-cursor code {
+    cursor: auto;
+  }
+}
+
+/* ── Route progress ───────────────────────────────────────────────────── */
+
+@keyframes progress-crawl {
+  0% {
+    transform: scaleX(0.02);
+  }
+  60% {
+    transform: scaleX(0.72);
+  }
+  100% {
+    transform: scaleX(0.92);
+  }
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────── */
+
+/*
+ * Every animation above is decorative. Users who ask for reduced motion get
+ * the fully-composed page with no movement at all — including the masked
+ * headline lines, which must be forced back to their resting position or the
+ * hero would render blank.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal,
+  .reveal.is-armed {
+    opacity: 1;
+  }
+  .line-mask > span,
+  .line-mask.is-armed > span {
+    transform: none;
+    opacity: 1;
+  }
+  .tilt {
+    transform: none;
+  }
+  .panel-hover:hover {
+    transform: none;
+  }
+}

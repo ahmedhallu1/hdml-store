@@ -16,6 +16,7 @@ import { getSiteSettings } from "@/lib/settings";
 import { sendEmail } from "@/lib/email/brevo";
 import { proofRejectedHtml, proofRejectedSubject } from "@/lib/email/templates";
 import { ensureInvoice, sendOrderEmail } from "@/lib/invoice-service";
+import { isEigEnabled, pushAndRecord, type EigPushResult } from "@/lib/eig/client";
 import { lineAmount, piastersToDecimalString, toPiasters } from "@/lib/money";
 import {
   adminInvoiceActionSchema,
@@ -92,6 +93,26 @@ async function recomputeOrderTotals(orderId: string): Promise<void> {
     } catch (e) {
       console.error(`invoice regeneration (${inv.kind}) failed for ${orderId}:`, e);
     }
+  }
+}
+
+/**
+ * What actually happened on the ELECT-I side, in the owner's words.
+ *
+ * A claim link is only ever promised when one was really stored — the old
+ * wording said it unconditionally, including for pushes that wrote NULL.
+ */
+function eigSuccessNote(result: EigPushResult): string {
+  if (!result.claimUrl) {
+    return "ELECT-I accepted the order but returned no claim link — retry, or open the order in ELECT-I.";
+  }
+  switch (result.outcome) {
+    case "existing":
+      return "This order was already on ELECT-I; its claim link is on the order.";
+    case "recovered":
+      return "This order was already on ELECT-I; its missing claim link has been recovered and stored.";
+    default:
+      return "ELECT-I order created; the claim link is on the order.";
   }
 }
 
@@ -579,6 +600,18 @@ export async function reviewProofAction(
       order_ref: order.order_ref,
     });
 
+    // Place the matching prepaid ELECT-I Global order BEFORE the receipt email,
+    // so the claim link is available to include in it. Best-effort by
+    // contract: pushAndRecord never throws, and a failure is recorded on the
+    // order (eig_status='failed') for retry — it must never undo the approval.
+    let eigNote = "";
+    if (paidNow && isEigEnabled()) {
+      const eig = await pushAndRecord(order.id);
+      eigNote = eig.ok
+        ? ` ${eigSuccessNote(eig)}`
+        : ` ELECT-I push failed (${eig.error ?? "unknown"}) — retry from the order page.`;
+    }
+
     // Best-effort final receipt email — only when the order really is paid.
     let emailNote = "";
     if (paidNow) {
@@ -588,7 +621,7 @@ export async function reviewProofAction(
         : ` Final email failed (${result.error ?? "unknown"}) — resend from the Invoices panel.`;
     }
     refresh();
-    return success(`Proof approved.${statusNote}${emailNote}`);
+    return success(`Proof approved.${statusNote}${eigNote}${emailNote}`);
   }
 
   // decision === "rejected"
@@ -745,4 +778,40 @@ export async function resendOrderEmailAction(
   return result.sent
     ? success(`${kind === "preliminary" ? "Preliminary" : "Final"} email re-sent to ${order.email}.`)
     : failure(`Send failed: ${result.error ?? "unknown error"}`);
+}
+
+/**
+ * Retry the ELECT-I Global push for a paid order whose earlier attempt failed
+ * (or was made before the integration was configured). Idempotent: an order
+ * that was already pushed returns its existing claim link, and one that was
+ * pushed but never got its claim link stored has it re-read and repaired.
+ */
+export async function retryEigPushAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const admin = await requireAdmin();
+
+  const orderId = fdString(formData, "orderId");
+  if (!orderId) return failure("Invalid input");
+  if (!isEigEnabled()) {
+    return failure("ELECT-I Global integration is not configured (set EIG_API_* secrets).");
+  }
+
+  const order = await loadOrder(orderId);
+  if (!order) return failure("Order not found");
+  if (order.status !== "paid") {
+    return failure("The ELECT-I order is only created once the payment is confirmed.");
+  }
+
+  const eig = await pushAndRecord(orderId);
+  await auditLog(admin.id, "eig.retry", "orders", orderId, {
+    ok: eig.ok,
+    error: eig.error ?? null,
+    order_ref: order.order_ref,
+  });
+  refresh();
+  return eig.ok
+    ? success(eigSuccessNote(eig))
+    : failure(`ELECT-I push failed: ${eig.error ?? "unknown error"}`);
 }

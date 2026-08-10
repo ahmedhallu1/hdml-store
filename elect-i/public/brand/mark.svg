@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" role="img" aria-label="ELECT-I Global">
+  <title>ELECT-I Global</title>
+  <defs>
+    <linearGradient id="eig-a" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#45DFE4"/>
+      <stop offset=".55" stop-color="#06A6B4"/>
+      <stop offset="1" stop-color="#004754"/>
+    </linearGradient>
+    <linearGradient id="eig-b" x1="14" y1="14" x2="34" y2="34" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C0F5F6"/>
+      <stop offset="1" stop-color="#17C8D2"/>
+    </linearGradient>
+    <clipPath id="eig-hex">
+      <path d="M24 2.6 41.4 12.7v20.6L24 43.4 6.6 33.3V12.7Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Orbit sits behind the die and is clipped to it, so the mark stays a
+       clean hexagon at every size. -->
+  <g clip-path="url(#eig-hex)">
+    <ellipse cx="24" cy="24" rx="21" ry="7.5" transform="rotate(-27 24 24)"
+             stroke="url(#eig-a)" stroke-width="1.2" opacity=".45"/>
+  </g>
+
+  <!-- Chip die: hexagon reads as both a silicon package and a globe facet. -->
+  <path d="M24 2.6 41.4 12.7v20.6L24 43.4 6.6 33.3V12.7Z" stroke="url(#eig-a)" stroke-width="2.2" stroke-linejoin="round"/>
+
+  <!-- E: three traces, stepped like a bus. -->
+  <path d="M15.5 17.2h11M15.5 24h7.5M15.5 30.8h11" stroke="url(#eig-b)" stroke-width="2.6" stroke-linecap="round"/>
+
+  <!-- I: the through-line, with circuit pins top and bottom. -->
+  <path d="M31.6 15.4v17.2" stroke="url(#eig-b)" stroke-width="2.6" stroke-linecap="round"/>
+  <circle cx="31.6" cy="13" r="1.9" fill="#F59E0B"/>
+  <circle cx="31.6" cy="35" r="1.5" fill="#17C8D2"/>
+</svg>

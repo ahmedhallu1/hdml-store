@@ -1,0 +1,9 @@
+# The root .gitignore anchors its node_modules / .next rules with a leading
+# slash, so they only cover the root app. This workspace needs its own.
+
+/node_modules
+/.next/
+/out/
+/build
+*.tsbuildinfo
+next-env.d.ts

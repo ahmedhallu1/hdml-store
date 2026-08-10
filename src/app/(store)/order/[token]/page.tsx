@@ -47,6 +47,8 @@ export default async function OrderTrackingPage(props: Props) {
     .maybeSingle();
   if (!orderRow) notFound();
   const order = orderRow as Order;
+  // Added by migration 0008; present via select("*") but not on the Order type.
+  const eigClaimUrl = (orderRow as { eig_claim_url?: string | null }).eig_claim_url ?? null;
 
   const settings = await getSiteSettings();
   const telegram = telegramUrl(settings.contact.telegram);
@@ -198,14 +200,42 @@ export default async function OrderTrackingPage(props: Props) {
           <h2 id="confirm-heading" className="text-base font-semibold text-gray-900">
             Confirm your order &amp; shipping details
           </h2>
-          <p className="mt-1 text-sm text-gray-600">
-            Your payment is confirmed 🎉 — one last step. We&rsquo;ll send you a link to confirm
-            your order and enter your shipping details so a courier can deliver. Keep your order
-            reference <strong className="font-mono text-brand-800">{order.order_ref}</strong> handy.
-          </p>
-          <p className="mt-3 text-sm text-gray-500">
-            If you haven&rsquo;t received it yet, contact us and mention your order reference.
-          </p>
+          {eigClaimUrl ? (
+            <>
+              <p className="mt-1 text-sm text-gray-600">
+                Your payment is confirmed 🎉 — one last step. Open your secure delivery link to
+                enter your address on our international fulfilment platform. You&rsquo;ll be asked
+                for your order reference{" "}
+                <strong className="font-mono text-brand-800">{order.order_ref}</strong> to open it,
+                and the amount due there is{" "}
+                <strong>0 — it&rsquo;s already fully paid</strong>.
+              </p>
+              <a
+                href={eigClaimUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-brand-700 px-5 font-semibold text-white transition-colors hover:bg-brand-800"
+              >
+                Confirm delivery details
+                <span aria-hidden="true">↗</span>
+              </a>
+              <p className="mt-3 break-all text-xs text-gray-500">
+                Or copy this link: <span className="font-mono">{eigClaimUrl}</span>
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="mt-1 text-sm text-gray-600">
+                Your payment is confirmed 🎉 — one last step. We&rsquo;ll send you a link to confirm
+                your order and enter your shipping details so a courier can deliver. Keep your order
+                reference <strong className="font-mono text-brand-800">{order.order_ref}</strong>{" "}
+                handy.
+              </p>
+              <p className="mt-3 text-sm text-gray-500">
+                If you haven&rsquo;t received it yet, contact us and mention your order reference.
+              </p>
+            </>
+          )}
         </section>
       )}
 

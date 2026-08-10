@@ -247,6 +247,12 @@ export async function sendOrderEmail(
         amountLabel: formatEgp(toPiasters(String(i.amount))),
       })),
       trackingUrl,
+      // Present on the order row (migration 0008) once the prepaid ELECT-I
+      // order exists. Only meaningful on the final email.
+      claimUrl:
+        kind === "final"
+          ? ((order as { eig_claim_url?: string | null }).eig_claim_url ?? null)
+          : null,
       contact: {
         phone: settings.contact.phone,
         email: settings.contact.email,

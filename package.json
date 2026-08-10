@@ -2,7 +2,15 @@
   "name": "hdml-store",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "elect-i"
+  ],
   "scripts": {
+    "eig:dev": "npm run dev --workspace elect-i",
+    "eig:build": "npm run build --workspace elect-i",
+    "eig:typecheck": "npm run typecheck --workspace elect-i",
+    "eig:deploy": "npm run deploy --workspace elect-i",
+    "eig:seed": "npm run seed:catalog --workspace elect-i",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

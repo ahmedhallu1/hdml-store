@@ -1,0 +1,2411 @@
+{
+  "common": {
+    "brand": "ELECT-I Global",
+    "slogan": "Source Smarter. Trade Globally.",
+    "loading": "Loading",
+    "search": "Search",
+    "close": "Close",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "continue": "Continue",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "required": "Required",
+    "optional": "optional",
+    "copy": "Copy",
+    "copied": "Copied",
+    "viewAll": "View all",
+    "learnMore": "Learn more",
+    "perUnit": "per unit",
+    "moq": "MOQ",
+    "units": "units",
+    "from": "from",
+    "free": "Free",
+    "yes": "Yes",
+    "no": "No",
+    "create": "Create",
+    "delete": "Delete",
+    "remove": "Remove",
+    "add": "Add",
+    "all": "All",
+    "none": "None",
+    "never": "Never",
+    "saving": "Saving…",
+    "saved": "Saved",
+    "email": "Email",
+    "role": "Role",
+    "status": "Status",
+    "date": "Date",
+    "amount": "Amount",
+    "total": "Total",
+    "actions": "Actions",
+    "showing": "Showing {count}",
+    "pagerRange": "{from}–{to} of {total}",
+    "pagerPrev": "Previous",
+    "pagerNext": "Next",
+    "clear": "Clear",
+    "currency": "Currency",
+    "applyCurrency": "Apply",
+    "currencyNote": "Prices in {currency} are indicative, converted from USD at the current platform rate. Orders, invoices and payments are in USD."
+  },
+  "nav": {
+    "catalog": "Catalog",
+    "categories": "Categories",
+    "suppliers": "Suppliers",
+    "services": "Services",
+    "pricing": "Membership",
+    "about": "About",
+    "contact": "Contact",
+    "signIn": "Sign in",
+    "register": "Create account",
+    "dashboard": "Dashboard",
+    "account": "Account",
+    "signOut": "Sign out",
+    "startSourcing": "Start Sourcing",
+    "requestQuote": "Request a quote",
+    "menu": "Menu",
+    "language": "Language",
+    "developers": "Developers"
+  },
+  "home": {
+    "heroKicker": "B2B wholesale marketplace",
+    "heroTitle": "Global Wholesale Starts Here",
+    "heroLead": "Source electronics, technology products, industrial supplies and general merchandise from manufacturers and distributors — with quotations, bulk pricing and international shipping in one platform.",
+    "searchPlaceholder": "Search {count} products, categories or SKUs",
+    "searchCta": "Search",
+    "popularSearches": "Popular",
+    "primaryCta": "Start Sourcing",
+    "secondaryCta": "Become a Supplier",
+    "statProducts": "Products listed",
+    "statCategories": "Categories",
+    "statCountries": "Destination markets",
+    "statLeadTime": "Typical lead time",
+    "categoriesTitle": "Everything wholesale, one platform",
+    "categoriesLead": "Electronics lead the catalog, but sourcing rarely stops there. Eight top-level groups cover the rest of the order.",
+    "howTitle": "From inquiry to delivery",
+    "howLead": "Four steps, fully tracked, with documents generated at every stage.",
+    "how1Title": "Search or request a quote",
+    "how1Body": "Browse live wholesale pricing, or send a quotation request with your target price and destination.",
+    "how2Title": "Confirm and pay",
+    "how2Body": "Approve the pro forma, then pay by card or draw on your merchant wallet. Merchants can also prepay on a buyer's behalf.",
+    "how3Title": "Recipient confirms delivery details",
+    "how3Body": "Prepaid orders generate a secure link. The recipient enters their address and sees a zero balance — the merchant already paid.",
+    "how4Title": "Consolidated shipping",
+    "how4Body": "Courier or freight forwarder collects, with tracking pushed back to you and to any connected system.",
+    "tiersTitle": "Built for merchants, not just buyers",
+    "tiersLead": "Two paid tiers unlock wholesale bands, prepaid ordering on behalf of your own customers, and the API that automates all of it.",
+    "apiTitle": "One API call becomes a finished order",
+    "apiLead": "Elite merchants create a paid order from their own storefront. ELECT-I returns a claim link, the recipient fills in delivery details, and shipping status flows back by webhook.",
+    "apiCta": "Read the API docs",
+    "ctaTitle": "Start sourcing this week",
+    "ctaLead": "Create a free buyer account to see wholesale pricing, or talk to us about merchant tiers.",
+    "trustTitle": "How we work",
+    "trustLead": "What this platform does — and what it does not claim to do.",
+    "statSuppliers": "Suppliers"
+  },
+  "tiers": {
+    "title": "Membership tiers",
+    "lead": "Upgrade for deeper wholesale bands, prepaid ordering on behalf of your customers, and API automation.",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "annualNote": "2 months free",
+    "currentPlan": "Current plan",
+    "choosePlan": "Choose plan",
+    "mostPopular": "Most popular",
+    "buyerName": "Buyer",
+    "buyerTagline": "Browse and order at list price.",
+    "merchantName": "Merchant",
+    "merchantTagline": "Wholesale bands, a prepaid wallet, and ordering on behalf of your customers.",
+    "eliteName": "Elite Merchant",
+    "eliteTagline": "Best pricing, unlimited prepaid claim links, full API and net terms.",
+    "featureDiscount": "Wholesale discount",
+    "featureRfq": "Quotation requests",
+    "featureOnBehalf": "Prepaid orders on behalf",
+    "featureWallet": "Merchant wallet",
+    "featureCredit": "Net-terms credit",
+    "featureApi": "API access",
+    "featureWebhooks": "Webhooks",
+    "featureSeats": "Team seats",
+    "featureCoBrand": "Co-branded claim page",
+    "featureMoq": "Minimum order quantity",
+    "featureSamples": "Sample orders",
+    "featureConsolidated": "Consolidated shipping",
+    "featurePriority": "Priority sourcing",
+    "featureManager": "Account manager",
+    "featureAnalytics": "Analytics",
+    "featureFeatured": "Featured placement",
+    "unlimited": "Unlimited",
+    "perMonth": "month",
+    "moqFull": "Standard",
+    "moqReduced": "Reduced 50%",
+    "moqWaived": "Waived",
+    "apiNone": "None",
+    "apiRead": "Read-only",
+    "apiFull": "Full access",
+    "managerNone": "Self-serve",
+    "managerShared": "Shared team",
+    "managerDedicated": "Dedicated"
+  },
+  "catalog": {
+    "title": "Catalog",
+    "lead": "Wholesale pricing across electronics and general merchandise.",
+    "resultsCount": "{count} products",
+    "noResults": "No products matched your search.",
+    "noResultsHint": "Try a broader term, or send us a sourcing request and we will find it.",
+    "filters": "Filters",
+    "category": "Category",
+    "allCategories": "All categories",
+    "supplier": "Supplier",
+    "priceRange": "Price range",
+    "sortBy": "Sort by",
+    "sortRelevance": "Relevance",
+    "sortPriceAsc": "Price: low to high",
+    "sortPriceDesc": "Price: high to low",
+    "sortNewest": "Newest",
+    "clearFilters": "Clear filters",
+    "inStock": "In stock",
+    "madeToOrder": "Made to order",
+    "outOfStock": "Out of stock",
+    "confirmAvailability": "Confirm availability",
+    "page": "Page {current} of {total}",
+    "yourPrice": "Your price",
+    "listPrice": "List price",
+    "signInForPricing": "Sign in for wholesale pricing",
+    "searchLabel": "Search the catalog",
+    "searchPlaceholder": "Product name or SKU",
+    "allSuppliers": "All suppliers",
+    "availability": "Availability",
+    "anyAvailability": "Any availability",
+    "minPrice": "Min USD",
+    "maxPrice": "Max USD",
+    "applyFilters": "Apply filters",
+    "activeFilters": "Active filters",
+    "removeFilter": "Remove filter",
+    "resultsRange": "Showing {from}–{to} of {count}",
+    "previousPage": "Previous",
+    "nextPage": "Next",
+    "pagination": "Pagination",
+    "goToPage": "Go to page {page}",
+    "emptyCatalog": "The catalog is still being loaded.",
+    "emptyCatalogHint": "Listings are being imported right now. Check back shortly, or send us a sourcing request and we will quote it directly.",
+    "errorTitle": "We couldn't load these results",
+    "errorBody": "The catalog service did not respond. This is usually temporary.",
+    "retry": "Try again",
+    "browseCategories": "Browse categories",
+    "browseAll": "Browse all products",
+    "viewProduct": "View product",
+    "unitShort": "/unit"
+  },
+  "product": {
+    "sku": "SKU",
+    "leadTime": "Lead time",
+    "leadTimeDays": "{days} days",
+    "supplier": "Supplier",
+    "quantityBreaks": "Quantity breaks",
+    "qty": "Quantity",
+    "addToOrder": "Add to order",
+    "requestQuote": "Request a quote",
+    "specifications": "Specifications",
+    "description": "Description",
+    "similar": "Similar products",
+    "tierSaving": "You save {amount} at {tier} tier",
+    "upgradeToSave": "Upgrade to save {amount} on this item",
+    "moqNote": "Minimum order: {qty} units",
+    "moqWaivedNote": "Minimum order waived on your tier",
+    "backToCatalog": "Back to catalog",
+    "noImage": "No product photo supplied",
+    "gallery": "Product images",
+    "viewImage": "Show image {index}",
+    "ladderQty": "Order quantity",
+    "ladderList": "List price",
+    "ladderYour": "Your price",
+    "ladderSave": "You save",
+    "ladderFrom": "{qty}+ units",
+    "lineTotal": "Line total",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "specsEmpty": "No published specifications for this item yet.",
+    "descriptionEmpty": "No description has been published for this listing. Request a quote and we will send full details.",
+    "similarEmpty": "Nothing comparable is listed yet.",
+    "upgradeCta": "Compare tiers",
+    "notFoundTitle": "Listing not available",
+    "notFoundBody": "This product is no longer listed, or the link is incorrect.",
+    "priceNote": "Prices exclude shipping, customs clearance and import duties at the destination.",
+    "unit": "Unit",
+    "schematic": "Schematic"
+  },
+  "categories": {
+    "title": "Category groups",
+    "lead": "Eight top-level groups cover the whole catalog. Every group links straight into live wholesale listings.",
+    "productsCount": "{count} listings",
+    "explore": "Explore group",
+    "inThisGroup": "In this group",
+    "empty": "Nothing listed in this group yet."
+  },
+  "suppliers": {
+    "title": "Suppliers",
+    "lead": "Manufacturers, distributors and trading partners behind the listings.",
+    "empty": "No suppliers are listed yet.",
+    "responseRate": "Response rate",
+    "leadTime": "Lead time",
+    "listings": "Listings",
+    "viewListings": "View listings",
+    "location": "Location",
+    "levelUnverified": "Unverified",
+    "levelVerified": "Documents on file",
+    "levelAudited": "Audited",
+    "levelPremiumManufacturer": "Manufacturer",
+    "levelAuthorizedDistributor": "Authorized distributor",
+    "verificationTitle": "What these labels mean",
+    "verificationNote": "Labels reflect the business documents a supplier has given us — company registration, and where applicable a manufacturer or distribution authorisation. ELECT-I Global does not currently run independent factory audits or third-party inspections, and a label is not a guarantee of product quality."
+  },
+  "claim": {
+    "pageTitle": "Confirm your delivery details",
+    "kicker": "Prepaid order",
+    "verifyTitle": "Verify it's you",
+    "verifyLead": "Enter the order reference from your original order to open this page.",
+    "verifyLabel": "Original order reference",
+    "verifyPlaceholder": "e.g. I20260713175900",
+    "verifyCta": "Open my order",
+    "verifyError": "That reference doesn't match this order. Check the reference on your original confirmation.",
+    "verifyLocked": "Too many attempts. Try again in {minutes} minutes.",
+    "matchTitle": "Order verification",
+    "matchOk": "Matched",
+    "matchOkBody": "Every item and quantity below matches the order you placed. The prices shown are ELECT-I's wholesale rates, so individual figures may differ from what you were quoted.",
+    "matchFail": "Mismatch detected",
+    "matchFailBody": "These items do not match your original order. Do not continue — contact support.",
+    "matchColItem": "Item",
+    "matchColQty": "Qty",
+    "matchColOriginal": "Your original order",
+    "matchColThis": "This order",
+    "matchNone": "No comparison available",
+    "matchNoneBody": "The merchant created this order manually, so there is no upstream order to compare it against. The items below are exactly what will ship.",
+    "orderLabel": "Order",
+    "dueTitle": "Amount due",
+    "dueZero": "$0.00",
+    "duePaidBy": "Paid in full by {merchant}",
+    "dueNothing": "There is nothing to pay. This order was prepaid for you.",
+    "formTitle": "Where should we deliver?",
+    "formLead": "This is the only information we need. It takes about a minute.",
+    "fullName": "Full name",
+    "email": "Email",
+    "phone": "Phone",
+    "country": "Country",
+    "city": "City",
+    "address1": "Address line 1",
+    "address2": "Address line 2",
+    "postalCode": "Postal code",
+    "taxId": "Tax / ID number",
+    "taxIdHint": "Some destinations require this for customs clearance.",
+    "notes": "Delivery notes",
+    "notesHint": "Landmarks, preferred delivery window, anything the courier should know.",
+    "saved": "Saved",
+    "savingDraft": "Saving…",
+    "submitCta": "Confirm delivery details",
+    "submitting": "Confirming…",
+    "successTitle": "You're all set",
+    "successBody": "Your delivery details are confirmed and this order is queued for shipping. We'll email you tracking as soon as it leaves the warehouse.",
+    "successRef": "Order number",
+    "expiredTitle": "This link has expired",
+    "expiredBody": "Claim links stay open for {days} days. Contact the merchant who sent it and they can issue a new one.",
+    "alreadyClaimedTitle": "Already confirmed",
+    "alreadyClaimedBody": "Delivery details for this order were confirmed on {date}. Need to change them? Contact support.",
+    "notFoundTitle": "Link not found",
+    "notFoundBody": "This claim link is not valid. Check that you copied the whole link.",
+    "customsNote": "Prices do not include customs clearance or import duties at the destination.",
+    "leadTimeNote": "Typical delivery is {min}–{max} days after dispatch."
+  },
+  "dashboard": {
+    "title": "Merchant dashboard",
+    "overview": "Overview",
+    "orders": "Orders",
+    "onBehalf": "Prepaid links",
+    "wallet": "Wallet",
+    "api": "API & webhooks",
+    "team": "Team",
+    "settings": "Settings",
+    "walletBalance": "Wallet balance",
+    "creditAvailable": "Credit available",
+    "topUp": "Top up",
+    "ordersThisMonth": "Orders this month",
+    "claimsPending": "Awaiting recipient",
+    "claimsClaimed": "Confirmed",
+    "newOnBehalf": "New prepaid order",
+    "onBehalfLead": "Order on behalf of a customer, pay now, and send them a link to fill in delivery details.",
+    "recipientHint": "You don't need their address — they fill it in themselves.",
+    "claimLink": "Claim link",
+    "copyLink": "Copy link",
+    "resend": "Resend",
+    "linkExpires": "Expires {date}",
+    "remainingThisMonth": "{used} of {limit} prepaid orders used this month",
+    "apiKeys": "API keys",
+    "createKey": "Create key",
+    "keySecretOnce": "This secret is shown once. Store it now — we only keep a hash.",
+    "revoke": "Revoke",
+    "webhookEndpoints": "Webhook endpoints",
+    "addEndpoint": "Add endpoint",
+    "noOrders": "No orders yet.",
+    "upgradeRequired": "This is an Elite Merchant feature.",
+    "upgradeCta": "Compare tiers",
+    "lead": "Everything you run as a merchant, in one place.",
+    "overviewLead": "Balance, prepaid links and orders at a glance.",
+    "recentActivity": "Recent activity",
+    "noActivity": "Nothing has happened yet.",
+    "walletLead": "Prepaid balance used to pay for orders on behalf of your customers.",
+    "topUpTitle": "Add funds",
+    "topUpAmount": "Top-up amount (USD)",
+    "topUpHint": "Minimum {min}, maximum {max} per top-up.",
+    "topUpCta": "Continue to payment",
+    "topUpPending": "Starting…",
+    "ledger": "Ledger",
+    "noLedger": "No wallet activity yet.",
+    "balanceAfter": "Balance after",
+    "kindTopup": "Top-up",
+    "kindCharge": "Order charge",
+    "kindRefund": "Refund",
+    "kindAdjustment": "Adjustment",
+    "kindCreditDraw": "Credit drawn",
+    "kindCreditRepay": "Credit repaid",
+    "creditUsed": "{used} of {limit} used",
+    "noCredit": "Prepay only on your tier.",
+    "ordersLead": "Every order you have placed or prepaid for a customer.",
+    "filterStatus": "Filter by status",
+    "colOrder": "Order",
+    "colType": "Type",
+    "colRecipient": "Recipient",
+    "typeOnBehalf": "Prepaid link",
+    "typeDirect": "Direct",
+    "noOrdersForFilter": "No orders with that status.",
+    "apiLead": "Keys for the merchant API and endpoints for order lifecycle webhooks.",
+    "keyName": "Key name",
+    "keyNameHint": "So you can tell your integrations apart later.",
+    "scopes": "Scopes",
+    "scopeOrdersRead": "Read orders",
+    "scopeOrdersWrite": "Create and update orders",
+    "scopeWalletRead": "Read wallet balance",
+    "scopeQuotesWrite": "Submit quotation requests",
+    "scopeCatalogRead": "Read the catalog",
+    "keyCreated": "Key created",
+    "keyId": "Key ID",
+    "keySecret": "Secret",
+    "keyPreview": "ends in {last4}",
+    "keyLastUsed": "Last used",
+    "keyNeverUsed": "Never used",
+    "revokeConfirm": "Revoke this key? Anything using it stops working immediately.",
+    "noKeys": "No API keys yet.",
+    "keyRevoked": "Revoked",
+    "webhookUrl": "Endpoint URL",
+    "webhookUrlHint": "HTTPS only. We POST a signed JSON body and retry on failure.",
+    "webhookEvents": "Events",
+    "eventOrderCreated": "Order created",
+    "eventOrderClaimed": "Recipient confirmed details",
+    "eventOrderShipped": "Order shipped",
+    "eventOrderDelivered": "Order delivered",
+    "eventOrderCancelled": "Order cancelled",
+    "eventWalletLowBalance": "Wallet balance low",
+    "webhookSecret": "Signing secret",
+    "webhookSecretOnce": "Shown once. Use it to verify the signature on every delivery.",
+    "noWebhooks": "No endpoints yet.",
+    "apiUpgradeTitle": "API access is a paid feature",
+    "apiUpgradeBody": "Read-only API access is included with Merchant. Full read/write access and webhooks are included with Elite Merchant.",
+    "webhooksUpgradeBody": "Outbound webhooks are included with Elite Merchant.",
+    "teamLead": "Give colleagues access to this account without sharing your password.",
+    "seatsUsed": "{used} of {limit} seats used",
+    "seatsUnlimited": "Unlimited seats on your tier.",
+    "seatEmail": "Teammate's email",
+    "seatEmailHint": "They need an ELECT-I account of their own first.",
+    "seatRole": "Role",
+    "roleMember": "Member",
+    "roleManager": "Manager",
+    "addSeat": "Add seat",
+    "addingSeat": "Adding…",
+    "noSeats": "No teammates yet.",
+    "owner": "Account owner",
+    "removeSeat": "Remove",
+    "seatAdded": "Seat added.",
+    "seatRemoved": "Seat removed.",
+    "settingsLead": "How your business appears to the customers you order for.",
+    "brandingTitle": "Claim page branding",
+    "displayName": "Merchant display name",
+    "displayNameHint": "Shown on the claim page as the business that prepaid the order.",
+    "logoUrl": "Logo URL",
+    "logoUrlHint": "HTTPS link to a PNG or SVG, at least 128px tall.",
+    "logoPreview": "Preview",
+    "brandingSaved": "Branding saved.",
+    "coBrandUpgradeBody": "Co-branded claim pages are included with Elite Merchant.",
+    "signedInAs": "Signed in as",
+    "externalRef": "Customer's original order reference",
+    "externalRefHint": "The reference from the order they placed with you. They must type this to open the claim link.",
+    "lines": "Line items",
+    "sku": "ELECT-I SKU",
+    "addLine": "Add another line",
+    "removeLine": "Remove this line",
+    "payFrom": "Pay from",
+    "payWallet": "Wallet balance",
+    "payCredit": "Credit line",
+    "submit": "Create and generate link",
+    "submitting": "Creating…",
+    "createdTitle": "Prepaid order created",
+    "createdBody": "Send this link to your customer. They confirm their delivery details and see a zero balance.",
+    "createAnother": "Create another",
+    "orderNumber": "Order",
+    "activeLinks": "Prepaid links",
+    "noLinks": "No prepaid orders yet.",
+    "colRef": "Their reference",
+    "colCreated": "Created",
+    "colAmount": "Charged",
+    "expiresOn": "Expires {date}",
+    "expired": "Expired",
+    "topUpSuccess": "Payment successful — funds added to your wallet.",
+    "chargedTo": "Charged to",
+    "noCardOnFile": "Add a payment method in Billing to top up.",
+    "keyCreatedOn": "Created",
+    "keyNoExpiry": "Never expires",
+    "searchOrders": "Search orders",
+    "noOrdersForSearch": "No orders match “{term}”."
+  },
+  "account": {
+    "title": "Account",
+    "profile": "Profile",
+    "companyName": "Company name",
+    "country": "Country",
+    "vatNumber": "VAT / Tax number",
+    "changePassword": "Change password",
+    "currentTier": "Current tier",
+    "orderHistory": "Order history",
+    "signInTitle": "Sign in",
+    "signInLead": "Access wholesale pricing and your orders.",
+    "registerTitle": "Create your account",
+    "registerLead": "Free to join. Wholesale pricing visible immediately.",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "lead": "Your profile, membership and order history.",
+    "fullName": "Full name",
+    "phone": "Phone",
+    "email": "Email",
+    "emailLocked": "Write to us if you need the email on your account changed.",
+    "profileLead": "These details appear on your invoices and customs paperwork.",
+    "saveProfile": "Save changes",
+    "profileSaved": "Profile updated.",
+    "phoneHint": "Include the country code, e.g. +20 100 000 0000.",
+    "vatHint": "Only needed if your country requires it on invoices.",
+    "memberSince": "Member since {date}",
+    "renews": "Renews {date}",
+    "statusActive": "Active",
+    "statusPastDue": "Payment overdue",
+    "statusCancelled": "Cancelled",
+    "statusExpired": "Expired",
+    "upgradeCta": "Compare tiers",
+    "dashboardCta": "Open merchant dashboard",
+    "dashboardLead": "Wallet, prepaid claim links, API keys and team seats.",
+    "noOrders": "You haven't placed an order yet.",
+    "noOrdersCta": "Browse the catalog",
+    "orderNumber": "Order",
+    "recentOrders": "Recent orders",
+    "suspendedTitle": "This account is on hold",
+    "suspendedBody": "We've paused activity on your account. Nothing is lost — write to us and we'll explain what's needed to lift it.",
+    "contactCta": "Contact support",
+    "signOutCta": "Sign out",
+    "securityTitle": "Security",
+    "securityLead": "Change the password used to sign in."
+  },
+  "rfq": {
+    "title": "Request a quotation",
+    "lead": "Tell us what you need and where it's going. We'll come back with pricing and lead time.",
+    "productDescription": "What are you sourcing?",
+    "qty": "Quantity needed",
+    "destination": "Destination country",
+    "incoterm": "Preferred trade term",
+    "targetPrice": "Target unit price",
+    "targetPriceHint": "Optional — helps us match you to the right supplier.",
+    "message": "Additional details",
+    "submitCta": "Send request",
+    "successTitle": "Request received",
+    "successBody": "We've logged your request as {reference}. Expect a response within one business day.",
+    "limitReached": "You've used all {limit} quotation requests this month. Upgrade for unlimited requests.",
+    "kicker": "Quotation desk",
+    "itemsTitle": "What do you need?",
+    "itemsLead": "Up to five lines per request. Model numbers and specifications get priced faster than category names.",
+    "itemLabel": "Item {n}",
+    "itemPlaceholder": "e.g. 20,000 mAh power bank, USB-C PD 65 W, ABS shell",
+    "contactTitle": "How we reach you",
+    "logisticsTitle": "Where it's going",
+    "yourName": "Your name",
+    "workEmail": "Work email",
+    "phone": "Phone or WhatsApp",
+    "companyName": "Company",
+    "noPreference": "No preference",
+    "selectCountry": "Select a country",
+    "countryOther": "Other / not listed",
+    "targetPricePlaceholder": "6.50",
+    "whatNextTitle": "What happens next",
+    "next1": "We log the request and confirm the reference by email, usually the same business day.",
+    "next2": "We price it against our own catalog first, then approach manufacturers and distributors for anything we do not already list.",
+    "next3": "You receive a quotation with unit price, quantity breaks, incoterm, lead time and a validity date.",
+    "incotermNote": "Every quotation states the trade term it is priced on. Unless a quotation says DDP, it excludes customs clearance and import duties at the destination.",
+    "errorTitle": "We could not send that request",
+    "addItemNote": "Leave a line blank if you don't need it.",
+    "signedInNote": "This request will be attached to your account.",
+    "sending": "Sending…",
+    "referenceLabel": "Reference",
+    "anotherCta": "Send another request",
+    "destinationHint": "Where the goods are going. It changes the trade term, the freight and the paperwork."
+  },
+  "footer": {
+    "tagline": "A global B2B wholesale platform for electronics, technology products, industrial equipment, home supplies, fashion, automotive products and general merchandise.",
+    "marketplace": "Marketplace",
+    "company": "Company",
+    "legal": "Legal",
+    "support": "Support",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "returns": "Returns & Refunds",
+    "compliance": "Compliance Policy",
+    "ip": "Intellectual Property",
+    "shipping": "Shipping & Logistics",
+    "payments": "Payment Methods",
+    "operatorNotice": "ELECT-I Global is the platform and the seller of record on every order placed here.",
+    "rights": "All rights reserved.",
+    "businessHours": "Business hours"
+  },
+  "legal": {
+    "termsTitle": "Terms of Service",
+    "privacyTitle": "Privacy Policy",
+    "returnsTitle": "Returns & Refunds",
+    "complianceTitle": "Compliance Policy",
+    "ipTitle": "Intellectual Property Policy",
+    "shippingTitle": "Shipping & Logistics",
+    "paymentsTitle": "Payment Methods",
+    "lastUpdated": "Last updated",
+    "toc": "Contents",
+    "questionsTitle": "Questions about this policy?",
+    "questionsBody": "Write to us and a person will answer. If your question is about a specific order, include the order number.",
+    "contactCta": "Contact us",
+    "operatorTitle": "Who you are contracting with",
+    "docs": {
+      "terms": {
+        "lead": "These terms govern the use of elect-i-global.com and every order placed through it. Read section one first: it names the company you are actually contracting with.",
+        "sections": [
+          {
+            "id": "parties",
+            "heading": "Who these terms are with",
+            "blocks": [
+              {
+                "p": "ELECT-I Global is the platform and the seller of record for every order placed here. It is your counterparty from quotation through to delivery, and the same name appears on your order documents."
+              },
+              {
+                "p": "\"We\", \"us\" and \"the platform\" in this document mean ELECT-I Global. \"You\" means the business, and the person acting for it, using the platform."
+              },
+              {
+                "note": "Your contract is with ELECT-I Global, the operator of this platform. Where registration details for the operating entity are required by law, they will be published here."
+              },
+              {
+                "p": "Using the site, requesting a quotation, creating an account or placing an order means you accept these terms and the policies linked from them: the privacy policy, the returns and refunds policy, the compliance policy, the intellectual property policy, the shipping and logistics policy and the payment methods policy."
+              }
+            ]
+          },
+          {
+            "id": "eligibility",
+            "heading": "Who may use the platform",
+            "blocks": [
+              {
+                "p": "This is a business-to-business platform. By using it you confirm that you are acting for a business, that you are at least eighteen years old, and that you are authorised to bind the business you name on your account or your order."
+              },
+              {
+                "p": "We may decline an account, an order or a quotation request, including where the goods are restricted in your destination, where the request falls under our compliance policy, or where we cannot lawfully trade with the party involved."
+              }
+            ]
+          },
+          {
+            "id": "accounts",
+            "heading": "Accounts and membership",
+            "blocks": [
+              {
+                "p": "You are responsible for the accuracy of the details on your account and for everything done through it. Keep your password and any API secrets to yourself; tell us immediately if you believe either has been exposed."
+              },
+              {
+                "p": "Membership tiers set the wholesale discount, minimum order handling, prepaid order allowances, API access, team seats and support level that apply to your account. The tier resolved on our servers is the one that governs your pricing — never a tier sent from a browser or an API client."
+              },
+              {
+                "p": "Paid tiers renew for the period you selected until you cancel. An upgrade applies to orders placed after it takes effect and does not reprice orders already placed. A downgrade takes effect at the end of the period you have paid for. Membership fees are not pro-rated on cancellation."
+              },
+              {
+                "p": "Team seats let colleagues act on your account. Everything they do is treated as done by you."
+              }
+            ]
+          },
+          {
+            "id": "catalog",
+            "heading": "Catalog, pricing and availability",
+            "blocks": [
+              {
+                "p": "Catalog prices are unit prices in United States dollars. They exclude freight, insurance, customs clearance, import duties, destination taxes and any local charges, unless a quotation you have accepted states otherwise."
+              },
+              {
+                "p": "Product listings, specifications, images, stock states and lead times come from suppliers and are indicative. Where a specification is critical to you, confirm it in a quotation request before ordering rather than relying on the listing alone."
+              },
+              {
+                "p": "Every product carries a minimum order quantity. It is halved for Merchant accounts and waived for Elite accounts, subject to what the supplier is genuinely able to produce or ship."
+              },
+              {
+                "p": "A listing is an invitation to order, not an offer. Where a price, a specification or an availability state is obviously wrong, we may correct it and decline or cancel the affected order, and we will tell you why. Anything you have already paid for such an order is returned in full."
+              },
+              {
+                "note": "Supplier labels shown on this platform describe the business documents a supplier has given us. ELECT-I Global does not currently perform factory audits or third-party inspections, and no label is a guarantee of product quality."
+              }
+            ]
+          },
+          {
+            "id": "quotations",
+            "heading": "Quotations",
+            "blocks": [
+              {
+                "p": "A quotation request is free and does not commit you to anything. We log it under a reference and reply to the address you gave."
+              },
+              {
+                "p": "A quotation states the unit price, the quantity breaks it is based on, the trade term it is priced on, a lead time and a validity date. It is only binding while it is valid and only on the quantities and specification it names."
+              },
+              {
+                "p": "Unless a quotation explicitly says DDP, it excludes customs clearance and import duties at the destination."
+              }
+            ]
+          },
+          {
+            "id": "orders",
+            "heading": "Orders and payment",
+            "blocks": [
+              {
+                "p": "An order is formed when we confirm it, not when you submit it. Until confirmation we may decline it — for stock, compliance, pricing error or payment reasons."
+              },
+              {
+                "p": "Every line on every order is priced on our servers from the catalog at your resolved tier. Lines that do not match a catalog product are marked as custom on the order and priced from the quotation they came from."
+              },
+              {
+                "p": "Goods are dispatched after payment has cleared in full, unless net terms have been agreed with you in writing and you have chosen credit as the payment source for that order."
+              },
+              {
+                "p": "The payment methods policy sets out which methods are live, the wallet ledger, top-up limits and refund routes."
+              }
+            ]
+          },
+          {
+            "id": "prepaid",
+            "heading": "Prepaid orders and claim links",
+            "blocks": [
+              {
+                "p": "Merchant and Elite accounts can pay for an order on behalf of their own customer. We collect no delivery address from the merchant. Instead the order is held and a single-use claim link is issued for the recipient."
+              },
+              {
+                "p": "The recipient opens the link, proves it is theirs by entering the reference of their original order, and sees the amount due as zero with the paying merchant named. Where the merchant supplied a snapshot of the original order, the claim page compares two independently computed digests and shows the comparison line by line."
+              },
+              {
+                "note": "If the two digests disagree, the claim form is withheld entirely and the recipient is told to contact support. We would rather stop a shipment than let someone confirm an order that does not match what they bought."
+              },
+              {
+                "p": "Claim links expire. An expired or unused link can be reissued by the merchant who created it. Until a recipient confirms their details, the merchant may cancel the order and have the money returned to the source it came from; once details are confirmed, cancellation is no longer available through the API."
+              },
+              {
+                "p": "The merchant is responsible for the accuracy of what they order on someone else's behalf and for having that person's agreement to receive it."
+              }
+            ]
+          },
+          {
+            "id": "delivery",
+            "heading": "Delivery, duties and risk",
+            "blocks": [
+              {
+                "p": "Delivery is carried out by a courier or a freight forwarder, not by us directly. Typical delivery is 15 to 30 days after dispatch. That is an estimate based on what we normally see, not a guaranteed date."
+              },
+              {
+                "note": "Prices exclude customs clearance and import duties at the destination. Unless a quotation explicitly states DDP, the recipient is the importer and is responsible for clearance, duties, taxes and any local charges."
+              },
+              {
+                "p": "Risk passes according to the trade term on the order. Title to the goods passes when we have received payment in full."
+              },
+              {
+                "p": "Delivery details are the recipient's responsibility. Where a shipment fails because the address, contact number or tax identifier given was wrong or incomplete, redelivery, storage and return costs are payable by the buyer."
+              }
+            ]
+          },
+          {
+            "id": "returns",
+            "heading": "Cancellation, returns and refunds",
+            "blocks": [
+              {
+                "p": "Problems with a delivered order must be reported within 48 hours of delivery. The returns and refunds policy sets out what qualifies, what evidence we need, and how a case is resolved."
+              },
+              {
+                "p": "Bulk, custom, private-label and OEM production cannot be returned because you changed your mind. Where production has started to your specification, cancellation is only possible to the extent the supplier will accept it."
+              },
+              {
+                "p": "Where an order was prepaid by a merchant on a recipient's behalf, any refund goes back to the merchant who paid, not to the recipient."
+              }
+            ]
+          },
+          {
+            "id": "acceptable-use",
+            "heading": "Acceptable use",
+            "blocks": [
+              {
+                "p": "You must not use the platform to source, sell or ship anything prohibited or restricted under our compliance policy, or anything you are not licensed to import at the destination."
+              },
+              {
+                "p": "You must not scrape the platform, attempt to bypass rate limits or authentication, probe or attack our infrastructure, resell access to the API, or use another account's credentials."
+              },
+              {
+                "p": "API keys and webhook secrets are issued to one account. Sharing them, or signing requests for a third party with them, ends API access for that account."
+              }
+            ]
+          },
+          {
+            "id": "ip",
+            "heading": "Intellectual property",
+            "blocks": [
+              {
+                "p": "The ELECT-I Global name, logo, site design, copy, code and data compilation belong to us. Nothing here grants you a licence to use them beyond viewing and using the platform for its purpose."
+              },
+              {
+                "p": "Content you send us — product data, images, specifications and brand assets — stays yours. You grant us the licence needed to display and process it in order to run the platform and fulfil your orders, and you confirm you have the right to give that licence."
+              },
+              {
+                "p": "Rights complaints, and how we handle them, are covered by the intellectual property policy."
+              }
+            ]
+          },
+          {
+            "id": "liability",
+            "heading": "Warranties and liability",
+            "blocks": [
+              {
+                "p": "Goods are supplied with the specification stated on the order or the accepted quotation. Manufacturer warranties, where they exist, pass to you; we will help you use them but we are not the manufacturer."
+              },
+              {
+                "p": "We do not warrant that a listing's supplier data, lead time or stock state is free of error, that the platform will be uninterrupted, or that goods will clear customs in any particular time."
+              },
+              {
+                "p": "Except where the law does not allow it to be limited, our total liability for any order is capped at the amount you paid for that order. We are not liable for lost profit, lost contracts, lost data, storage or demurrage charges, or any indirect or consequential loss."
+              },
+              {
+                "p": "Neither side is liable for failure caused by events beyond reasonable control, including carrier failure, customs action, port closure, natural disaster, conflict, sanctions and government restriction."
+              }
+            ]
+          },
+          {
+            "id": "suspension",
+            "heading": "Suspension, termination and changes",
+            "blocks": [
+              {
+                "p": "We may suspend or close an account that breaches these terms or our compliance policy, that we are required to stop dealing with, or that shows signs of fraud. Where we suspend an account, we say so on the account itself rather than leaving it silently broken."
+              },
+              {
+                "p": "You can stop using the platform at any time. Closing an account does not cancel orders already in production or shipped, and does not remove records we are required to keep."
+              },
+              {
+                "p": "We may change these terms. The date at the top of this page always shows when they last changed. Orders already confirmed are governed by the version in force when they were confirmed."
+              }
+            ]
+          },
+          {
+            "id": "law",
+            "heading": "Governing law and disputes",
+            "blocks": [
+              {
+                "p": "These terms and any dispute arising from them are governed by the laws of the Arab Republic of Egypt, and the courts of Egypt have jurisdiction."
+              },
+              {
+                "p": "Before starting proceedings, write to us. Most disputes about a shipment turn out to be a documentation or clearance problem that we can resolve directly, and we would rather fix it than argue about it."
+              },
+              {
+                "p": "If any part of these terms is found unenforceable, the rest continues to apply."
+              }
+            ]
+          }
+        ]
+      },
+      "privacy": {
+        "lead": "What we collect, why we collect it, who it goes to and how long we keep it. Written to be read rather than to be defensible.",
+        "sections": [
+          {
+            "id": "controller",
+            "heading": "Who is responsible for your data",
+            "blocks": [
+              {
+                "p": "ELECT-I Global is the operator of this platform. It decides how and why personal data on this platform is processed, and is the point of contact for anything in this policy."
+              },
+              {
+                "p": "The email address at the bottom of this page is a monitored mailbox. Write to it for any request about your data and say what you want done."
+              }
+            ]
+          },
+          {
+            "id": "categories",
+            "heading": "What we collect",
+            "blocks": [
+              {
+                "dl": [
+                  {
+                    "t": "Account data",
+                    "d": "Your name, email address, password (stored only as a hash by our authentication provider), preferred language and the tier your account holds."
+                  },
+                  {
+                    "t": "Business data",
+                    "d": "Company name, country, phone number and any tax or VAT number you give us for invoices and customs paperwork."
+                  },
+                  {
+                    "t": "Order data",
+                    "d": "Line items, quantities, prices, order status history, documents generated for the order, and the trade term and shipping method it was placed on."
+                  },
+                  {
+                    "t": "Recipient delivery details",
+                    "d": "For prepaid orders, the name, email address, phone number, delivery address, postal code, tax identifier and delivery notes the recipient enters on the claim page. The merchant who paid never receives the full address — only the recipient's name, country and city."
+                  },
+                  {
+                    "t": "Quotation and enquiry data",
+                    "d": "What you asked us to source, the destination, target price, and the contact details on the request. Supplier applications are treated the same way."
+                  },
+                  {
+                    "t": "Payment data",
+                    "d": "The amount, currency, purpose, status and the payment provider's own reference for each attempt. Card details are entered on the payment provider's page and never reach our servers, so we never see or store a full card number."
+                  },
+                  {
+                    "t": "Technical data",
+                    "d": "The IP address and forwarding headers of requests, used to apply rate limits to public forms and to the claim page, plus server logs of errors."
+                  },
+                  {
+                    "t": "Integration data",
+                    "d": "For merchant API keys: the key identifier, its scopes, when it was last used, and the request nonces we store to reject replays. Webhook endpoints and their delivery history."
+                  }
+                ]
+              },
+              {
+                "note": "We do not run advertising trackers, we do not build behavioural profiles, and we do not sell data to anyone."
+              }
+            ]
+          },
+          {
+            "id": "sources",
+            "heading": "Where it comes from",
+            "blocks": [
+              {
+                "ul": [
+                  "Directly from you, when you create an account, request a quotation, place an order, apply as a supplier or write to us.",
+                  "From the merchant who prepaid an order, when they create it on a recipient's behalf. That is limited to the order lines and, optionally, an email address for the claim link.",
+                  "Automatically from your requests: IP address, headers and timestamps, which we use for security and rate limiting."
+                ]
+              }
+            ]
+          },
+          {
+            "id": "purposes",
+            "heading": "What we use it for",
+            "blocks": [
+              {
+                "ul": [
+                  "Creating and running your account, and applying the correct tier pricing.",
+                  "Pricing, confirming, fulfilling and documenting orders, including the customs paperwork a shipment needs.",
+                  "Answering quotation requests, supplier applications and messages you send us.",
+                  "Issuing and verifying prepaid claim links, including the digest comparison shown to the recipient.",
+                  "Taking payment, keeping the wallet ledger accurate and processing refunds.",
+                  "Protecting the platform: rate limiting, replay protection, fraud checks and audit logs.",
+                  "Meeting legal, accounting, customs and sanctions obligations."
+                ]
+              },
+              {
+                "p": "We do not use your data for automated decisions that produce legal effects for you."
+              }
+            ]
+          },
+          {
+            "id": "basis",
+            "heading": "Why we are allowed to",
+            "blocks": [
+              {
+                "dl": [
+                  {
+                    "t": "Performance of a contract",
+                    "d": "Everything needed to give you an account, price an order, take payment and ship goods."
+                  },
+                  {
+                    "t": "Legitimate interests",
+                    "d": "Keeping the platform secure, preventing abuse and fraud, and answering enquiries you have sent us."
+                  },
+                  {
+                    "t": "Legal obligation",
+                    "d": "Tax and accounting records, customs declarations, and sanctions and export-control screening."
+                  },
+                  {
+                    "t": "Consent",
+                    "d": "Anything optional, such as an update we ask permission to send you. Consent can be withdrawn at any time."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "sharing",
+            "heading": "Who else sees it",
+            "blocks": [
+              {
+                "dl": [
+                  {
+                    "t": "Hosting and database",
+                    "d": "Supabase hosts the database and the authentication service; Cloudflare hosts and serves the application. Both process data on our instructions."
+                  },
+                  {
+                    "t": "Payment provider",
+                    "d": "The active payment gateway receives the amount, currency, reference and the billing contact details it needs to take a payment. It is the party that handles card details, not us."
+                  },
+                  {
+                    "t": "Suppliers and manufacturers",
+                    "d": "The line items needed to produce or pick your goods. Delivery details are shared only where the supplier ships directly."
+                  },
+                  {
+                    "t": "Couriers and freight forwarders",
+                    "d": "The recipient's name, address, phone number and any tax identifier the destination requires, because a shipment cannot be delivered or cleared without them."
+                  },
+                  {
+                    "t": "Customs and authorities",
+                    "d": "The commercial invoice, packing list and declaration data that the destination's rules require."
+                  },
+                  {
+                    "t": "The merchant who prepaid",
+                    "d": "For a prepaid order, the recipient's name, country and city only — and only after the recipient has confirmed their details."
+                  },
+                  {
+                    "t": "Professional advisers and authorities",
+                    "d": "Accountants, auditors and legal advisers under confidentiality, and any authority we are legally required to answer."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "transfers",
+            "heading": "International transfers",
+            "blocks": [
+              {
+                "p": "This is a cross-border trading platform, so data moves across borders by design. Order and delivery data reaches the country the goods are shipped to and the country the supplier operates from. Our own systems are operated from Egypt, and our hosting and database providers operate globally distributed infrastructure."
+              },
+              {
+                "p": "Where a transfer needs a safeguard under the law that applies to you, we rely on the provider's own contractual protections and on the necessity of the transfer for performing your contract."
+              }
+            ]
+          },
+          {
+            "id": "retention",
+            "heading": "How long we keep it",
+            "blocks": [
+              {
+                "dl": [
+                  {
+                    "t": "Order, invoice and customs records",
+                    "d": "Kept for as long as tax, accounting and customs rules require, counted from the end of the financial year the order falls in."
+                  },
+                  {
+                    "t": "Account data",
+                    "d": "Kept while the account exists. After closure we keep only what is attached to order records."
+                  },
+                  {
+                    "t": "Claim page drafts",
+                    "d": "Delivery details saved while a recipient is filling the form are kept with the order once submitted, and cleared with the order's claim data when the link expires unused."
+                  },
+                  {
+                    "t": "Quotation requests, supplier applications and messages",
+                    "d": "Kept while the enquiry is live and for a reasonable period afterwards so we can pick up a conversation where it stopped."
+                  },
+                  {
+                    "t": "Security data",
+                    "d": "Rate-limit counters roll over with their window. API request nonces are kept only long enough to make replay impossible. Audit logs are kept for security review."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "rights",
+            "heading": "Your rights",
+            "blocks": [
+              {
+                "ul": [
+                  "Ask for a copy of the personal data we hold about you.",
+                  "Ask us to correct anything inaccurate — you can change most of it yourself in your account.",
+                  "Ask us to delete data we no longer have a reason to keep. Records we must retain for tax, customs or accounting reasons cannot be deleted on request.",
+                  "Object to processing based on our legitimate interests, and withdraw any consent you have given.",
+                  "Ask for your data in a portable format.",
+                  "Complain to the data protection authority that covers you."
+                ]
+              },
+              {
+                "p": "Write to us with what you want done. We answer within thirty days and will ask you to confirm your identity first, because handing account data to the wrong person is the worst outcome available here."
+              }
+            ]
+          },
+          {
+            "id": "security",
+            "heading": "How it is protected",
+            "blocks": [
+              {
+                "ul": [
+                  "All traffic is served over HTTPS, with a strict content security policy and framing disabled.",
+                  "Passwords are never stored by us in a readable form; authentication is handled by our provider.",
+                  "Database access is scoped by row-level security, and the privileged key that bypasses it is used only from the server, behind an explicit authorisation check on every call.",
+                  "API key secrets are stored encrypted, with a separate hash kept as an integrity cross-check. Request signatures and claim references are compared in constant time.",
+                  "Claim tokens are 32 bytes from a cryptographic random source, and claim reference attempts are rate limited per token."
+                ]
+              },
+              {
+                "p": "No system is perfect. If a breach affects you, we will tell you and the relevant authority within the time the law allows, and we will say what actually happened."
+              }
+            ]
+          },
+          {
+            "id": "cookies",
+            "heading": "Cookies",
+            "blocks": [
+              {
+                "p": "We set only the cookies the platform needs to work: a session cookie that keeps you signed in, a cookie remembering your language choice, and a short-lived signed cookie on the claim page that records that a recipient has proved a claim link is theirs."
+              },
+              {
+                "note": "There are no advertising cookies and no third-party analytics on this site, which is why you are not being asked to accept anything."
+              }
+            ]
+          },
+          {
+            "id": "children",
+            "heading": "Children",
+            "blocks": [
+              {
+                "p": "This platform is for businesses. It is not directed at children and we do not knowingly collect data from anyone under eighteen. If you believe we have, write to us and we will remove it."
+              }
+            ]
+          },
+          {
+            "id": "changes",
+            "heading": "Changes to this policy",
+            "blocks": [
+              {
+                "p": "When this policy changes, the date at the top of the page changes with it. Where a change materially affects how we use data you have already given us, we will tell account holders directly rather than relying on you noticing the date."
+              }
+            ]
+          }
+        ]
+      },
+      "returns": {
+        "lead": "Wholesale returns work differently from consumer returns: quantities are large, goods are already across a border, and the window to report a problem is short. This page says exactly how short and exactly what qualifies.",
+        "sections": [
+          {
+            "id": "window",
+            "heading": "The 48-hour reporting window",
+            "blocks": [
+              {
+                "note": "Any problem with a delivered order must be reported to us within 48 hours of delivery. After 48 hours we can no longer separate a transit or supply problem from damage that happened after the goods reached you, and a claim can no longer be raised with the carrier."
+              },
+              {
+                "p": "Report the problem before unpacking more than you need to in order to document it, and before redistributing the goods. Once a consignment has been broken up and sent onward, the evidence a claim depends on is gone."
+              },
+              {
+                "p": "Reporting means writing to us with the order number and the evidence listed below. A message that only says something is wrong, without the order number, does not start the clock."
+              }
+            ]
+          },
+          {
+            "id": "eligible",
+            "heading": "What qualifies",
+            "blocks": [
+              {
+                "p": "We assess every case on the same factors:"
+              },
+              {
+                "ul": [
+                  "The goods do not match the specification on the order or the accepted quotation.",
+                  "The wrong item, model, variant or configuration was shipped.",
+                  "The quantity delivered is short against the packing list.",
+                  "Goods arrived damaged, and the damage is consistent with transit rather than with handling after delivery.",
+                  "A unit is dead on arrival or has a manufacturing defect present from the start.",
+                  "Goods are missing a certification or marking that the order stated they would carry."
+                ]
+              }
+            ]
+          },
+          {
+            "id": "not-eligible",
+            "heading": "What does not qualify",
+            "blocks": [
+              {
+                "ul": [
+                  "Changing your mind about a bulk purchase, or being unable to resell the goods.",
+                  "Custom, private-label and OEM or ODM production made to your own specification, once production has started.",
+                  "Damage caused after delivery, including during your own onward shipping, storage or installation.",
+                  "Goods ordered against a specification you supplied that turned out to be wrong for your market.",
+                  "Normal variation in bulk goods: colour and finish tolerance, packaging differences between production runs, and the defect rate a specification allows for.",
+                  "Wear, misuse, unauthorised repair, or use outside the stated rating or environment.",
+                  "Problems reported more than 48 hours after delivery.",
+                  "Goods refused, abandoned or destroyed at customs because an import licence, certification or duty payment was not in place."
+                ]
+              }
+            ]
+          },
+          {
+            "id": "evidence",
+            "heading": "What we need from you",
+            "blocks": [
+              {
+                "ul": [
+                  "The ELECT-I order number, and the claim link reference if the order was prepaid for you.",
+                  "Photographs of the outer cartons before they were opened, including any shipping labels and seals.",
+                  "Photographs or video of the goods showing the problem, with enough context to identify the item.",
+                  "For shortages: a count against the packing list, carton by carton.",
+                  "For defects: the quantity affected out of the quantity received, and the batch or serial numbers where they exist.",
+                  "Any carrier delivery note showing damage recorded at the point of delivery."
+                ]
+              },
+              {
+                "p": "Keep the goods and the packaging as they are until the case is closed. Do not return anything before we have given you a return reference — unannounced returns cannot be identified at the receiving end and may be refused."
+              }
+            ]
+          },
+          {
+            "id": "process",
+            "heading": "How a case runs",
+            "blocks": [
+              {
+                "ul": [
+                  "You report the problem within 48 hours with the order number and the evidence above.",
+                  "We acknowledge it and open a case, usually the same business day.",
+                  "We assess it against the order record and the supplier's own documentation, and raise a carrier claim where transit damage is involved.",
+                  "We tell you the outcome, what we are proposing, and why.",
+                  "Once you accept the outcome, we execute it and the case is closed."
+                ]
+              }
+            ]
+          },
+          {
+            "id": "outcomes",
+            "heading": "Possible outcomes",
+            "blocks": [
+              {
+                "dl": [
+                  {
+                    "t": "Replacement",
+                    "d": "The affected quantity is remade or reshipped, normally consolidated with your next order to avoid a second freight charge."
+                  },
+                  {
+                    "t": "Partial refund",
+                    "d": "Where the goods are usable but not as ordered, a proportion of the line value is returned."
+                  },
+                  {
+                    "t": "Full refund of the affected lines",
+                    "d": "Where the goods are unusable and a replacement does not make sense."
+                  },
+                  {
+                    "t": "Wallet credit",
+                    "d": "For Merchant and Elite accounts, credited to the wallet ledger and immediately usable on the next order."
+                  }
+                ]
+              },
+              {
+                "p": "We choose the outcome with you, not for you, but we will not agree to a remedy that exceeds what you paid for the affected lines."
+              }
+            ]
+          },
+          {
+            "id": "return-shipping",
+            "heading": "Returning goods",
+            "blocks": [
+              {
+                "p": "Most wholesale problems are resolved without shipping goods back, because return freight across a border often costs more than the goods. Where a physical return is genuinely necessary, we issue a return reference and instructions first."
+              },
+              {
+                "p": "Where the fault is ours or the supplier's, we pay return freight. Where a return is agreed for any other reason, return freight, export clearance and any re-import charges are yours."
+              }
+            ]
+          },
+          {
+            "id": "refunds",
+            "heading": "How refunds are paid",
+            "blocks": [
+              {
+                "p": "Refunds go back to the source the money came from: a card payment to the same card, a wallet-funded order to the same wallet, a credit-funded order against the same credit line."
+              },
+              {
+                "note": "Where a merchant prepaid an order on someone else's behalf, the refund goes to the merchant who paid, not to the recipient. The recipient never paid anything, so there is nothing to return to them."
+              },
+              {
+                "p": "We process an accepted refund within five business days. How long it takes to appear afterwards depends on the payment provider and the receiving bank."
+              },
+              {
+                "p": "Customs duties, import taxes and destination clearance charges are paid by the importer to their own authorities. We cannot refund them, and neither can the carrier. Where duties are refundable at all, the claim is made to the customs authority that collected them."
+              }
+            ]
+          },
+          {
+            "id": "cancellation",
+            "heading": "Cancelling before dispatch",
+            "blocks": [
+              {
+                "p": "An order that has not yet entered production or picking can be cancelled in full. Once production or picking has started, cancellation is only possible to the extent the supplier accepts it, and any cost already incurred is deducted."
+              },
+              {
+                "p": "A prepaid order can be cancelled by the merchant who paid for it at any point before the recipient confirms their delivery details, and the money returns to the wallet or credit line it came from. After the recipient confirms, the order is queued against a real address and this policy applies instead."
+              }
+            ]
+          }
+        ]
+      },
+      "compliance": {
+        "lead": "What may not be traded through this platform, what needs a licence, and what we expect from buyers and suppliers. This policy applies to every order, every quotation and every listing.",
+        "sections": [
+          {
+            "id": "scope",
+            "heading": "Scope",
+            "blocks": [
+              {
+                "p": "This policy applies to everyone using the platform: buyers, merchants ordering on behalf of their customers, suppliers, and anyone acting for them. It applies at quotation, at order and at any point afterwards."
+              },
+              {
+                "p": "Cross-border trade is regulated at both ends. Something legal where a supplier operates can be prohibited where it is going. Where the two disagree, the stricter rule is the one we apply."
+              }
+            ]
+          },
+          {
+            "id": "prohibited",
+            "heading": "Prohibited outright",
+            "blocks": [
+              {
+                "p": "We will not source, list, quote or ship any of the following, under any circumstances:"
+              },
+              {
+                "ul": [
+                  "Weapons, ammunition, their components, and parts or accessories designed for them.",
+                  "Explosives, detonators, fireworks and pyrotechnic compositions.",
+                  "Narcotics, controlled substances, their precursors, and equipment whose purpose is to produce them.",
+                  "Counterfeit goods, unauthorised replicas, and anything bearing a mark the seller is not entitled to use.",
+                  "Goods that infringe a third party's trademark, copyright, patent or design right.",
+                  "Products of endangered or protected species, including ivory, and any wildlife product traded in breach of CITES.",
+                  "Human remains, organs, bodily fluids and tissue.",
+                  "Stolen goods, and goods that cannot be shown to have been lawfully acquired.",
+                  "Counterfeit currency, forged documents, and instruments designed for fraud.",
+                  "Radioactive material and nuclear-related equipment.",
+                  "Devices whose primary purpose is unlawful interception, covert surveillance or defeating security controls.",
+                  "Child sexual abuse material and any content that sexualises minors.",
+                  "Goods whose supply would breach applicable sanctions or export controls."
+                ]
+              }
+            ]
+          },
+          {
+            "id": "restricted",
+            "heading": "Restricted — licence or documentation required",
+            "blocks": [
+              {
+                "p": "These can be traded only where the paperwork is genuinely in place at both ends, and we will ask to see it before quoting:"
+              },
+              {
+                "ul": [
+                  "Dual-use items with a civilian and a military application, including certain electronics, sensors, encryption hardware and machine tools.",
+                  "Medicines, medical devices, diagnostics and laboratory reagents.",
+                  "Chemicals, batteries above the carrier's threshold, aerosols, paints, solvents and anything classified as dangerous goods for transport.",
+                  "Food, food-contact materials, supplements and cosmetics.",
+                  "Radio transmitting equipment subject to spectrum approval at the destination.",
+                  "Alcohol and tobacco products, and their delivery systems.",
+                  "Vehicles, vehicle parts subject to type approval, and machinery requiring conformity assessment.",
+                  "Goods requiring a specific import permit, standards certificate or conformity mark in the destination market."
+                ]
+              },
+              {
+                "note": "Dangerous goods must be declared before booking. An undeclared hazardous shipment endangers handlers, invalidates insurance and can be destroyed at the border at the shipper's cost."
+              }
+            ]
+          },
+          {
+            "id": "sanctions",
+            "heading": "Sanctions and export control",
+            "blocks": [
+              {
+                "p": "We do not knowingly deal with a party, a vessel or a destination subject to applicable sanctions, and we do not process a transaction that would breach an export control that applies to the goods."
+              },
+              {
+                "p": "You confirm, every time you place an order, that neither you nor the end recipient is a sanctioned party, that the goods are not destined for a prohibited end use, and that you are not acting to disguise a party or destination that would otherwise be blocked."
+              },
+              {
+                "p": "Where a screening result is unclear we hold the order and ask. We would rather delay a shipment than complete one we should not have."
+              }
+            ]
+          },
+          {
+            "id": "financial",
+            "heading": "Financial crime",
+            "blocks": [
+              {
+                "ul": [
+                  "Payment must come from the account holder or the business named on the order. We do not accept payment from an unrelated third party.",
+                  "We do not accept cash, and we do not accept a series of smaller payments arranged to avoid a threshold.",
+                  "We may ask about the source of funds, the ownership of a business, or the commercial purpose of an order, and may hold the order until we have an answer.",
+                  "Wallet balances are a payment facility for orders on this platform. They are not a stored-value or money-transfer service, and a balance cannot be sent to a third party."
+                ]
+              }
+            ]
+          },
+          {
+            "id": "buyer-duties",
+            "heading": "What we expect from buyers",
+            "blocks": [
+              {
+                "ul": [
+                  "Check that the goods may lawfully be imported into the destination before you order.",
+                  "Hold any import licence, permit or registration the goods require, in the correct name.",
+                  "Act as importer of record and pay the duties, taxes and clearance charges, unless a quotation explicitly states DDP.",
+                  "Confirm that the certification and labelling you need for your market are stated on the order, rather than assumed.",
+                  "Tell us immediately if a shipment you have received turns out to be restricted where it landed."
+                ]
+              }
+            ]
+          },
+          {
+            "id": "supplier-duties",
+            "heading": "What we expect from suppliers",
+            "blocks": [
+              {
+                "ul": [
+                  "Declare goods accurately: description, composition, quantity, value, origin and any hazard classification.",
+                  "Supply only what you are entitled to sell, with authorisation letters where you distribute someone else's brand.",
+                  "Hold the safety and conformity documentation you claim, and provide the certificates on request.",
+                  "Never substitute a component, a grade or a certification without written agreement.",
+                  "Tell us at once about a recall, a safety notice or a rights complaint affecting anything you have supplied."
+                ]
+              }
+            ]
+          },
+          {
+            "id": "enforcement",
+            "heading": "How we enforce this",
+            "blocks": [
+              {
+                "p": "Where we believe this policy has been breached, we may remove a listing, refuse or cancel an order, hold a shipment, suspend an account, refund and unwind a transaction, and report the matter to the relevant authority."
+              },
+              {
+                "p": "For a breach involving prohibited goods, sanctions or financial crime, we act first and explain afterwards. For anything else, we tell you what we found and give you the chance to answer."
+              },
+              {
+                "p": "Repeat breaches end the relationship."
+              }
+            ]
+          },
+          {
+            "id": "reporting",
+            "heading": "Reporting a problem",
+            "blocks": [
+              {
+                "p": "If you see a listing, an order or a supplier that breaches this policy, write to us with the SKU or order number, what you believe the problem is, and anything supporting it. We treat compliance reports as urgent and we do not disclose who reported what."
+              }
+            ]
+          }
+        ]
+      },
+      "ip": {
+        "lead": "How intellectual property is handled on this platform: what we refuse to trade, how to complain about a listing, and how a complaint is dealt with.",
+        "sections": [
+          {
+            "id": "position",
+            "heading": "Our position",
+            "blocks": [
+              {
+                "p": "Counterfeit goods and unauthorised replicas are prohibited on this platform. So is any listing that uses someone else's trademark, images, copy or design without the right to do so."
+              },
+              {
+                "p": "Suppliers warrant that they own or are licensed to use every mark, design and asset attached to the products they list. A distributor listing another company's brand must be able to produce an authorisation letter."
+              },
+              {
+                "p": "We do not adjudicate ownership. Where a genuine dispute over rights exists, we act to stop the harm continuing while it is resolved elsewhere, and we say what we have done to both sides."
+              }
+            ]
+          },
+          {
+            "id": "grounds",
+            "heading": "Grounds for a complaint",
+            "blocks": [
+              {
+                "dl": [
+                  {
+                    "t": "Trademark infringement",
+                    "d": "A listing bears your registered mark, or a mark confusingly similar to it, on goods you did not authorise."
+                  },
+                  {
+                    "t": "Counterfeiting",
+                    "d": "Goods are presented as your product but were not made by you or under your licence."
+                  },
+                  {
+                    "t": "Copyright infringement",
+                    "d": "Product photographs, drawings, manuals, packaging artwork or listing copy have been copied from you."
+                  },
+                  {
+                    "t": "Patent or design right",
+                    "d": "A listed product embodies your patented invention or your registered design without a licence."
+                  },
+                  {
+                    "t": "Misuse of a brand name",
+                    "d": "Your brand is used in a title, description or keyword to attract buyers to goods that are not yours."
+                  },
+                  {
+                    "t": "Passing off",
+                    "d": "A listing presents goods in a way designed to make buyers believe they come from you."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "notice",
+            "heading": "What a complaint must contain",
+            "blocks": [
+              {
+                "p": "So that we can act quickly, send all of the following in one message:"
+              },
+              {
+                "ul": [
+                  "Your name, the rights holder's name, and your authority to act if you are not the rights holder.",
+                  "Contact details we can reply to, including an email address.",
+                  "Identification of the right: the registration number and jurisdiction for a registered trademark, patent or design, or a description and proof of ownership for an unregistered right such as copyright.",
+                  "Identification of what you are complaining about: the listing URL, the ELECT-I SKU, or the order number.",
+                  "An explanation of why the listing infringes — which element, and how.",
+                  "A statement that you believe in good faith that the use complained of is not authorised by the rights holder, its agent or the law.",
+                  "A statement that the information in your complaint is accurate, and that you accept responsibility for it.",
+                  "Your signature, electronic or physical."
+                ]
+              },
+              {
+                "note": "A complaint sent in bad faith, or used to attack a competitor's legitimate listing, is itself a breach of these policies and we will remove the complainant's access to this process."
+              }
+            ]
+          },
+          {
+            "id": "handling",
+            "heading": "How we handle it",
+            "blocks": [
+              {
+                "ul": [
+                  "We acknowledge a complete complaint, normally within two business days.",
+                  "We review it against the listing and the documentation the supplier holds.",
+                  "Where a complaint is clearly well founded, we disable the listing immediately and stop any order in progress against it.",
+                  "We tell the supplier what has been alleged and give them the chance to respond.",
+                  "We tell you what we did. We do not share the supplier's confidential business information with you, and we do not share your complaint's contact details more widely than the supplier needs to answer it."
+                ]
+              }
+            ]
+          },
+          {
+            "id": "counter",
+            "heading": "If your listing was removed",
+            "blocks": [
+              {
+                "p": "A supplier whose listing has been disabled can answer with evidence of the right to sell: a licence, an authorisation letter, a distribution agreement, proof of exhaustion of rights for genuine goods, or proof that their own registration predates the complaint."
+              },
+              {
+                "p": "Where the answer resolves the matter, the listing is restored and both sides are told. Where it does not, the listing stays disabled until the parties settle it or a court decides it."
+              }
+            ]
+          },
+          {
+            "id": "repeat",
+            "heading": "Repeat infringement",
+            "blocks": [
+              {
+                "p": "A supplier who is the subject of repeated, well-founded complaints has their listings removed and their account closed. A single confirmed case of counterfeiting ends the relationship immediately."
+              }
+            ]
+          },
+          {
+            "id": "our-rights",
+            "heading": "Our own rights",
+            "blocks": [
+              {
+                "p": "The ELECT-I Global name, logo, site design, page copy, code and the compilation of the catalog are ours. You may not copy them, use them as a mark, present yourself as us, or use them in a way that implies an endorsement we have not given."
+              },
+              {
+                "p": "Automated collection of the catalog — scraping, bulk downloading or reproducing listings elsewhere — is not permitted. Merchants who need programmatic access have the API for that."
+              }
+            ]
+          },
+          {
+            "id": "your-content",
+            "heading": "Content you give us",
+            "blocks": [
+              {
+                "p": "Product data, images, specifications and brand assets you send us stay yours. You grant us the licence needed to display and process them so the platform can list, quote and fulfil, and you confirm you have the right to grant it."
+              },
+              {
+                "p": "Withdraw that licence and we remove the material, but records attached to orders already placed are kept for as long as the law requires."
+              }
+            ]
+          }
+        ]
+      },
+      "shipping": {
+        "lead": "Who actually moves your goods, how long it usually takes, and precisely what the price does and does not include.",
+        "sections": [
+          {
+            "id": "who",
+            "heading": "Who carries the goods",
+            "blocks": [
+              {
+                "p": "Delivery is carried out by a courier or a freight forwarder appointed for the shipment. ELECT-I Global does not operate its own fleet and does not deliver goods itself."
+              },
+              {
+                "p": "We book the carrier, hand over the export documentation, and stay your single point of contact if a shipment stalls. The carrier's own terms govern how the goods are handled in transit."
+              }
+            ]
+          },
+          {
+            "id": "timing",
+            "heading": "Lead times",
+            "blocks": [
+              {
+                "p": "Typical delivery is 15 to 30 days after dispatch. That range is what we normally see across the destinations we serve; it is an estimate, not a guaranteed date, and it does not include production time."
+              },
+              {
+                "p": "Dispatch happens after payment has cleared and, for a prepaid order, after the recipient has confirmed their delivery details through the claim link. A claim link left unopened holds the shipment: nothing moves until there is an address."
+              },
+              {
+                "p": "Air freight and express courier are faster and more expensive; sea freight is slower and cheaper. Where timing matters, say so in the quotation request and we will price the method that meets the date."
+              }
+            ]
+          },
+          {
+            "id": "customs",
+            "heading": "Customs, duties and taxes",
+            "blocks": [
+              {
+                "note": "Prices exclude customs clearance and import duties at the destination. Unless a quotation explicitly states DDP, the recipient is the importer of record and is responsible for clearance, duties, import taxes and any local charges."
+              },
+              {
+                "p": "Duty and tax rates depend on the destination, the tariff classification and the declared value. We declare goods accurately; we cannot under-declare a value or mis-describe goods to reduce a duty bill, and we will refuse a request to do so."
+              },
+              {
+                "p": "Some destinations require a tax or identity number from the importer before goods can clear. That is why the claim page asks for one, and why a shipment can be held without it."
+              },
+              {
+                "p": "Goods held, inspected, seized or destroyed by a customs authority for reasons outside our control are not our responsibility. We will provide every document we hold to support your case with the authority."
+              }
+            ]
+          },
+          {
+            "id": "terms",
+            "heading": "Trade terms we quote on",
+            "blocks": [
+              {
+                "dl": [
+                  {
+                    "t": "EXW",
+                    "d": "Ex Works. You collect from the supplier's premises and take on everything from that point."
+                  },
+                  {
+                    "t": "FCA",
+                    "d": "Free Carrier. We hand the goods to a carrier you nominate, cleared for export."
+                  },
+                  {
+                    "t": "FOB",
+                    "d": "Free On Board. We deliver the goods on board the vessel at the named port of shipment."
+                  },
+                  {
+                    "t": "CFR",
+                    "d": "Cost and Freight. We pay carriage to the destination port. Insurance is yours."
+                  },
+                  {
+                    "t": "CIF",
+                    "d": "Cost, Insurance and Freight. As CFR, with minimum-cover insurance to the destination port."
+                  },
+                  {
+                    "t": "DAP",
+                    "d": "Delivered At Place. We deliver to the named destination. Import clearance and duties remain yours."
+                  },
+                  {
+                    "t": "DDP",
+                    "d": "Delivered Duty Paid. We deliver cleared and duty paid. This is the only term where destination duties are included."
+                  }
+                ]
+              },
+              {
+                "p": "Every quotation names the term it is priced on. Comparing two quotations on different terms without adjusting for freight, insurance and duty is the fastest way to buy the more expensive one."
+              }
+            ]
+          },
+          {
+            "id": "methods",
+            "heading": "Shipping methods",
+            "blocks": [
+              {
+                "ul": [
+                  "Express courier — small, urgent and high-value consignments, door to door.",
+                  "Air freight — larger volumes on a short lead time, airport to airport or door to door.",
+                  "Sea freight — full container load or less than container load, port to port or door to door.",
+                  "Rail and road freight — where the corridor supports it and the transit time beats sea.",
+                  "Consolidated cargo — several orders combined into one shipment so freight is paid once."
+                ]
+              },
+              {
+                "p": "Consolidated shipping is available on Merchant and Elite accounts. Orders are held until you release them, so a consolidation window trades a few days of waiting for a single freight charge."
+              }
+            ]
+          },
+          {
+            "id": "addresses",
+            "heading": "Delivery details",
+            "blocks": [
+              {
+                "p": "A shipment is only as good as the address on it. Give a full street address with a postal code, a phone number the carrier can actually reach, and the tax identifier the destination requires."
+              },
+              {
+                "p": "Where a delivery fails because the details given were wrong or incomplete, redelivery, storage, demurrage and return charges are payable by the buyer. Where goods are returned to origin for that reason, the return freight is charged before a refund is considered."
+              },
+              {
+                "p": "We do not collect a delivery address from a merchant who prepays an order for someone else. The recipient enters their own details on the claim page, and the merchant only ever sees the name, country and city."
+              }
+            ]
+          },
+          {
+            "id": "tracking",
+            "heading": "Tracking",
+            "blocks": [
+              {
+                "p": "Tracking is attached to the order as soon as the carrier issues it, and appears in your account. Elite accounts also receive it by webhook, so it can flow straight into your own systems."
+              },
+              {
+                "p": "Carrier tracking can go quiet for several days during international legs and customs clearance. A gap is normal; a gap plus a missed delivery estimate is worth writing to us about."
+              }
+            ]
+          },
+          {
+            "id": "arrival",
+            "heading": "On arrival",
+            "blocks": [
+              {
+                "p": "Check the consignment before you sign for it. Count the cartons against the packing list, look for crushing, water damage and broken seals, and have the carrier record any damage on the delivery note. That note is what a carrier claim depends on."
+              },
+              {
+                "note": "Any problem must be reported to us within 48 hours of delivery. The returns and refunds policy sets out what qualifies and what evidence we need."
+              }
+            ]
+          },
+          {
+            "id": "restrictions",
+            "heading": "What cannot be shipped",
+            "blocks": [
+              {
+                "p": "Prohibited and restricted goods are listed in the compliance policy. Dangerous goods — batteries above the carrier's threshold, aerosols, flammable liquids, magnets and pressurised items among them — must be declared before a booking is made, because they change the carrier, the packing and the paperwork."
+              },
+              {
+                "p": "Some destinations refuse whole categories, and some routes are closed by sanctions or conflict. Where we cannot ship legally and safely, we say so before taking payment."
+              }
+            ]
+          }
+        ]
+      },
+      "payments": {
+        "lead": "Which payment methods are live today, how the merchant wallet works, and what happens when a payment fails or an order is refunded.",
+        "sections": [
+          {
+            "id": "currency",
+            "heading": "Currency and pricing",
+            "blocks": [
+              {
+                "p": "Everything on this platform is priced, charged and refunded in United States dollars. Amounts are held as exact whole cents throughout, so a total never drifts by rounding between the catalog, the order and the ledger."
+              },
+              {
+                "p": "If your bank converts from another currency, the rate and any conversion fee are set by your bank, not by us, and the amount that leaves your account may differ slightly from the order total."
+              }
+            ]
+          },
+          {
+            "id": "methods",
+            "heading": "How you can pay",
+            "blocks": [
+              {
+                "dl": [
+                  {
+                    "t": "Card payment",
+                    "d": "Handled by our payment provider on its own hosted page. Card payments are not switched on yet — until they are, write to us and we will arrange the payment or credit your wallet manually."
+                  },
+                  {
+                    "t": "Merchant wallet",
+                    "d": "A prepaid balance held on Merchant and Elite accounts and used to pay for orders, including prepaid orders placed on a customer's behalf."
+                  },
+                  {
+                    "t": "Net terms",
+                    "d": "An agreed credit line on Elite accounts, drawn only when you choose credit as the payment source for an order. The limit is a ceiling we agree with you, not an automatic facility."
+                  },
+                  {
+                    "t": "Bank transfer",
+                    "d": "Available for larger orders and wallet top-ups, arranged with us directly. Goods are dispatched once funds have cleared."
+                  }
+                ]
+              },
+              {
+                "note": "Payment must come from the account holder or the business named on the order. We do not accept payment from an unrelated third party, and we do not accept cash."
+              }
+            ]
+          },
+          {
+            "id": "card-data",
+            "heading": "Card details",
+            "blocks": [
+              {
+                "p": "When card payments are live, the card is entered on the payment provider's own hosted page. Full card numbers never reach our servers and are never stored by us. What we keep is the amount, the currency, the purpose, the status and the provider's reference for the attempt."
+              },
+              {
+                "p": "We never ask for a card number, a security code or a full bank credential by email, by chat or over the phone. Anyone who does is not us."
+              }
+            ]
+          },
+          {
+            "id": "wallet",
+            "heading": "How the wallet works",
+            "blocks": [
+              {
+                "p": "A wallet is a prepaid balance for orders on this platform. It is not a bank account, it earns no interest, and it cannot be sent to a third party."
+              },
+              {
+                "p": "Every movement — top-up, order charge, refund, adjustment, credit drawn and credit repaid — is written to a ledger together with the balance that resulted from it. The two are written in one locked transaction, so a balance can never disagree with its own history."
+              },
+              {
+                "p": "Every movement also carries an idempotency key. Retrying a top-up or a cancelled order returns the original result rather than moving money twice."
+              },
+              {
+                "p": "Top-ups have a minimum of {minTopUp} and a maximum of {maxTopUp} each. An unused balance stays yours; write to us if you want it returned."
+              }
+            ]
+          },
+          {
+            "id": "limits",
+            "heading": "Order minimums",
+            "blocks": [
+              {
+                "p": "Buyer and Merchant accounts have a minimum order value of {minOrder}. Elite accounts have no minimum order value."
+              },
+              {
+                "p": "Minimum order value is separate from a product's minimum order quantity, which is set per product and reduced or waived by your tier."
+              }
+            ]
+          },
+          {
+            "id": "membership-billing",
+            "heading": "Membership billing",
+            "blocks": [
+              {
+                "p": "Paid tiers are billed monthly or annually, in advance, for the period you selected, and renew until cancelled. The annual price is lower than twelve monthly payments; the membership page shows both figures side by side."
+              },
+              {
+                "p": "Membership fees are separate from order payments and are not drawn from your wallet balance. They are not pro-rated when a membership is cancelled part way through a period."
+              },
+              {
+                "p": "If a membership payment fails, the account moves to a past-due state. Wholesale pricing, prepaid ordering and API access follow the tier only while the membership is active."
+              }
+            ]
+          },
+          {
+            "id": "prepaid",
+            "heading": "Prepaid orders and claim links",
+            "blocks": [
+              {
+                "p": "When a merchant orders on a customer's behalf, the merchant pays in full at the moment the order is created. The recipient opens a claim link that shows an amount due of zero and names the business that paid."
+              },
+              {
+                "note": "A recipient is never asked for payment on a prepaid claim page. If a page reached from a claim link asks you for card details, it is not ours — close it and write to us."
+              }
+            ]
+          },
+          {
+            "id": "failures",
+            "heading": "Failed and pending payments",
+            "blocks": [
+              {
+                "p": "An order is not confirmed until its payment has cleared. A payment that is pending holds the order rather than dispatching it, and a payment that fails leaves the order unpaid — nothing is dispatched on an unpaid order."
+              },
+              {
+                "p": "Where a wallet balance does not cover an order, the order is rejected before anything is charged. Nothing is partially taken."
+              },
+              {
+                "p": "Where a credit-funded order would exceed the agreed limit, it is rejected in the same way."
+              }
+            ]
+          },
+          {
+            "id": "refunds",
+            "heading": "Refunds",
+            "blocks": [
+              {
+                "p": "A refund returns to the source the payment came from: a card payment to the same card, a wallet-funded order to the same wallet, a credit-funded order against the same credit line. Cancelling an unclaimed prepaid order refunds it automatically."
+              },
+              {
+                "p": "Refund eligibility is governed by the returns and refunds policy. Customs duties and import taxes are paid to the destination's authorities and cannot be refunded by us."
+              }
+            ]
+          },
+          {
+            "id": "fraud",
+            "heading": "Fraud, chargebacks and disputes",
+            "blocks": [
+              {
+                "p": "We screen payments for fraud and may hold an order while we check it. Where a payment is reversed after goods have shipped, the amount becomes immediately due and the account is suspended until it is settled."
+              },
+              {
+                "p": "If something looks wrong on your account, write to us before raising a chargeback. A chargeback on a delivered wholesale order is slow, and it stops us from resolving the underlying problem."
+              }
+            ]
+          },
+          {
+            "id": "documents",
+            "heading": "Invoices and records",
+            "blocks": [
+              {
+                "p": "Every order produces its own documents from the order record itself, so what is on the invoice and what is in your account are the same numbers. Invoices, payment records and wallet ledger entries stay available in your account."
+              },
+              {
+                "p": "Where your customs authority needs a document in a particular form, ask us and we will issue it. We will not issue a document that misstates the value, the description or the origin of the goods."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "lead": "Sourcing questions, order support, or supplier applications.",
+    "formTitle": "Send a message",
+    "name": "Your name",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Message",
+    "sendCta": "Send message",
+    "successBody": "Thanks — we'll reply to the address you gave.",
+    "directTitle": "Direct contact",
+    "hoursTitle": "Business hours",
+    "kicker": "Contact",
+    "formLead": "One form, read by a person. Tell us what you need and we will route it.",
+    "topic": "What is this about?",
+    "topicGeneral": "General enquiry",
+    "topicSourcing": "Sourcing or pricing",
+    "topicOrder": "An existing order",
+    "topicSupplier": "Becoming a supplier",
+    "topicApi": "API and integrations",
+    "topicLegal": "Legal, privacy or intellectual property",
+    "messageHint": "Model numbers, quantities, destination, and an order reference if you have one. The more specific, the faster the answer.",
+    "sending": "Sending…",
+    "successTitle": "Message sent",
+    "errorTitle": "We could not send that message",
+    "emailLabel": "Email",
+    "phoneLabel": "Phone",
+    "whatsappLabel": "WhatsApp",
+    "responseTitle": "When you will hear back",
+    "responseBody": "Messages sent during business hours are usually answered the same day, and always within one business day.",
+    "fasterTitle": "Faster routes",
+    "quoteCardTitle": "Need pricing?",
+    "quoteCardBody": "A quotation request captures quantities, destination and trade term in one pass, so the first reply is a price rather than a question.",
+    "supplierCardTitle": "Want to supply us?",
+    "supplierCardBody": "The supplier application asks for the capacity, certification and range details we need in order to assess a listing.",
+    "privacyNote": "What you send here is used to answer you and for nothing else. The privacy policy explains how long it is kept."
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "notFound": "Page not found",
+    "notFoundBody": "The page you're looking for doesn't exist or has moved.",
+    "goHome": "Back to home",
+    "rateLimited": "Too many requests. Please wait a moment.",
+    "unauthorized": "You need to sign in to do that.",
+    "forbidden": "Your account doesn't have access to this.",
+    "validation": "Please check the highlighted fields.",
+    "rateLimitedRetry": "Too many attempts. Try again in {seconds} seconds.",
+    "accountNotFound": "No ELECT-I account uses that email address.",
+    "seatLimitReached": "You've used every seat on your tier.",
+    "seatAlreadyExists": "That person already has a seat on this account.",
+    "seatSelf": "You already own this account.",
+    "paymentsUnavailable": "Card top-ups aren't switched on yet. Contact us and we'll credit your wallet manually.",
+    "saveFailed": "We couldn't save that. Try again."
+  },
+  "auth": {
+    "emailLabel": "Email address",
+    "emailHint": "Use the address you want order notifications sent to.",
+    "passwordLabel": "Password",
+    "passwordHint": "At least 8 characters.",
+    "confirmPasswordLabel": "Confirm password",
+    "fullNameLabel": "Full name",
+    "companyLabel": "Company name",
+    "signInCta": "Sign in",
+    "signingIn": "Signing in…",
+    "registerCta": "Create account",
+    "registering": "Creating account…",
+    "invalidCredentials": "That email and password don't match an account.",
+    "emailNotConfirmed": "Confirm your email address first — the link is in your inbox.",
+    "signUpFailed": "We couldn't create that account. Try again in a moment.",
+    "checkEmailTitle": "Check your email",
+    "checkEmailBody": "We sent a confirmation link to {email}. Open it to finish setting up your account.",
+    "forgotTitle": "Reset your password",
+    "forgotLead": "Enter the email on your account and we'll send a reset link.",
+    "forgotCta": "Send reset link",
+    "forgotSending": "Sending…",
+    "forgotSent": "If an account exists for that email, a reset link is on its way. Check your inbox and your spam folder.",
+    "backToSignIn": "Back to sign in",
+    "updatePasswordTitle": "Set a new password",
+    "updatePasswordLead": "Choose a password you don't use anywhere else.",
+    "newPassword": "New password",
+    "updatePasswordCta": "Update password",
+    "updatingPassword": "Updating…",
+    "passwordUpdated": "Your password has been updated.",
+    "confirmFailedTitle": "That link didn't work",
+    "confirmFailedBody": "Confirmation links expire and can only be used once. Request a new one and try again.",
+    "termsNote": "By creating an account you agree to our {terms} and {privacy}.",
+    "benefitsTitle": "What a free account gets you",
+    "benefit1": "Wholesale pricing on every product page.",
+    "benefit2": "Quotation requests with lead times and landed cost.",
+    "benefit3": "Order history, documents and tracking in one place.",
+    "merchantNote": "Merchant and Elite tiers add a prepaid wallet, ordering on behalf of your customers, and API access.",
+    "revealPassword": "Show or hide password",
+    "alreadyRegistered": "That email is already registered. Sign in instead."
+  },
+  "validation": {
+    "required": "This field is required.",
+    "invalidEmail": "Enter a valid email address.",
+    "passwordTooShort": "Use at least 8 characters.",
+    "passwordTooLong": "Use 72 characters or fewer.",
+    "passwordMismatch": "The two passwords don't match.",
+    "nameTooShort": "Enter your full name.",
+    "tooLong": "That's longer than we can store.",
+    "invalidPhone": "Enter a valid phone number, digits only, with the country code.",
+    "invalidUrl": "Enter a valid URL.",
+    "httpsOnly": "The URL must start with https://.",
+    "publicUrlOnly": "The URL must be publicly reachable — localhost and private addresses won't work.",
+    "invalidAmount": "Enter an amount like 250.00.",
+    "amountTooSmall": "The minimum is {min}.",
+    "amountTooLarge": "The maximum is {max}.",
+    "selectAtLeastOne": "Select at least one option.",
+    "invalidSelection": "That option isn't available.",
+    "invalidRate": "Enter a rate like 51 or 3.6725.",
+    "rateTooLarge": "That rate is too large."
+  },
+  "orderStatus": {
+    "draft": "Draft",
+    "awaiting_payment": "Awaiting payment",
+    "paid": "Paid",
+    "awaiting_recipient": "Awaiting recipient",
+    "claimed": "Details confirmed",
+    "ready_to_ship": "Ready to ship",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled",
+    "refunded": "Refunded"
+  },
+  "pay": {
+    "unknownTitle": "Payment not found",
+    "unknownBody": "We couldn't find that payment. Check your wallet for its current status.",
+    "pendingTitle": "Payment pending",
+    "pendingBody": "Your payment is being processed. Your wallet updates automatically once it settles.",
+    "paidTitle": "Payment received",
+    "paidBody": "Your wallet balance has been updated.",
+    "simulateNote": "Test mode: no live payment gateway is connected yet. Use the button to mark this payment as settled.",
+    "simulateCta": "Mark as paid (test)"
+  },
+  "about": {
+    "kicker": "About",
+    "title": "Wholesale sourcing without the guesswork",
+    "lead": "ELECT-I Global is a B2B wholesale platform for electronics and general merchandise. We publish wholesale pricing openly, quote what we cannot list, and let a merchant pay for an order before the person receiving it has given an address.",
+    "storyTitle": "Why the platform exists",
+    "storyBody1": "Most cross-border wholesale still runs on screenshots, spreadsheets and trust. A buyer sends a specification, receives a price in a chat window, wires money, and waits. Almost nothing in that chain can be checked afterwards.",
+    "storyBody2": "ELECT-I Global replaces it with a catalog you can price yourself, a quotation desk for everything the catalog does not cover, and an order record both sides can read line by line — including the prepaid claim link, where a recipient confirms that what is about to ship matches what they originally ordered before they hand over a delivery address.",
+    "statGroups": "Category groups",
+    "statTiers": "Membership tiers",
+    "statDelivery": "Typical delivery",
+    "statCurrency": "Trading currency",
+    "statDeliveryValue": "15–30 days",
+    "coverageTitle": "What we cover",
+    "coverageLead": "Electronics lead the catalog, but a purchase order rarely stops there. Eight top-level groups carry the rest of it.",
+    "doTitle": "What we actually do",
+    "doLead": "Four things, done end to end. Anything outside this list, we say so.",
+    "do1Title": "Publish wholesale pricing",
+    "do1Body": "Unit prices, quantity breaks and minimum order quantities on the product page itself — not behind a sign-up wall and a sales call.",
+    "do2Title": "Quote what isn't listed",
+    "do2Body": "Send a specification and a destination. We price it against our own catalog first, then approach manufacturers and distributors for the rest.",
+    "do3Title": "Take payment and issue the paperwork",
+    "do3Body": "Orders are priced in US dollars, paid by card or from a merchant wallet, and recorded with the documents each stage produces.",
+    "do4Title": "Coordinate the shipment",
+    "do4Body": "A courier or freight forwarder collects and delivers, typically 15–30 days after dispatch, with tracking returned to your account and to any connected system.",
+    "honestTitle": "What we don't claim",
+    "honestLead": "Sourcing platforms tend to inflate what they can verify. This is the literal current position.",
+    "honest1Title": "Services we arrange, not services we perform",
+    "honest1Body": "Pre-shipment inspection, factory audits and third-party escrow can be arranged with an independent provider at your cost, on request. ELECT-I Global does not carry them out itself, and nothing here should be read as a factory having been audited by us.",
+    "honest2Title": "Supplier labels describe documents, not verdicts",
+    "honest2Body": "A supplier label reflects the business documents that supplier has given us — company registration, and where applicable a manufacturer or distribution authorisation. It is not an independent verification and not a guarantee of product quality.",
+    "honest3Title": "Delivery estimates are estimates",
+    "honest3Body": "15–30 days after dispatch is what we typically see. Customs inspections, carrier backlogs and destination clearance are outside our control, and prices exclude clearance and import duties unless a quotation explicitly says DDP.",
+    "operatorTitle": "Who you are contracting with",
+    "operatorBody": "Every order placed here is a contract with the operator named below, not with an anonymous marketplace intermediary. Order documents carry the same name.",
+    "entityTitle": "Registered details",
+    "buildTitle": "How the platform is built",
+    "buildLead": "The parts of the system a buyer never sees, described plainly.",
+    "build1Title": "Server-side pricing",
+    "build1Body": "Every line on every order is repriced from the database at the tier resolved on the server. A price submitted by a browser or an API client is never trusted.",
+    "build2Title": "Signed order digests",
+    "build2Body": "Prepaid orders carry two independently computed HMAC digests — one over the upstream order, one over what ELECT-I will ship. The claim page compares them and withholds the form entirely if they disagree.",
+    "build3Title": "One ledger for money",
+    "build3Body": "Every wallet movement goes through a single locked, idempotent transaction that writes the ledger entry and the balance together, so a retry can never double-charge or double-refund.",
+    "build4Title": "Two languages, one source",
+    "build4Body": "English and Simplified Chinese are served from the same dictionaries, so a policy change lands in both at once instead of drifting apart.",
+    "ctaTitle": "Talk to us before you commit",
+    "ctaLead": "Send a specification, ask about a tier, or just check whether we can source something. No account needed to ask."
+  },
+  "services": {
+    "kicker": "Services",
+    "title": "Sourcing, quoting, shipping — and the paperwork in between",
+    "lead": "Two sets of services: what a buyer gets when they source through ELECT-I Global, and what a manufacturer or distributor gets when they list with us.",
+    "buyersTitle": "For buyers",
+    "buyersLead": "From a specification in a message to a tracked shipment, without changing platform three times.",
+    "buyer1Title": "Product sourcing",
+    "buyer1Body": "Search a live catalog across eight category groups, or describe what you need and let us find it. Model numbers and specifications get priced faster than category names.",
+    "buyer2Title": "Quotation management",
+    "buyer2Body": "Every quotation request gets a reference, a named trade term, unit pricing with quantity breaks, a lead time and a validity date. Requests stay attached to your account with their history.",
+    "buyer3Title": "Order and document handling",
+    "buyer3Body": "Pro forma, order confirmation, packing list and commercial invoice are generated from the order record itself, so the numbers on the documents and the numbers in your account are the same numbers.",
+    "buyer4Title": "Consolidated shipping",
+    "buyer4Body": "Merchant and Elite accounts can hold several orders and release them as one shipment, so freight is paid once instead of once per supplier.",
+    "buyer5Title": "Logistics coordination",
+    "buyer5Body": "We book the courier or freight forwarder, hand over the export paperwork and return the tracking. The carrier delivers; we stay the single point of contact if something stalls.",
+    "buyer6Title": "Prepaid ordering on behalf of your customers",
+    "buyer6Body": "Pay for an order from your wallet and send the recipient a claim link. They verify it against their original order, enter their own delivery details and see a zero balance. You never handle their address.",
+    "buyerNote": "Prices exclude customs clearance and import duties at the destination unless a quotation explicitly states DDP.",
+    "suppliersTitle": "For suppliers and brands",
+    "suppliersLead": "Listing, private label and OEM/ODM work — with demand aggregated across buyers rather than chased one order at a time.",
+    "supplier1Title": "Catalog listing",
+    "supplier1Body": "Send a product list with specifications, images, minimum order quantities and price breaks. We onboard it with bilingual names and category placement.",
+    "supplier2Title": "Private label",
+    "supplier2Body": "Existing products produced under a buyer's brand: logo, packaging, manuals and barcodes. We coordinate artwork approval and pre-production samples with the factory.",
+    "supplier3Title": "OEM and ODM programmes",
+    "supplier3Body": "OEM builds to a buyer's own design; ODM adapts a factory's existing design. Both run through the same quotation desk, with tooling, minimum order quantity and lead time stated before anything is committed.",
+    "supplier4Title": "Demand aggregation",
+    "supplier4Body": "Quotation requests are matched against listings first, so a supplier already in the catalog sees enquiries that would otherwise never reach them.",
+    "supplier5Title": "Export documentation",
+    "supplier5Body": "We collect the commercial invoice, packing list and the certificates a destination expects, and keep them attached to the order.",
+    "supplier6Title": "Order and payment flow",
+    "supplier6Body": "Buyers pay ELECT-I Global; you invoice against confirmed orders. No chasing an unknown buyer for a balance.",
+    "arrangedTitle": "Arranged on request, not performed by us",
+    "arrangedLead": "These are real services you can ask for. They are carried out by independent third parties at your cost, and we are explicit about that because the difference matters when something goes wrong.",
+    "arranged1Title": "Pre-shipment inspection",
+    "arranged1Body": "We can engage an independent inspection company to check quantity, workmanship and packaging before dispatch and send you their report. ELECT-I Global does not perform inspections itself.",
+    "arranged2Title": "Factory audits",
+    "arranged2Body": "We can put you in touch with an accredited audit firm for a facility or social-compliance audit. We do not audit factories ourselves and do not describe any listing as audited by us.",
+    "arranged3Title": "Escrow and staged payment",
+    "arranged3Body": "For large orders we can structure staged payments against agreed milestones, or work with an escrow provider you nominate. We do not operate an escrow service of our own.",
+    "arranged4Title": "Supplier due diligence",
+    "arranged4Body": "We can request registration documents, authorisation letters and references from a supplier and pass them to you unaltered. Reviewing them is your decision, not a verification we have carried out.",
+    "processTitle": "How an order runs",
+    "processLead": "Five stages. Every one of them writes a record you can look at afterwards.",
+    "step1Title": "Specify",
+    "step1Body": "Search the catalog, or send a quotation request with quantities, target price and destination.",
+    "step2Title": "Quote",
+    "step2Body": "You receive unit pricing, quantity breaks, the trade term, a lead time and a validity date.",
+    "step3Title": "Confirm and pay",
+    "step3Body": "Approve the pro forma and pay by card, from a merchant wallet, or on net terms if your tier includes them.",
+    "step4Title": "Produce and consolidate",
+    "step4Body": "Goods are produced or picked, then held for consolidation if you have more than one order open.",
+    "step5Title": "Ship and track",
+    "step5Body": "A courier or freight forwarder collects. Tracking returns to your account and to any webhook endpoint you have registered.",
+    "faqTitle": "Common questions",
+    "faq1Q": "Do I need an account to get a quotation?",
+    "faq1A": "No. A quotation request only needs a contact email. An account keeps the request and the resulting quotation attached to your history, and unlocks wholesale pricing on the product pages.",
+    "faq2Q": "Are prices landed, or ex-works?",
+    "faq2A": "Catalog prices are unit prices and exclude freight, customs clearance and import duties. Every quotation names the trade term it is priced on — EXW, FOB, CIF, CFR, DAP, FCA or DDP — and only DDP includes destination duties.",
+    "faq3Q": "Can you ship to my country?",
+    "faq3A": "We ship wherever a courier or freight forwarder will legally carry the goods and the destination permits their import. Some categories are restricted or prohibited outright; the compliance policy lists them.",
+    "faq4Q": "What is the minimum order?",
+    "faq4A": "Each product carries its own minimum order quantity. Merchant accounts have it halved and Elite accounts have it waived, subject to what the supplier will actually produce.",
+    "faq5Q": "Do you inspect goods before they ship?",
+    "faq5A": "Not ourselves. We can engage an independent inspection company on your behalf and send you their report, but ELECT-I Global does not perform inspections and does not certify any factory.",
+    "faq6Q": "How does a supplier get listed?",
+    "faq6A": "Send an application with your product range, capacity and documentation. Listing is not an endorsement and does not imply we have audited or verified your facility.",
+    "ctaTitle": "Tell us what you need",
+    "ctaLead": "A quotation request takes about two minutes and does not need an account."
+  },
+  "membership": {
+    "kicker": "Membership",
+    "title": "Pick the tier that matches how you buy",
+    "lead": "One free tier for buying at list price, and two paid tiers that add wholesale bands, a prepaid wallet, ordering on behalf of your own customers, and the API that automates all of it.",
+    "upgradeTitle": "That page needs the {tier} tier",
+    "upgradeBody": "You were sent here because the feature you opened is included with {tier} and above. Everything below compares what each tier actually unlocks.",
+    "perYear": "year",
+    "equivalentMonthly": "{amount} per month, billed annually",
+    "billedAnnually": "{amount} charged once a year",
+    "compareTitle": "Full comparison",
+    "compareLead": "Everything the platform gates on, in one table. These are the same values the order engine and the API enforce — nothing here is marketing rounding.",
+    "featureColumn": "Feature",
+    "groupPricing": "Pricing",
+    "groupOrdering": "Ordering",
+    "groupPrepaid": "Prepaid claim links",
+    "groupMoney": "Money",
+    "groupPlatform": "Platform",
+    "rowMonthly": "Monthly price",
+    "rowAnnual": "Annual price",
+    "rowMinOrder": "Minimum order value",
+    "rowRfq": "Quotation requests per month",
+    "prepayOnly": "Prepay only",
+    "seatsCount": "{count} users",
+    "analyticsBasic": "Basic",
+    "analyticsFull": "Full",
+    "analyticsExport": "Full, with export",
+    "faqTitle": "Questions about membership",
+    "faq1Q": "Can I change tier later?",
+    "faq1A": "Yes. An upgrade applies the new tier's pricing to orders placed from that point onward; it does not reprice orders already placed. A downgrade takes effect at the end of the period you have paid for.",
+    "faq2Q": "What happens to my wallet if I downgrade?",
+    "faq2A": "The balance stays yours. Buyer accounts cannot spend from a wallet, so it simply sits untouched until you upgrade again or ask us to return it.",
+    "faq3Q": "Is the wholesale discount on top of quantity breaks?",
+    "faq3A": "Yes. The quantity break sets the unit price for your order size, and the tier discount is applied to that price on the server. You never get one without the other.",
+    "faq4Q": "What counts as a prepaid order on behalf?",
+    "faq4A": "Any order you pay for where the recipient fills in their own delivery details through a claim link. The monthly allowance counts orders created in the calendar month, not links opened.",
+    "faq5Q": "Do net terms need an application?",
+    "faq5A": "Yes. The Elite credit line is a ceiling, not an automatic facility — we agree it with you before it is switched on, and an order draws against it only when you choose credit as the payment source.",
+    "faq6Q": "Is the API included?",
+    "faq6A": "Merchant includes read-only access. Elite includes full read and write access plus outbound webhooks. The developer documentation says exactly which endpoints each level reaches.",
+    "ctaTitle": "Not sure which tier fits?",
+    "ctaLead": "Tell us your order volume and how you sell, and we'll say which tier pays for itself.",
+    "developersCta": "Read the API docs"
+  },
+  "developers": {
+    "kicker": "Merchant API",
+    "title": "Create a paid order from your own storefront",
+    "lead": "A small, signed REST API for Merchant and Elite accounts: create prepaid orders on a customer's behalf, read them back, cancel the unclaimed ones, and check your wallet.",
+    "tierNoteTitle": "Who can call it",
+    "tierNoteBody": "API access follows the membership tier of the account that owns the key. Merchant keys are read-only. Elite keys can write. A key on a Buyer account is rejected with tier_forbidden.",
+    "baseUrlTitle": "Base URL",
+    "baseUrlNote": "Every endpoint below is relative to this base, and every request must be HTTPS.",
+    "authTitle": "Authentication",
+    "authLead": "Every request is signed. There is no bearer token: a captured header is useless without the secret, and a captured request is useless after five minutes.",
+    "headersTitle": "Required headers",
+    "headerName": "Header",
+    "headerMeaning": "What it carries",
+    "headerKeyId": "The public key identifier issued with the key pair.",
+    "headerTimestamp": "Unix time in seconds. A request more than 300 seconds from server time is rejected.",
+    "headerNonce": "A value you have never sent before on this key. It is stored server-side, so a repeat is rejected.",
+    "headerSignature": "Lowercase hex HMAC-SHA256 of the canonical string below, keyed on your own secret.",
+    "canonicalTitle": "The canonical string",
+    "canonicalLead": "Five fields joined by a single newline character. The path excludes the query string. The body is the exact bytes you send — for a GET request that is the empty string.",
+    "canonicalNote": "Sign the body you actually transmit. Re-serialising the JSON after signing changes the bytes and breaks the signature.",
+    "signingTitle": "Signing a request",
+    "signingLead": "This example uses WebCrypto, so it runs unchanged on Node 18+, Deno, Bun and Cloudflare Workers.",
+    "curlTitle": "The same request with curl",
+    "endpointsTitle": "Endpoints",
+    "endpointsLead": "Five endpoints. Everything else on the platform is deliberately not exposed.",
+    "scopeLabel": "Scope",
+    "tierLabel": "Tier",
+    "requestLabel": "Request",
+    "responseLabel": "Response",
+    "createOrderTitle": "Create a prepaid order",
+    "createOrderBody": "Charges the wallet or credit line named in pay_from, then returns a claim link for the recipient. Catalog lines are repriced on the server from the SKU, so a unit price sent for a line that resolves to a catalog product is ignored. Send the same idempotency_key twice and the original order comes back untouched.",
+    "createOrderDigest": "If you send external_items together with the external_digest you computed over them, the response reports whether your digest matches the one ELECT-I computed independently. That comparison is what makes the recipient's claim page meaningful, so compute the digest on your side rather than copying ours.",
+    "listOrdersTitle": "List orders",
+    "listOrdersBody": "Your orders, newest first. Accepts limit (default 25, maximum 100) and status.",
+    "getOrderTitle": "Retrieve one order",
+    "getOrderBody": "Full detail including line items and the claim link. Recipient data is limited to name, country and city, and only after the recipient has confirmed their details: you paid for the order, but you do not need the buyer's full address to reconcile it.",
+    "cancelOrderTitle": "Cancel an unclaimed order",
+    "cancelOrderBody": "Cancels an order the recipient has not yet claimed and returns the money to the source it came from. Once a recipient has confirmed their delivery details the order can no longer be cancelled through the API.",
+    "walletTitle": "Read the wallet",
+    "walletBody": "Balance, credit headroom, your tier's monthly prepaid-order allowance and the last twenty ledger entries.",
+    "errorsTitle": "Errors",
+    "errorsLead": "Every failure returns the same envelope: an error object with a stable code and a human-readable message. Match on the code, never on the message.",
+    "errorCode": "Code",
+    "errorStatus": "Status",
+    "errorMeaning": "Meaning",
+    "errMissingHeaders": "One of the four signing headers was absent.",
+    "errUnknownKey": "No such key, or the stored secret failed its own integrity cross-check.",
+    "errKeyRevoked": "The key exists but has been revoked in the dashboard.",
+    "errStaleTimestamp": "The timestamp is more than 300 seconds from server time.",
+    "errReplayedNonce": "That nonce has already been used on this key.",
+    "errBadSignature": "The signature did not match the canonical string.",
+    "errAccountSuspended": "The account behind the key is suspended.",
+    "errTierForbidden": "The tier has no API access, or the membership is not active.",
+    "errForbidden": "Authenticated, but this key's scopes or tier do not allow the call.",
+    "errInvalidJson": "The request body is not valid JSON.",
+    "errInvalidRequest": "The body parsed but failed validation. The details array names each offending field.",
+    "errInsufficientFunds": "The wallet balance does not cover the order total.",
+    "errCreditLimit": "The order would exceed the agreed credit line.",
+    "errQuotaExceeded": "The tier's monthly prepaid-order allowance is used up.",
+    "errMoqNotMet": "A line is below the minimum order quantity that applies at your tier.",
+    "errUnknownProduct": "A SKU or product id does not resolve to an available listing.",
+    "errNotFound": "No such order for this account. Orders belonging to another merchant return the same 404 rather than confirming that they exist.",
+    "errAlreadyClaimed": "The recipient has already confirmed delivery details, so the order cannot be cancelled.",
+    "errInvalidState": "The order's current status does not allow that transition.",
+    "errServerError": "Something failed on our side. Retry with the same idempotency key.",
+    "webhooksTitle": "Webhooks",
+    "webhooksLead": "Elite accounts can register HTTPS endpoints and receive order lifecycle events. Deliveries are queued first and attempted afterwards, so an endpoint that is down loses nothing.",
+    "webhookEventsTitle": "Events",
+    "webhookSigTitle": "Verifying a delivery",
+    "webhookSigBody": "Each POST carries x-eig-event, x-eig-timestamp and x-eig-signature. The signature is a lowercase hex HMAC-SHA256 over the string <timestamp>.<raw body>, keyed on that endpoint's own signing secret. Compare it in constant time and reject anything that does not match.",
+    "webhookRetryTitle": "Retries",
+    "webhookRetryBody": "A delivery is attempted up to six times with growing gaps of roughly 30 seconds, 2 minutes, 8 minutes, 30 minutes and 2 hours. Any 2xx response ends the sequence. Endpoints must be idempotent, because a delivery you have already processed can arrive again.",
+    "eventOrderCreated": "A prepaid order was created and a claim link issued.",
+    "eventOrderClaimed": "The recipient verified the order and confirmed delivery details.",
+    "eventOrderShipped": "The order left the warehouse; tracking is attached.",
+    "eventOrderDelivered": "The carrier recorded delivery.",
+    "eventOrderCancelled": "The order was cancelled; the payload says whether it was refunded.",
+    "eventWalletLow": "The wallet balance fell below the low-balance threshold after a charge.",
+    "rulesTitle": "Rules worth knowing before you integrate",
+    "rule1Title": "Prices are never taken from you",
+    "rule1Body": "Every line that resolves to a catalog SKU is repriced from the database at your tier. Only lines with no catalog match may carry a price you send, and those are flagged as custom on the order.",
+    "rule2Title": "Idempotency is your responsibility",
+    "rule2Body": "idempotency_key is required on order creation. Generate it before the first attempt and reuse it on every retry of the same logical order.",
+    "rule3Title": "Nonces are single-use per key",
+    "rule3Body": "A nonce is stored the first time it is seen. Retrying needs a fresh nonce and a fresh timestamp — and, if the failure was a timeout, the same idempotency key.",
+    "rule4Title": "Clocks matter",
+    "rule4Body": "The 300-second window is measured against server time. If stale_timestamp starts appearing, check the clock on the machine signing the requests before anything else.",
+    "keysTitle": "Getting a key",
+    "keysBody": "Keys are created in the merchant dashboard. The secret is shown once, at creation, and is stored encrypted — we cannot show it to you again. Scope each key to what it needs: a key that only reads orders should not hold orders:write.",
+    "ctaTitle": "Ready to build?",
+    "ctaLead": "Create a key in the dashboard, or ask us about the integration first."
+  },
+  "supplierApply": {
+    "kicker": "Supplier application",
+    "title": "List your products on ELECT-I Global",
+    "lead": "Manufacturers, authorised distributors, trading companies and brand owners. Tell us what you make, how much of it and how fast, and we will come back with what onboarding needs.",
+    "formTitle": "Your application",
+    "formLead": "Everything here is used to assess the listing. Nothing is published until we have agreed it with you.",
+    "companyTitle": "Company",
+    "companyName": "Company name",
+    "businessType": "Business type",
+    "typeManufacturer": "Manufacturer",
+    "typeDistributor": "Authorised distributor",
+    "typeTrading": "Trading company",
+    "typeBrand": "Brand owner",
+    "country": "Country or region",
+    "website": "Website",
+    "websiteHint": "Company site, catalog or marketplace storefront.",
+    "contactTitle": "Contact",
+    "contactName": "Contact name",
+    "email": "Work email",
+    "phone": "Phone or WhatsApp",
+    "capabilityTitle": "What you supply",
+    "categories": "Category groups",
+    "categoriesHint": "Tick every group your range fits into.",
+    "products": "Main product range",
+    "productsHint": "Model families, specifications and the volumes you normally run.",
+    "moq": "Typical minimum order quantity",
+    "leadTime": "Typical lead time in days",
+    "capacity": "Monthly capacity",
+    "capacityHint": "Units per month across your main lines.",
+    "certifications": "Certifications",
+    "certificationsHint": "CE, FCC, RoHS, ISO, UL and anything else you hold. List them as they appear on the certificate.",
+    "message": "Anything else",
+    "submitCta": "Send application",
+    "sending": "Sending…",
+    "successTitle": "Application received",
+    "successBody": "Your reference is {reference}. We read every application and reply to the address you gave, usually within two business days.",
+    "errorTitle": "We could not send that application",
+    "expectTitle": "What happens next",
+    "expect1": "We read the application and ask for whatever is missing — usually registration documents and a product list with specifications and price breaks.",
+    "expect2": "We agree the listing scope with you: which products, which price breaks, which minimum order quantities and which markets you can serve.",
+    "expect3": "We onboard the range with bilingual product names, category placement and images, and you appear in the supplier directory.",
+    "honestTitle": "What a listing is, and what it isn't",
+    "honestBody1": "Supplier labels on this platform describe the business documents we hold — company registration, and where applicable a manufacturer or distribution authorisation. They are not an independent verification.",
+    "honestBody2": "ELECT-I Global does not currently run factory audits or third-party inspections, so no listing is described as audited or inspected by us. When a buyer wants either, we arrange it with an independent provider and the report goes to them directly.",
+    "honestBody3": "Counterfeit goods, unauthorised replicas and anything on the prohibited list in our compliance policy are refused outright, at application and at any point afterwards."
+  },
+  "suppliersApply": {
+    "kicker": "Become a supplier",
+    "title": "List your products with ELECT-I Global",
+    "lead": "Manufacturers, authorized distributors and exporters can apply to list. Tell us who you are and what you make; we review every application before any listing goes live.",
+    "formTitle": "Supplier application",
+    "companyName": "Company name",
+    "contactName": "Contact name",
+    "email": "Work email",
+    "country": "Country / region",
+    "website": "Website",
+    "websiteOptional": "optional",
+    "productCategories": "What do you manufacture or distribute?",
+    "productCategoriesHint": "List your main product categories and any brands you are authorized to distribute.",
+    "message": "Anything else we should know",
+    "messageOptional": "optional",
+    "submitCta": "Submit application",
+    "sending": "Submitting…",
+    "successTitle": "Application received",
+    "successBody": "Your application reference is {reference}. Our supplier team reviews every submission and will be in touch by email.",
+    "errorTitle": "We couldn't submit that",
+    "requirementsTitle": "What you'll be asked for",
+    "requirementsLead": "Verification levels reflect the documents a supplier provides — nothing more. We do not perform independent factory audits or third-party inspections, so a level is not a guarantee of product quality.",
+    "req1": "Company registration certificate or business licence",
+    "req2": "Tax registration",
+    "req3": "Legal representative identification",
+    "req4": "Factory or warehouse address",
+    "req5": "Export licence, where applicable",
+    "req6": "Product certifications and, where applicable, brand authorization",
+    "levelsTitle": "Verification levels",
+    "level1Title": "Verified supplier",
+    "level1Body": "Submitted basic company documentation and contact information.",
+    "level2Title": "Audited supplier",
+    "level2Body": "Completed a platform-managed document verification process.",
+    "level3Title": "Premium manufacturer",
+    "level3Body": "Provided enhanced production-capacity and quality-control documentation.",
+    "level4Title": "Authorized distributor",
+    "level4Body": "Provided documentation supporting distribution rights for specified brands or territories."
+  },
+  "billing": {
+    "title": "Billing",
+    "nav": "Billing",
+    "lead": "Payment methods and your complete billing history.",
+    "cardsTitle": "Payment methods",
+    "addCard": "Add card",
+    "cardHolder": "Cardholder name",
+    "cardNumber": "Card number",
+    "cardExpiry": "Expiry (MM/YY)",
+    "cardCvc": "CVC",
+    "saveCard": "Save card",
+    "saving": "Saving…",
+    "cardAdded": "Card added.",
+    "default": "Default",
+    "makeDefault": "Make default",
+    "remove": "Remove",
+    "noCards": "No payment methods on file.",
+    "expires": "Expires {mm}/{yy}",
+    "addedOn": "Added {date}",
+    "historyTitle": "Billing history",
+    "noHistory": "No billing activity yet.",
+    "colDate": "Date",
+    "colDescription": "Description",
+    "colMethod": "Method",
+    "colAmount": "Amount",
+    "colStatus": "Status",
+    "purposeOrder": "Order payment",
+    "purposeTopup": "Wallet top-up",
+    "purposeSubscription": "Membership — Elite",
+    "statusPaid": "Paid",
+    "statusPending": "Pending",
+    "statusFailed": "Failed",
+    "statusRefunded": "Refunded",
+    "methodWallet": "Wallet",
+    "methodVisa": "VISA •••• 4261",
+    "exportCsv": "Export CSV",
+    "summaryOrders": "Order payments",
+    "summaryTopups": "Top-ups",
+    "summarySubs": "Membership",
+    "summaryTransactions": "Transactions"
+  },
+  "admin": {
+    "title": "Administration",
+    "lead": "Platform settings. Changes here are visible to every visitor.",
+    "currencyTitle": "Display currencies",
+    "currencyLead": "Rates used to show catalogue prices in a visitor's own currency. The catalogue is priced in USD and every order, invoice and payment stays in USD — these rates change presentation only.",
+    "currencyCta": "Edit display currencies",
+    "defaultCurrency": "Default currency",
+    "defaultCurrencyHint": "Shown when a visitor has made no choice and their country tells us nothing.",
+    "rate": "Rate",
+    "rateHint": "Units of {currency} per 1 USD.",
+    "enabled": "Offer to visitors",
+    "baseCurrency": "Base currency — priced and transacted in.",
+    "preview": "Preview",
+    "previewHint": "How {amount} is shown at the rate above.",
+    "saved": "Display currencies updated.",
+    "resolutionTitle": "How a visitor's currency is chosen",
+    "resolutionCookie": "Their own choice in the site footer picker.",
+    "resolutionCountry": "The country their IP resolves to at the edge.",
+    "resolutionDefault": "The default currency above.",
+    "resolutionFallback": "USD, if none of the above is available."
+  }
+}

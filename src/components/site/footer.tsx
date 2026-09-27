@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { waLink } from "@/lib/egypt";
 import { getSiteSettings } from "@/lib/settings";
 
 const colTitle = "text-sm font-semibold uppercase tracking-wide text-gray-900";
@@ -77,37 +76,10 @@ export async function Footer() {
             <h2 className={colTitle}>Get in touch</h2>
             <ul className="mt-3 space-y-2 text-sm text-gray-600">
               <li>
-                <a href={`tel:${contact.phone}`} className="hover:text-brand-700">
-                  Phone: {contact.phone}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={waLink(contact.whatsapp)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-brand-700"
-                >
-                  WhatsApp: {contact.whatsapp}
-                </a>
-              </li>
-              <li>
                 <a href={`mailto:${contact.email}`} className="break-all hover:text-brand-700">
                   {contact.email}
                 </a>
               </li>
-              {contact.telegram && (
-                <li>
-                  <a
-                    href={`https://t.me/${contact.telegram.replace(/^@/, "")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-brand-700"
-                  >
-                    Telegram: {contact.telegram.startsWith("@") ? contact.telegram : `@${contact.telegram}`}
-                  </a>
-                </li>
-              )}
               <li className="pt-1 text-xs text-gray-500">{seller_info.address}</li>
             </ul>
           </div>

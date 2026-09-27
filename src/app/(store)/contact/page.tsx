@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { waLink } from "@/lib/egypt";
 import { getSiteSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Get in touch with HDML by phone, WhatsApp or email for wholesale orders and support.",
+  description: "Get in touch with HDML by email for wholesale orders and support.",
 };
 
 export default async function ContactPage() {
@@ -12,45 +11,19 @@ export default async function ContactPage() {
 
   const channels = [
     {
-      title: "WhatsApp",
-      note: "Fastest response — send your order reference for order questions.",
-      href: waLink(contact.whatsapp),
-      label: contact.whatsapp,
-      external: true,
-    },
-    {
-      title: "Phone",
-      note: "Call us during business hours for urgent matters.",
-      href: `tel:${contact.phone}`,
-      label: contact.phone,
-      external: false,
-    },
-    {
       title: "Email",
       note: "Best for detailed enquiries, bulk quotes and documents.",
       href: `mailto:${contact.email}`,
       label: contact.email,
       external: false,
     },
-    ...(contact.telegram
-      ? [
-          {
-            title: "Telegram",
-            note: "Message us on Telegram for quick chats and updates.",
-            href: `https://t.me/${contact.telegram.replace(/^@/, "")}`,
-            label: contact.telegram.startsWith("@") ? contact.telegram : `@${contact.telegram}`,
-            external: true,
-          },
-        ]
-      : []),
   ];
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold tracking-tight text-gray-900">Contact us</h1>
       <p className="mt-3 leading-relaxed text-gray-600">
-        Questions about a product, an order, or a large-quantity quote? Reach us on any of the
-        channels below — WhatsApp is usually the fastest.
+        Questions about a product, an order, or a large-quantity quote? Reach us by email below.
       </p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
